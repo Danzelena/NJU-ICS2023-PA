@@ -69,6 +69,7 @@ static long load_img() {
 }
 
 static int parse_args(int argc, char *argv[]) {
+				/* list many option to choose*/
   const struct option table[] = {
     {"batch"    , no_argument      , NULL, 'b'},
     {"log"      , required_argument, NULL, 'l'},
@@ -78,6 +79,7 @@ static int parse_args(int argc, char *argv[]) {
     {0          , 0                , NULL,  0 },
   };
   int o;
+/*	use function getopt_long() to get the parameter in argv*/
   while ( (o = getopt_long(argc, argv, "-bhl:d:p:", table, NULL)) != -1) {
     switch (o) {
       case 'b': sdb_set_batch_mode(); break;
@@ -101,7 +103,7 @@ static int parse_args(int argc, char *argv[]) {
 void init_monitor(int argc, char *argv[]) {
   /* Perform some global initialization. */
 
-  /* Parse arguments. */
+  /* Parse arguments. Parse=analysis in computer */
   parse_args(argc, argv);
 
   /* Set random seed. */
@@ -117,7 +119,7 @@ void init_monitor(int argc, char *argv[]) {
   IFDEF(CONFIG_DEVICE, init_device());
 
   /* Perform ISA dependent initialization. */
-  init_isa();
+  init_isa();//do something about isa
 
   /* Load the image to memory. This will overwrite the built-in image. */
   long img_size = load_img();
