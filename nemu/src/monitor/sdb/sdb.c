@@ -28,6 +28,7 @@ void init_wp_pool();
 static char* rl_gets() {
   static char *line_read = NULL;
 
+	// clean something already there
   if (line_read) {
     free(line_read);
     line_read = NULL;
@@ -36,20 +37,20 @@ static char* rl_gets() {
   line_read = readline("(nemu) ");
 
   if (line_read && *line_read) {
-    add_history(line_read);
+    add_history(line_read);//which add_history?
   }
 
   return line_read;
 }
 
 static int cmd_c(char *args) {
-  cpu_exec(-1);
+  cpu_exec(-1);//when encounts 'c',just run it!
   return 0;
 }
 
 
 static int cmd_q(char *args) {
-  return -1;
+  return -1;//'q' for quit
 }
 
 static int cmd_help(char *args);
@@ -57,16 +58,21 @@ static int cmd_help(char *args);
 static struct {
   const char *name;
   const char *description;
-  int (*handler) (char *);
+  int (*handler) (char *);//handler is a pointer which
+													//turn to a function that input
+													//in char and output int
 } cmd_table [] = {
   { "help", "Display information about all supported commands", cmd_help },
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
-
-  /* TODO: Add more commands */
-
-};
-
+	{"step","let program goes N steps then stop,default N=1",cmd_si},
+	{"info","print register and watchpoint state",cmd_info}.
+	{"scanmem","eval the expr ,scan the corrsponding memory",cmd_scm},
+					{"evalexpr","eval the expression",cmd_eval},
+					{"setWarchPoint","if value of expr changed,stop",cmd_setWP},
+					{"delWatchPoint","del the N.th watchpoint",cmd_delWP},
+					/*TODO*/
+}
 #define NR_CMD ARRLEN(cmd_table)
 
 static int cmd_help(char *args) {
