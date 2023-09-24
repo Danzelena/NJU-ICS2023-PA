@@ -54,7 +54,7 @@ static int cmd_q(char *args) {
 }
 
 static int cmd_help(char *args);
-
+static int cmd_si(char *args);
 
 static struct {
   const char *name;
@@ -66,8 +66,8 @@ static struct {
   { "help", "Display information about all supported commands", cmd_help },
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
-/*	{"si","let program goes N steps then stop,default N=1",cmd_si},
-	{"info","print register and watchpoint state",cmd_info},
+	{"si","let program goes N steps then stop,default N=1",cmd_si},
+/*	{"info","print register and watchpoint state",cmd_info},
 	{"x","eval the expr ,scan the corrsponding memory",cmd_scm},
 					{"p","eval the expression",cmd_eval},
 					{"w","if value of expr changed,stop",cmd_setWP},
@@ -75,7 +75,22 @@ static struct {
 					/*TODO*/
 };
 #define NR_CMD ARRLEN(cmd_table)
-
+int isValid(char*);
+static int cmd_si(char *args){
+			char *arg = strtok(NULL," ");
+		  uint64_t num_step = 1;//default 1	
+			if (arg == NULL){
+							cpu_exec(num_step);
+			}
+			else if(isValid(arg)){
+				     	num_step = strtol(arg,NULL,10);	
+							cpu_exec(num_step);
+			}
+			else{
+							printf("Unknown parameter'%s'\n",arg);
+			}
+			return 0;
+}
 static int cmd_help(char *args) {
   /* extract the first argument */
   char *arg = strtok(NULL, " ");
@@ -135,6 +150,7 @@ void sdb_mainloop() {
     int i;
     for (i = 0; i < NR_CMD; i ++) {
       if (strcmp(cmd, cmd_table[i].name) == 0) {
+/* check the instrucion runs*/
         if (cmd_table[i].handler(args) < 0) { return; }
         break;
       }
@@ -144,6 +160,15 @@ void sdb_mainloop() {
   }
 }
 
+int isValid(char *str){
+				int isnumber = 1;
+				for (int i=0;i < strlen(str);i++){
+								if(!isdigit(str[i])){
+												isnumber = 0;
+								}
+				}
+				return isnumber;
+}
 void init_sdb() {
   /* Compile the regular expressions. */
   init_regex();
