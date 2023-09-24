@@ -87,6 +87,7 @@ static int cmd_help(char *args) {
       printf("%s - %s\n", cmd_table[i].name, cmd_table[i].description);
     }
   }
+	/*give the help information of 'arg'*/
   else {
     for (i = 0; i < NR_CMD; i ++) {
       if (strcmp(arg, cmd_table[i].name) == 0) {
@@ -110,18 +111,18 @@ void sdb_mainloop() {
   }
 
   for (char *str; (str = rl_gets()) != NULL; ) {
-					/*track the string*/
+		/*track the string*/
     char *str_end = str + strlen(str);
 
     /* extract the first token as the command */
     char *cmd = strtok(str, " ");//first call 'strtok'
     if (cmd == NULL) { continue; }
 
-		/* have found the arguments*/
     /* treat the remaining string as the arguments,
      * which may need further parsing
      */
     char *args = cmd + strlen(cmd) + 1;
+		/*don't found arguments*/
     if (args >= str_end) {
       args = NULL;
     }
