@@ -55,6 +55,7 @@ static int cmd_q(char *args) {
 
 static int cmd_help(char *args);
 
+
 static struct {
   const char *name;
   const char *description;
@@ -65,14 +66,14 @@ static struct {
   { "help", "Display information about all supported commands", cmd_help },
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
-	{"step","let program goes N steps then stop,default N=1",cmd_si},
-	{"info","print register and watchpoint state",cmd_info}.
-	{"scanmem","eval the expr ,scan the corrsponding memory",cmd_scm},
-					{"evalexpr","eval the expression",cmd_eval},
-					{"setWarchPoint","if value of expr changed,stop",cmd_setWP},
-					{"delWatchPoint","del the N.th watchpoint",cmd_delWP},
+/*	{"si","let program goes N steps then stop,default N=1",cmd_si},
+	{"info","print register and watchpoint state",cmd_info},
+	{"x","eval the expr ,scan the corrsponding memory",cmd_scm},
+					{"p","eval the expression",cmd_eval},
+					{"w","if value of expr changed,stop",cmd_setWP},
+					{"d","del the N.th watchpoint",cmd_delWP},*/
 					/*TODO*/
-}
+};
 #define NR_CMD ARRLEN(cmd_table)
 
 static int cmd_help(char *args) {
@@ -109,12 +110,14 @@ void sdb_mainloop() {
   }
 
   for (char *str; (str = rl_gets()) != NULL; ) {
+					/*track the string*/
     char *str_end = str + strlen(str);
 
     /* extract the first token as the command */
-    char *cmd = strtok(str, " ");
+    char *cmd = strtok(str, " ");//first call 'strtok'
     if (cmd == NULL) { continue; }
 
+		/* have found the arguments*/
     /* treat the remaining string as the arguments,
      * which may need further parsing
      */
