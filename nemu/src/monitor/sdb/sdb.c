@@ -149,7 +149,7 @@ static int cmd_x(char *args){
     for(int i=0;i< n;i++){
       printf("Debug:i is %d\n",i);
       if(i % 4 == 0){
-        printf("6666\n");
+        printf("6666");
         printf("%x",expr_val+i*4);
       }
       for(int j = 0;j <4;j++){
