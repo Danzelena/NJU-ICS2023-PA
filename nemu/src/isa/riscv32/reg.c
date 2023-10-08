@@ -31,6 +31,7 @@ void isa_reg_display() {
 								printf("%s\t",regs[i]);
                 
 				}
+        printf("\n");
 
 }
 
