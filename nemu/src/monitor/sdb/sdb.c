@@ -148,7 +148,8 @@ static int cmd_x(char *args){
 
     for(int i=0;i< n;i++){
       if(i%4 == 0){
-        printf("\n\e[1;36m%#x: \e[0m\t",expr_val+i*4);
+        printf("6666");
+        printf("%x",expr_val+i*4);
       }
       for(int j = 0;i <4;j++){
         uint8_t *pos = guest_to_host(expr_val+i*4+j);
