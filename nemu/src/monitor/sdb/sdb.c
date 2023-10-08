@@ -144,7 +144,7 @@ static int cmd_x(char *args){
     // assume expr is a 0x...
     paddr_t expr_val;
     expr_val = strtol(arg,NULL,16);
-    printf("Debug:n is %d,expr_val is %d",n,expr_val);
+    printf("Debug:n is %d,expr_val is %d\n",n,expr_val);
 
     for(int i=0;i< n;i++){
       if(i%4 == 0){
