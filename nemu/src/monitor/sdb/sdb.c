@@ -128,6 +128,8 @@ int info_r();
 // isa_reg_display();
 // }
 
+
+// finish ugly
 static int cmd_x(char *args){
 	char *arg_n = strtok(NULL, " ");
 	char *arg = strtok(NULL," ");
