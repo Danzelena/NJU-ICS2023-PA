@@ -154,8 +154,8 @@ static int cmd_x(char *args){
         printf("0x%x : \n",expr_val+i*4);
       }
       for(int j = 0;j <4;j++){
-        uint8_t *pos = guest_to_host(expr_val+i*4+j);
-        printf("%x\n",*pos);
+        // uint8_t *pos = guest_to_host(expr_val+i*4+j);
+        // printf("%x\n",*pos);
       }
       
     }
