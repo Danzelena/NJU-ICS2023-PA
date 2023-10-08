@@ -27,7 +27,9 @@ void isa_reg_display() {
 				int i ;
 				int reg_num = 32;
 				for (i=0;i <reg_num;i++){
-								printf("%s",regs[i]);
+          if (i % 8 == 0){printf("\n");}
+								printf("%s\t",regs[i]);
+                
 				}
 
 }
