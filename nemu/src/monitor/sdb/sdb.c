@@ -136,12 +136,8 @@ static int cmd_x(char *args){
 	return 0;
   }
 	else{
-
-    // convert str to int
-    
     int n;
     n = atoi(arg_n);
-
     // assume expr is a 0x...
     paddr_t expr_val;
     expr_val = strtol(arg,NULL,16);
@@ -155,24 +151,19 @@ static int cmd_x(char *args){
         printf("0x%x : \n",expr_val+i*4);
       }
       // Big bug!
-      // for(int j = 0;j <4;j++){
-      //   uint8_t *pos = guest_to_host(expr_val+i*4+j);
-      //   // *pos += 1;
-      //   printf("%.2x ",*pos);
-      // }
+      for(int j = 0;j <4;j++){
+        word_t re = paddr_read(expr_val+i*4+j,1);
+        printf("%.2x",re);
+        // uint8_t *pos = guest_to_host(expr_val+i*4+j);
+        // *pos += 1;
+        // printf("%.2x ",*pos);
+      }
       printf("\t");
       
     }
     printf("\n");
     return 0;
-    // for(paddr_t i = expr_val;i <n + expr_val;i++){
-            
-    //         //dirctly print
-    //         printf("%x is: %x",i,*i);
-          
-    //         //(print readmem)
-    // }
-
+  
 	}
 return 0;
 }
