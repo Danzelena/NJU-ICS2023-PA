@@ -155,11 +155,13 @@ static int cmd_x(char *args){
       }
       for(int j = 0;j <4;j++){
         uint8_t *pos = guest_to_host(expr_val+i*4+j);
-        *pos += 1;
-        // printf("%x\n",*pos);
+        // *pos += 1;
+        printf("%.2x ",*pos);
       }
+      printf("\t");
       
     }
+    printf("\n");
     printf("finish!");
     // for(paddr_t i = expr_val;i <n + expr_val;i++){
             
