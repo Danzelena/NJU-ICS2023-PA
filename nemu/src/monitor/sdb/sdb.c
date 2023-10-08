@@ -142,7 +142,9 @@ static int cmd_x(char *args){
     paddr_t expr_val;
     expr_val = strtol(arg,NULL,16);
     // printf("Debug:n is %d,expr_val is %d\n",n,expr_val);
-
+    if (expr_val < 0x80000000 || expr_val > 0x87ffffff){
+      printf("address = 0x%.8x is out of bound of pmem [0x80000000, 0x87ffffff]",expr_val);
+    }
     for(int i=0;i< n;i++){
       // printf("Debug:i is %d\n",i);
       if(i % 4 == 0){
@@ -150,13 +152,13 @@ static int cmd_x(char *args){
         // printf("%d\n",expr_val+i*4);
         printf("0x%x : \n",expr_val+i*4);
       }
-      // Big bug!
+      
       for(int j = 0;j <4;j++){
         // word_t re = paddr_read(expr_val+i*4+j,1);
         // printf("%.2x",re);
         uint8_t *pos = guest_to_host(expr_val+i*4+j);
         // *pos += 1;
-        printf("%.2x ",*pos);
+        printf("0x%.2x\t ",*pos);
       }
       printf("\t");
       
