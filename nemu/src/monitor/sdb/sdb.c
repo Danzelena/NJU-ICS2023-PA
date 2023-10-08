@@ -15,6 +15,7 @@
 
 #include <isa.h>
 #include <cpu/cpu.h>
+#include<memory/paddr.h>
 #include <readline/readline.h>
 #include <readline/history.h>
 #include "sdb.h"
@@ -23,6 +24,7 @@ static int is_batch_mode = false;
 
 void init_regex();
 void init_wp_pool();
+// static word_t paddr_read();
 
 /* We use the `readline' library to provide more flexibility to read from stdin. */
 static char* rl_gets() {
@@ -55,6 +57,7 @@ static int cmd_q(char *args) {
 
 static int cmd_help(char *args);
 static int cmd_si(char *args);
+static int cmd_x(char *args);
 
 static struct {
   const char *name;
@@ -67,9 +70,9 @@ static struct {
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
 	{"si","let program goes N steps then stop,default N=1",cmd_si},
-/*	{"info","print register and watchpoint state",cmd_info},
-	{"x","eval the expr ,scan the corrsponding memory",cmd_scm},
-					{"p","eval the expression",cmd_eval},
+	// {"info","print register and watchpoint state",cmd_info},
+	{"x","eval the expr ,scan the corrsponding memory",cmd_x},
+/*					{"p","eval the expression",cmd_eval},
 					{"w","if value of expr changed,stop",cmd_setWP},
 					{"d","del the N.th watchpoint",cmd_delWP},*/
 					/*TODO*/
@@ -91,6 +94,81 @@ static int cmd_si(char *args){
 			}
 			return 0;
 }
+int info_r();
+// static int cmd_info(char *args){
+// 				char *arg = strtok(NULL, " ");
+// 				int num_arg = 2;//number of args in arg_table
+// 				struct{
+// 								const char *name;
+// 								const char *description;
+// 								int (*handler)(char *);
+// 				}arg_table [] = {
+// 								{	"r","infomation of register",info_r},
+// 								//{"w","infomation of watchpoint",info_w},
+// 				};
+// 				int i;
+// 				if(arg == NULL){
+// 								for (i=0;i < num_arg;i ++){
+// 											 printf("%s - %s\n",arg_table[i].name,arg_table[i].description);
+// 																			 }
+// 								 }
+// 				else{
+// 			for(i = 0;i < num_arg;i++){
+// 			if (strcmp(arg,arg_table[i].name)== 0){
+// 			arg_table[i].handler();
+			
+// 			}
+// 			}
+// 				}
+// }
+								
+// static int info_r(){
+
+//   // not finished!!!
+// isa_reg_display();
+// }
+
+static int cmd_x(char *args){
+	char *arg_n = strtok(NULL, " ");
+	char *arg = strtok(NULL," ");
+	if (arg == NULL || arg_n == NULL){
+	printf("cmd_x needs a valid expressionto deal with");
+	}
+	else{
+
+    // convert str to int
+    
+    int n;
+    n = atoi(arg_n);
+
+    // assume expr is a 0x...
+    paddr_t expr_val;
+    expr_val = strtol(arg,NULL,16);
+
+    for(int i=0;i< n;i++){
+      if(i%4 == 0){
+        printf("%x",expr_val+i*4);
+      }
+      for(int j = 0;i <4;j++){
+        uint8_t *pos = guest_to_host(expr_val+i*4+j);
+        printf("%x",*pos);
+      }
+      
+    }
+
+    // for(paddr_t i = expr_val;i <n + expr_val;i++){
+            
+    //         //dirctly print
+    //         printf("%x is: %x",i,*i);
+          
+    //         //(print readmem)
+    // }
+
+	}
+return 0;
+}
+
+
 static int cmd_help(char *args) {
   /* extract the first argument */
   char *arg = strtok(NULL, " ");
