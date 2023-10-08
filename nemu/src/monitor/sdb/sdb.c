@@ -132,7 +132,7 @@ static int cmd_x(char *args){
 	char *arg_n = strtok(NULL, " ");
 	char *arg = strtok(NULL," ");
 	if (arg == NULL || arg_n == NULL){
-	printf("cmd_x needs a valid expressionto deal with");
+	printf("cmd_x needs a valid expressionto deal with\n");
 	}
 	else{
 
