@@ -152,11 +152,11 @@ static int cmd_x(char *args){
       }
       // Big bug!
       for(int j = 0;j <4;j++){
-        word_t re = paddr_read(expr_val+i*4+j,1);
-        printf("%.2x",re);
-        // uint8_t *pos = guest_to_host(expr_val+i*4+j);
+        // word_t re = paddr_read(expr_val+i*4+j,1);
+        // printf("%.2x",re);
+        uint8_t *pos = guest_to_host(expr_val+i*4+j);
         // *pos += 1;
-        // printf("%.2x ",*pos);
+        printf("%.2x ",*pos);
       }
       printf("\t");
       
