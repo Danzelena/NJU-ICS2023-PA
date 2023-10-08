@@ -133,7 +133,8 @@ static int cmd_x(char *args){
 	char *arg = strtok(NULL," ");
 	if (arg == NULL || arg_n == NULL){
 	printf("cmd_x needs a valid expressionto deal with\n");
-	}
+	return 0;
+  }
 	else{
 
     // convert str to int
@@ -163,7 +164,7 @@ static int cmd_x(char *args){
       
     }
     printf("\n");
-    printf("finish!\n");
+    return 0;
     // for(paddr_t i = expr_val;i <n + expr_val;i++){
             
     //         //dirctly print
