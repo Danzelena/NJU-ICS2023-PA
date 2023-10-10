@@ -20,8 +20,10 @@
 #include <assert.h>
 #include <string.h>
 
+int number_range = 1000;
 // this should be enough
 static char buf[65536] = {};
+// int buf_index;
 static char code_buf[65536 + 128] = {}; // a little larger than `buf`
 static char *code_format =
 "#include <stdio.h>\n"
@@ -30,20 +32,60 @@ static char *code_format =
 "  printf(\"%%u\", result); "
 "  return 0; "
 "}";
+static void gen(char ch){
+  strcat(buf,&ch);
+}
+static void gen_rand_op(){
+  char op;
+  switch (choose(3))
+  {case 0:op = '+';break;
+  case 1:op = '-';break;
+  case 2:op = '*';break;
+  case 3:op = '/';break;
+  }
+  gen(op);
+  }
 
+static void gen_num(){
+  int num = choose(number_range);
+  char *num_str;
+  sprintf(num_str,"%d",num);
+  strcat(buf,num_str);
+}
 static void gen_rand_expr() {
-  buf[0] = '\0';
+  // TODO
+  switch(choose(3)){
+    case 0:{
+      gen_num();
+      break;
+    }case 1:{
+      gen('(');
+      gen_rand_expr();
+      gen(')');
+      break;
+    }default:{
+      gen_rand_expr();
+      gen_rand_op();
+      gen_rand_expr();
+      break;
+    }
+  }
+  // buf[0] = '\0';
 }
 
 int main(int argc, char *argv[]) {
   int seed = time(0);
   srand(seed);
-  int loop = 1;
+  
+  int loop = 1;// times for test
+  /*argv[1] is times for test*/
   if (argc > 1) {
     sscanf(argv[1], "%d", &loop);
   }
   int i;
   for (i = 0; i < loop; i ++) {
+    // buf_index = 0;
+    buf[0] = '\0';
     gen_rand_expr();
 
     sprintf(code_buf, code_format, buf);
