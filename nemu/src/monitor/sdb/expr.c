@@ -23,7 +23,7 @@
 enum {
   TK_NOTYPE = 256, 
   TK_EQ,
-  TK_NUM,
+  NUM,
 
   /* TODO: Add more token types */
 
@@ -39,9 +39,18 @@ static struct rule {
    */
 
   {" +", TK_NOTYPE},    // spaces
+
   {"\\+", '+'},         // plus
+  {"\\-",'-'},           // sub
+  {"\\*",'*'},          // mul
+  {"\\/",'/'},          // divide
+
   {"==", TK_EQ},        // equal
-  {"\d+", TK_NUM}
+
+  {"[0-9]+", NUM},    // number
+
+  {"\\(", '('},           //left (
+  {"\\)",')'},        //right )
 };
 
 #define NR_REGEX ARRLEN(rules)
@@ -102,10 +111,11 @@ static bool make_token(char *e) {
 
 
         switch (rules[i].token_type) {
-          case TK_NUM:{
-            strcpy(tok.str,substr_start,substr_len);
+          case NUM:{
+            strncpy(tok.str,substr_start,substr_len);
+            break;
           }
-          default: 
+          default: {tok.str[0] = ' ';}
         }
         tokens[nr_token] = tok;
         nr_token++;
@@ -122,6 +132,100 @@ static bool make_token(char *e) {
   return true;
 }
 
+static bool check_paretheses_matched(Token *tokens,int begin,int end){
+  int stack[20];
+  int top = 0;
+  for (int i=begin;i <= end;i++){
+    if (tokens[i].type== '('){
+
+      stack[top] = '(';
+      top++;
+    }else if(tokens[i].type== ')' && top > 0 && stack[top-1] == '('){
+      top--;
+    }
+  }
+  if (top != 0){   return false;
+  }
+return true;
+}
+bool check_paretheses(Token *tokens,int begin,int end){
+  // if first is not '(' and last is ')',return false
+  if (tokens[begin].type!= '(' || tokens[end].type!= ')'){
+    return false;
+  }
+  if (check_paretheses_matched(tokens,begin+1,end-1)){
+    return true;
+  }
+  return false;
+}
+static int getMainop(Token *tokens,int begin,int end){
+  // get the main operation of the expression
+  int isInparetheses = 0;
+  // char opset[10] = {'+','-','*','/'};
+  struct myset 
+  {
+    int type;
+    int pos;
+  }okset[40];
+ int okindex = 0; 
+  // linear search
+  for(int i=begin;i <=end;i++){
+    int type = tokens[i].type;
+    if(type== '('){isInparetheses++;}
+    if(type== ')'){isInparetheses--;}
+    if(type=='+'||type=='-'||type=='*'||type=='/'){
+      if(isInparetheses == 0){
+        struct myset ok;
+        ok.type = type;
+        ok.pos = i;
+        okset[okindex] = ok;
+        okindex++;
+      }
+    }
+
+  }
+  // select the best op from okset
+  for(int k=0;k<=okindex;k++){
+    if(okset[k].type == '+' || okset[k].type == '-'){
+      return okset[k].pos;
+    }
+  }
+  for(int k=0;k<=okindex;k++){
+    if(okset[k].type == '*'||okset[k].type == '/'){
+      return okset[k].pos;
+    }
+  }
+  assert(0);
+}
+u_int32_t eval(Token* tokens,int begin,int end){
+  if (begin > end){
+    // Bad expression
+    assert(0);
+  }else if(begin == end){
+    // return the value of the number
+    char* num = tokens[begin].str; 
+    int number = atoi(num);
+    return number; 
+  }else if(check_paretheses(tokens,begin,end) == true){
+    return eval(tokens,begin + 1,end - 1);
+  }else{
+    int op = getMainop(tokens,begin,end);
+    u_int32_t val1 = eval(tokens,begin,op-1);
+    u_int32_t val2 = eval(tokens,op+1,end);
+    int op_type= tokens[op].type;
+    u_int32_t ret;
+    switch(op_type){
+      case '+':{ret =  val1 + val2;break;}
+      case '-':{ret =  val1 - val2;break;}
+      case '*':{ret =  val1 * val2;break;}
+      case '/':{ret =  val1 / val2;break;}
+      default:assert(0);
+    }
+    printf("Debug: %d  %d = %d\n",val1,val2,ret);
+   return ret; 
+  }
+}
+
 
 word_t expr(char *e, bool *success) {
   if (!make_token(e)) {
@@ -130,7 +234,7 @@ word_t expr(char *e, bool *success) {
   }
 
   /* TODO: Insert codes to evaluate the expression. */
-  TODO();
-
+  int len = nr_token;
+  return eval(tokens,0,len - 1);
   return 0;
 }
