@@ -59,6 +59,7 @@ static int cmd_help(char *args);
 static int cmd_si(char *args);
 static int cmd_x(char *args);
 static int cmd_info(char *args);
+static int cmd_p(char *args);
 
 static struct {
   const char *name;
@@ -73,6 +74,7 @@ static struct {
 	{"si","let program goes N steps then stop,default N=1",cmd_si},
 	{"info","print register and watchpoint state",cmd_info},
 	{"x","eval the expr ,scan the corrsponding memory",cmd_x},
+  {"p","eval the expr",cmd_p},
 /*					{"p","eval the expression",cmd_eval},
 					{"w","if value of expr changed,stop",cmd_setWP},
 					{"d","del the N.th watchpoint",cmd_delWP},*/
@@ -197,6 +199,19 @@ static int cmd_help(char *args) {
     printf("Unknown command '%s'\n", arg);
   }
   return 0;
+}
+static int cmd_p(char *args){
+  bool su = true;
+  bool *success = &su;
+  if (*success){
+  return expr(args,success);
+
+  }else{
+    printf("invalid expression: %s",args);
+    assert(0);
+    return 0;
+  }
+
 }
 
 void sdb_set_batch_mode() {
