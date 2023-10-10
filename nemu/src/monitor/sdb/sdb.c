@@ -204,7 +204,9 @@ static int cmd_p(char *args){
   bool su = true;
   bool *success = &su;
   if (*success){
-  return expr(args,success);
+    int ret = expr(args,success);
+    printf("%d\n",ret);
+  return ret;
 
   }else{
     printf("invalid expression: %s",args);
