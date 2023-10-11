@@ -108,6 +108,7 @@ static bool make_token(char *e) {
          */
         Token tok;
         tok.type = rules[i].token_type;
+        tok.str[0] = '\0';
         
 
 
