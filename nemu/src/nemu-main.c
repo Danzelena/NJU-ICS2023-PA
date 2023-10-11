@@ -69,7 +69,7 @@ int test_cmd_q(){
     printf("can't read file:input!\n");
     assert(0);
   }
-  while(test_cnt < 5){
+  while(test_cnt < 10){
 
 
 
