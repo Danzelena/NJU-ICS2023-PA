@@ -47,10 +47,11 @@ bool equal_test(char* opt,char* exp){
   int myopt = expr(exp,&suc);
   int passopt; 
   sscanf(opt,"%d",&passopt);
-  printf("myopt:%d\n",myopt);
-  printf("passopt:%d\n",passopt);
+  // printf("myopt:%d\n",myopt);
+  // printf("passopt:%d\n",passopt);
+  return myopt == passopt;
 
-  return true;
+  // return true;
 }
 int test_cmd_q(){
   // debug
