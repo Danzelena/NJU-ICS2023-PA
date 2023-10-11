@@ -20,7 +20,8 @@
 #include <assert.h>
 #include <string.h>
 
-int number_range = 1000;
+#define MAX_LEN 30
+int number_range = 10;
 // this should be enough
 static char buf[65536] = {};
 // int buf_index;
@@ -74,10 +75,13 @@ static void gen_rand_expr() {
       gen_rand_expr();
       gen(')');
       break;
-    }default:{
+    }case 2:{
       gen_rand_expr();
       gen_rand_op();
       gen_rand_expr();
+      break;
+    }default:{
+      gen_num();
       break;
     }
   }
@@ -99,7 +103,9 @@ int main(int argc, char *argv[]) {
     buf[0] = '\0';
     gen_rand_expr();
     // printf("Debug: %s\n",buf);
-
+    if(strlen(buf) > MAX_LEN){
+      break;
+    }
     sprintf(code_buf, code_format, buf);
 
     FILE *fp = fopen("/tmp/.code.c", "w");
