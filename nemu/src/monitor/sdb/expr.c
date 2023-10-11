@@ -121,7 +121,7 @@ static bool make_token(char *e) {
         nr_token++;
         break;
       }
-      printf("Debug:nr_token=%d",nr_token);
+      printf("Debug:nr_token=%d\n",nr_token);
     }
 
     if (i == NR_REGEX) {
