@@ -211,7 +211,9 @@ u_int32_t eval(Token* tokens,int begin,int end){
   }else if(begin == end){
     // return the value of the number
     char* num = tokens[begin].str; 
+    
     int number = atoi(num);
+    printf("Debug:%d",number);
     return number; 
   }else if(check_paretheses(tokens,begin,end) == true){
     return eval(tokens,begin + 1,end - 1);
