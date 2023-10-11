@@ -21,7 +21,7 @@ void engine_start();
 int is_exit_status_bad();
 
 #define CONFIG_DEBUG 1
-#define INPUT_PATH "../tools/gen_expr/input"
+#define INPUT_PATH "../tools/gen-expr/input"
 
 int test_cmd_q();
 int main(int argc, char *argv[]) {
@@ -46,14 +46,15 @@ int test_cmd_q(){
 
   input = fopen(INPUT_PATH,"r");
   if(input == NULL){
-    printf("cna't read file:input!\n");
+    printf("can't read file:input!\n");
     assert(0);
   }
   // read output
   if(fscanf(input,"%s",opt) == 1){
   printf("output:%s",opt);
 
-  }
+  }  
+
 
   // read expr
   if(fgets(buff,255,input)!= NULL){
