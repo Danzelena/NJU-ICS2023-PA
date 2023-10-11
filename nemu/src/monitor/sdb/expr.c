@@ -78,8 +78,8 @@ typedef struct token {
   int type;
   char str[32];
 } Token;
-
-static Token tokens[25565] __attribute__((used)) = {};
+// TODO: determine to change 32
+static Token tokens[32] __attribute__((used)) = {};
 static int nr_token __attribute__((used))  = 0;
 
 static bool make_token(char *e) {
@@ -236,5 +236,5 @@ word_t expr(char *e, bool *success) {
   /* TODO: Insert codes to evaluate the expression. */
   int len = nr_token;
   return eval(tokens,0,len - 1);
-  return 0;
+  // return 0;
 }

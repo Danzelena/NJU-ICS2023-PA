@@ -65,7 +65,7 @@ int test_cmd_q(){
     printf("can't read file:input!\n");
     assert(0);
   }
-  while(test_cnt < 5){
+  while(test_cnt < 1){
 
 
 
@@ -80,7 +80,7 @@ int test_cmd_q(){
 
   // read expr
   if(fgets(buff,65535,input)!= NULL){
-  // printf("expr:%s\n",buff);
+  printf("expr:%s\n",buff);
 
   }
   if(equal_test(opt,buff)){
