@@ -191,12 +191,12 @@ static int getMainop(Token *tokens,int begin,int end){
 
   }
   // select the best op from okset
-  for(int k=okindex;k>=0;k--){
+  for(int k=okindex-1;k>=0;k--){
     if(okset[k].type == '+' || okset[k].type == '-'){
       return okset[k].pos;
     }
   }
-  for(int k=okindex;k>=0;k--){
+  for(int k=okindex-1;k>=0;k--){
     if(okset[k].type == '*'||okset[k].type == '/'){
       return okset[k].pos;
     }
