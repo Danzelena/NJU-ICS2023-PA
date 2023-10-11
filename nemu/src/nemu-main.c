@@ -82,7 +82,7 @@ int test_cmd_q(){
   if(fgets(buff,65535,input)!= NULL){
   printf("expr:%s\n",buff);
   int len = strlen(buff);
-  printf("length:%d",len);
+  // printf("length:%d",len);
   buff[len-1] = '\0';
 
   }
