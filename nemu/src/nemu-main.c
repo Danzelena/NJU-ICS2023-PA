@@ -84,7 +84,7 @@ int test_cmd_q(){
 
   // read expr
   if(fgets(buff,65535,input)!= NULL){
-  printf("expr:%s\n",buff);
+  // printf("expr:%s\n",buff);
   int len = strlen(buff);
   // printf("length:%d",len);
   buff[len-1] = '\0';
@@ -95,7 +95,7 @@ int test_cmd_q(){
     printf("%d expr pass!\n",corr_cnt);
   }else{
     fail_cnt++;
-    printf("%d expr fail!\n",fail_cnt);
+    Log("%d expr fail!\n",fail_cnt);
   }
   test_cnt++;
   }
