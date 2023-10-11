@@ -32,8 +32,17 @@ static char *code_format =
 "  printf(\"%%u\", result); "
 "  return 0; "
 "}";
+
+uint32_t choose(uint32_t n){
+  return rand() % n;
+}
 static void gen(char ch){
-  strcat(buf,&ch);
+
+  char cha =ch;
+  strcat(buf,&cha);
+
+
+  
 }
 static void gen_rand_op(){
   char op;
@@ -48,7 +57,9 @@ static void gen_rand_op(){
 
 static void gen_num(){
   int num = choose(number_range);
-  char *num_str;
+  char ch = ' ';
+  char *num_str = &ch;
+  
   sprintf(num_str,"%d",num);
   strcat(buf,num_str);
 }
@@ -87,6 +98,7 @@ int main(int argc, char *argv[]) {
     // buf_index = 0;
     buf[0] = '\0';
     gen_rand_expr();
+    // printf("Debug: %s\n",buf);
 
     sprintf(code_buf, code_format, buf);
 

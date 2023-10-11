@@ -20,16 +20,52 @@ void am_init_monitor();
 void engine_start();
 int is_exit_status_bad();
 
+#define CONFIG_DEBUG 1
+#define INPUT_PATH "../tools/gen_expr/input"
+
+int test_cmd_q();
 int main(int argc, char *argv[]) {
   /* Initialize the monitor. */
 #ifdef CONFIG_TARGET_AM
   am_init_monitor();
 #else
   init_monitor(argc, argv);
-#endif
+#endif 
+  IFDEF(CONFIG_DEBUG,test_cmd_q());
 
   /* Start engine. */
   engine_start();
 
   return is_exit_status_bad();
+}
+int test_cmd_q(){
+  // read input file
+  char buff[255];
+  char opt[255];
+  FILE *input = NULL;
+
+  input = fopen(INPUT_PATH,"r");
+  if(input == NULL){
+    printf("cna't read file:input!\n");
+    assert(0);
+  }
+  // read output
+  if(fscanf(input,"%s",opt) == 1){
+  printf("output:%s",opt);
+
+  }
+
+  // read expr
+  if(fgets(buff,255,input)!= NULL){
+  printf("expr:%s\n",buff);
+
+  }
+
+
+  fclose(input);
+  // calculate expr
+
+  // compare output and answer
+  return 0;
+
 }
