@@ -49,14 +49,15 @@ int test_cmd_q(){
   int fail_cnt = 0;
   int test_cnt = 0;
   FILE *input = NULL;
-  while(test_cnt < 5){
-
-  
+    
   input = fopen(INPUT_PATH,"r");
   if(input == NULL){
     printf("can't read file:input!\n");
     assert(0);
   }
+  while(test_cnt < 5){
+
+
 
   opt[0] = '\0';
   buff[0] = '\0';
