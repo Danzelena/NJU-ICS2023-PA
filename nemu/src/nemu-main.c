@@ -43,7 +43,7 @@ bool equal_test(char* opt,char* expr){
 }
 int test_cmd_q(){
   // read input file
-  char buff[255];
+  char buff[65535];
   char opt[255];
   int corr_cnt = 0;
   int fail_cnt = 0;
