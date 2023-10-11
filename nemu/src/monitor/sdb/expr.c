@@ -112,7 +112,9 @@ static bool make_token(char *e) {
 
         switch (rules[i].token_type) {
           case NUM:{
+            
             strncpy(tok.str,substr_start,substr_len);
+            printf("Debug:tok.str:%s\n",tok.str);
             break;
           }
           default: {tok.str[0] = '\0';}
@@ -211,7 +213,7 @@ u_int32_t eval(Token* tokens,int begin,int end){
   }else if(begin == end){
     // return the value of the number
     char* num = tokens[begin].str; 
-        printf("Debug:%s\n",num);
+
     int number = atoi(num);
 
     return number; 
