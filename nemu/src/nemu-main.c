@@ -38,20 +38,31 @@ int main(int argc, char *argv[]) {
 
   return is_exit_status_bad();
 }
+bool equal_test(char* opt,char* expr){
+  return true;
+}
 int test_cmd_q(){
   // read input file
   char buff[255];
   char opt[255];
+  int corr_cnt = 0;
+  int fail_cnt = 0;
+  int test_cnt = 0;
   FILE *input = NULL;
+  while(test_cnt < 5){
 
+  
   input = fopen(INPUT_PATH,"r");
   if(input == NULL){
     printf("can't read file:input!\n");
     assert(0);
   }
+
+  opt[0] = '\0';
+  buff[0] = '\0';
   // read output
   if(fscanf(input,"%s",opt) == 1){
-  printf("output:%s",opt);
+  printf("output:%s\n",opt);
 
   }  
 
@@ -61,7 +72,15 @@ int test_cmd_q(){
   printf("expr:%s\n",buff);
 
   }
-
+  if(equal_test(opt,buff)){
+    corr_cnt++;
+    printf("%d expr pass!\n",corr_cnt);
+  }else{
+    fail_cnt++;
+    printf("%d expr fail!\n",fail_cnt);
+  }
+  test_cnt++;
+  }
 
   fclose(input);
   // calculate expr
