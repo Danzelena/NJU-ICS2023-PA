@@ -108,13 +108,12 @@ static bool make_token(char *e) {
          */
         Token tok;
         tok.type = rules[i].token_type;
-        tok.str[0] = '\0';
         
 
 
         switch (rules[i].token_type) {
           case NUM:{
-            
+            memset(tok.str, '\0', sizeof(tok.str));
             strncpy(tok.str,substr_start,substr_len);
             printf("Debug:tok.str:%s\n",tok.str);
             break;
