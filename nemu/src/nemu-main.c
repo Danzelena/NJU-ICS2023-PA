@@ -52,6 +52,10 @@ bool equal_test(char* opt,char* exp){
   return true;
 }
 int test_cmd_q(){
+  // debug
+  equal_test("-278","260-((((901)-(425)-649)+(711)))");
+  return 0;
+
   // read input file
   char buff[65535];
   char opt[255];
