@@ -115,7 +115,7 @@ static bool make_token(char *e) {
             strncpy(tok.str,substr_start,substr_len);
             break;
           }
-          default: {tok.str[0] = ' ';}
+          default: {tok.str[0] = '\0';}
         }
         if(tok.type != TK_NOTYPE){
         tokens[nr_token] = tok;
