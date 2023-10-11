@@ -23,7 +23,7 @@ int is_exit_status_bad();
 
 #define CONFIG_DEBUG 1
 #define INPUT_PATH "./tools/gen-expr/input"
-#define TEST_LOOP 19
+#define TEST_LOOP 100
 
 int test_cmd_q();
 int main(int argc, char *argv[]) {
