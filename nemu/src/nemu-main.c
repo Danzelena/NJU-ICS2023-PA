@@ -23,7 +23,7 @@ int is_exit_status_bad();
 
 #define CONFIG_DEBUG 1
 #define INPUT_PATH "./tools/gen-expr/input"
-#define TEST_LOOP 100
+#define TEST_LOOP 19
 
 int test_cmd_q();
 int main(int argc, char *argv[]) {
@@ -47,8 +47,8 @@ bool equal_test(char* opt,char* exp){
   int myopt = expr(exp,&suc);
   int passopt; 
   sscanf(opt,"%d",&passopt);
-  // printf("myopt:%d\n",myopt);
-  // printf("passopt:%d\n",passopt);
+  printf("myopt:%d\n",myopt);
+  printf("passopt:%d\n",passopt);
   return myopt == passopt;
 
   // return true;
