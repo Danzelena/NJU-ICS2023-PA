@@ -92,10 +92,10 @@ int test_cmd_q(){
   }
   if(equal_test(opt,buff)){
     corr_cnt++;
-    printf("%d expr pass!\n",corr_cnt);
+    Log("%d expr pass!\n",corr_cnt);
   }else{
     fail_cnt++;
-    Log("%d expr fail!\n",fail_cnt);
+    printf("%d expr fail!\n",fail_cnt);
   }
   test_cnt++;
   }
