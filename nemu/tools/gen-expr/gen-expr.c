@@ -20,8 +20,10 @@
 #include <assert.h>
 #include <string.h>
 
-#define MAX_LEN 30
-int number_range = 10;
+#define MAX_LEN 100
+#define RANGE 50
+
+// int number_range = 10;
 // this should be enough
 static char buf[65536] = {};
 // int buf_index;
@@ -57,7 +59,7 @@ static void gen_rand_op(){
   }
 
 static void gen_num(){
-  int num = choose(number_range);
+  int num = choose(RANGE);
   char ch = ' ';
   char *num_str = &ch;
   
@@ -66,24 +68,28 @@ static void gen_num(){
 }
 static void gen_rand_expr() {
   // TODO
-  switch(choose(3)){
+  switch(choose(5)){
     case 0:{
-      gen_num();
-      break;
-    }case 1:{
       gen('(');
-      gen_rand_expr();
+      gen_num();
       gen(')');
       break;
-    }case 2:{
+    }case 1:{
+      gen_num();
+      break;
+    }default:{
+      int len = strlen(buf);
+      if (len > MAX_LEN){
+        return;
+      }
       gen_rand_expr();
       gen_rand_op();
       gen_rand_expr();
-      break;
-    }default:{
-      gen_num();
+      
       break;
     }
+
+  
   }
   // buf[0] = '\0';
 }
@@ -92,19 +98,21 @@ int main(int argc, char *argv[]) {
   int seed = time(0);
   srand(seed);
   
-  int loop = 1;// times for test
+  int loop = 100;// times for test
   /*argv[1] is times for test*/
   if (argc > 1) {
     sscanf(argv[1], "%d", &loop);
   }
   int i;
   for (i = 0; i < loop; i ++) {
-    // buf_index = 0;
+    
     buf[0] = '\0';
     gen_rand_expr();
     // printf("Debug: %s\n",buf);
     if(strlen(buf) > MAX_LEN){
-      break;
+      i-=1;
+      continue;
+      
     }
     sprintf(code_buf, code_format, buf);
 
@@ -120,8 +128,14 @@ int main(int argc, char *argv[]) {
     assert(fp != NULL);
 
     int result;
+   
     ret = fscanf(fp, "%d", &result);
     pclose(fp);
+
+     if (result < 0){
+      i-=1;
+      continue;
+    }
 
     printf("%u %s\n", result, buf);
   }

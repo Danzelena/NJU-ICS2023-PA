@@ -23,6 +23,7 @@ int is_exit_status_bad();
 
 #define CONFIG_DEBUG 1
 #define INPUT_PATH "./tools/gen-expr/input"
+#define TEST_LOOP 10
 
 int test_cmd_q();
 int main(int argc, char *argv[]) {
@@ -69,9 +70,7 @@ int test_cmd_q(){
     printf("can't read file:input!\n");
     assert(0);
   }
-  while(test_cnt < 10){
-
-
+  while(test_cnt < TEST_LOOP){
 
   opt[0] = '\0';
   buff[0] = '\0';
