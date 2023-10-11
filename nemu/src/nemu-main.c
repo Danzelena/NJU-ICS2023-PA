@@ -69,7 +69,7 @@ int test_cmd_q(){
 
 
   // read expr
-  if(fgets(buff,255,input)!= NULL){
+  if(fgets(buff,65535,input)!= NULL){
   printf("expr:%s\n",buff);
 
   }
