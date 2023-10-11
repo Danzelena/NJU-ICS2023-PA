@@ -83,7 +83,7 @@ int test_cmd_q(){
   printf("expr:%s\n",buff);
   int len = strlen(buff);
   printf("length:%d",len);
-  buff[len-1] = '\0';
+  buff[len] = '\0';
 
   }
   if(equal_test(opt,buff)){
