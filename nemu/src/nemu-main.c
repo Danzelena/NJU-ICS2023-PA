@@ -14,6 +14,7 @@
 ***************************************************************************************/
 
 #include <common.h>
+// #include "sdb.h"
 
 void init_monitor(int, char *[]);
 void am_init_monitor();
@@ -38,7 +39,16 @@ int main(int argc, char *argv[]) {
 
   return is_exit_status_bad();
 }
-bool equal_test(char* opt,char* expr){
+word_t expr();
+bool equal_test(char* opt,char* exp){
+  // call cmd_p calculate value
+  bool suc = true;
+  int myopt = expr(exp,&suc);
+  int passopt; 
+  sscanf(opt,"%d",&passopt);
+  printf("myopt:%d\n",myopt);
+  printf("passopt:%d\n",passopt);
+
   return true;
 }
 int test_cmd_q(){
@@ -63,14 +73,14 @@ int test_cmd_q(){
   buff[0] = '\0';
   // read output
   if(fscanf(input,"%s",opt) == 1){
-  printf("output:%s\n",opt);
+  // printf("output:%s\n",opt);
 
   }  
 
 
   // read expr
   if(fgets(buff,65535,input)!= NULL){
-  printf("expr:%s\n",buff);
+  // printf("expr:%s\n",buff);
 
   }
   if(equal_test(opt,buff)){
