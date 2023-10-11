@@ -96,8 +96,8 @@ static bool make_token(char *e) {
         char *substr_start = e + position;
         int substr_len = pmatch.rm_eo;
 
-        Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s",
-            i, rules[i].regex, position, substr_len, substr_len, substr_start);
+        // Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s",
+        //     i, rules[i].regex, position, substr_len, substr_len, substr_start);
         
         position += substr_len;
 
@@ -164,7 +164,7 @@ bool check_paretheses(Token *tokens,int begin,int end){
   return false;
 }
 static int getMainop(Token *tokens,int begin,int end){
-  printf("Debug:begin=%d,end=%d\n",begin,end);
+  // printf("Debug:begin=%d,end=%d\n",begin,end);
   // get the main operation of the expression
   int isInparetheses = 0;
   // char opset[10] = {'+','-','*','/'};
@@ -201,7 +201,7 @@ static int getMainop(Token *tokens,int begin,int end){
       return okset[k].pos;
     }
   }
-  printf("Debug:okindex=%d\n",okindex);
+  // printf("Debug:okindex=%d\n",okindex);
   assert(0);
 }
 u_int32_t eval(Token* tokens,int begin,int end){
