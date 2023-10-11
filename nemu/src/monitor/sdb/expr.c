@@ -195,6 +195,7 @@ static int getMainop(Token *tokens,int begin,int end){
       return okset[k].pos;
     }
   }
+  printf("Debug:okindex=%d\n",okindex);
   assert(0);
 }
 u_int32_t eval(Token* tokens,int begin,int end){
