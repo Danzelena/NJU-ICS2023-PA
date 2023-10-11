@@ -159,6 +159,7 @@ bool check_paretheses(Token *tokens,int begin,int end){
   return false;
 }
 static int getMainop(Token *tokens,int begin,int end){
+  printf("Debug:begin=%d,end=%d\n",begin,end);
   // get the main operation of the expression
   int isInparetheses = 0;
   // char opset[10] = {'+','-','*','/'};
