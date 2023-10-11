@@ -117,9 +117,13 @@ static bool make_token(char *e) {
           }
           default: {tok.str[0] = ' ';}
         }
+        if(tok.type != TK_NOTYPE){
         tokens[nr_token] = tok;
         nr_token++;
+
         break;
+        }
+
       }
       
     }
