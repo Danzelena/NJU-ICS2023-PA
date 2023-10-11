@@ -23,7 +23,7 @@ int is_exit_status_bad();
 
 #define CONFIG_DEBUG 1
 #define INPUT_PATH "./tools/gen-expr/input"
-#define TEST_LOOP 10
+#define TEST_LOOP 100
 
 int test_cmd_q();
 int main(int argc, char *argv[]) {
@@ -92,10 +92,10 @@ int test_cmd_q(){
   }
   if(equal_test(opt,buff)){
     corr_cnt++;
-    Log("%d expr pass!\n",corr_cnt);
+    printf("%d expr pass!\n",corr_cnt);
   }else{
     fail_cnt++;
-    printf("%d expr fail!\n",fail_cnt);
+    Log("%d expr fail!\n",fail_cnt);
   }
   test_cnt++;
   }
