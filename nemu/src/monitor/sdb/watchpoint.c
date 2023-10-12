@@ -27,6 +27,7 @@ typedef struct watchpoint
   /* TODO: Add more members if necessary */
 
 } WP;
+
 WP *new_wp();
 void free_WP();
 static WP wp_pool[NR_WP] = {};
@@ -80,9 +81,12 @@ void print_wp_pool()
   printf("=================================\n");
 }
 /* TODO: Implement the functionality of watchpoint */
-
+int call_new_WP(char *expression,bool*success){
+  WP *wp = new_wp(expression,success);
+  return wp->NO;
+}
 // get the wp from free_
-WP *new_WP(char *expression,bool*success)
+WP *new_wp(char *expression,bool*success)
 {
   if (free_ == NULL)
   {
@@ -111,7 +115,19 @@ WP *new_WP(char *expression,bool*success)
   // }
   return ret;
 }
-
+void del_WP(int no){
+  int cnt = 0;
+  for(int i = 0;i <NR_WP;i++){
+    if(wp_pool[i].NO == no){
+      cnt ++;
+      if(cnt == 2){
+        Log("Fail:two watchpoiot have same NO!!!\n");
+        assert(0);
+      }
+      free_WP(wp_pool+i);
+    }
+  }
+}
 // give back wp to free_
 void free_WP(WP *wp)
 {

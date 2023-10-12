@@ -25,6 +25,8 @@ static int is_batch_mode = false;
 
 void init_regex();
 void init_wp_pool();
+int call_new_WP();
+void del_WP();
 void print_wp_pool();
 // static word_t paddr_read();
 
@@ -62,6 +64,8 @@ static int cmd_si(char *args);
 static int cmd_x(char *args);
 static int cmd_info(char *args);
 static int cmd_p(char *args);
+static int cmd_w(char *args);
+static int cmd_d(char *args);
 
 static struct {
   const char *name;
@@ -77,13 +81,15 @@ static struct {
 	{"info","print register and watchpoint state",cmd_info},
 	{"x","eval the expr ,scan the corrsponding memory",cmd_x},
   {"p","eval the expr",cmd_p},
-/*					{"p","eval the expression",cmd_eval},
-					{"w","if value of expr changed,stop",cmd_setWP},
-					{"d","del the N.th watchpoint",cmd_delWP},*/
+	{"w","if value of expr changed,stop",cmd_w},
+	{"d","del the N.th watchpoint",cmd_d},
 					/*TODO*/
 };
 #define NR_CMD ARRLEN(cmd_table)
 int isValid(char*);
+
+
+
 static int cmd_si(char *args){
 			char *arg = strtok(NULL," ");
 		  uint64_t num_step = 1;//default 1	
@@ -99,6 +105,7 @@ static int cmd_si(char *args){
 			}
 			return 0;
 }
+
 static int info_r();
 static int info_w();
 static int cmd_info(char *args){
@@ -207,6 +214,7 @@ static int cmd_help(char *args) {
   }
   return 0;
 }
+
 static int cmd_p(char *args){
   bool su = true;
   bool *success = &su;
@@ -223,6 +231,23 @@ static int cmd_p(char *args){
 
 }
 
+/* set watchpoints */
+static int cmd_w(char *args){
+  bool suc = true;
+  call_new_WP(args, &suc);
+  if (!suc){
+    Log("Fail to do new_WP!\n");
+    assert(0);
+  }
+  return 0;
+}
+
+/* delete watchpoints */
+static int cmd_d(char *args){
+  int no = atoi(args);
+  del_WP(no);
+  return 0;
+}
 void sdb_set_batch_mode() {
   is_batch_mode = true;
 }
