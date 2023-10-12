@@ -41,7 +41,7 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
   IFDEF(CONFIG_DIFFTEST, difftest_step(_this->pc, dnpc));
   //scan all the watchpoint
   if(!check_wp()){
-nemu_state.state = NEMU_STOP;
+  nemu_state.state = NEMU_STOP;
   printf("count to watchpoint!\n");
   }
   
