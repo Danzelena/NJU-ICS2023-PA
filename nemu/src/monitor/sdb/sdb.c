@@ -161,7 +161,7 @@ static int cmd_x(char *args){
     // assume expr is a 0x...
     paddr_t expr_val;
     expr_val = strtol(arg,NULL,16);
-    printf("Debug:n is %d,expr_val is %d\n",n,expr_val);
+    // printf("Debug:n is %d,expr_val is %d\n",n,expr_val);
     if (expr_val < 0x80000000 || expr_val > 0x87ffffff){
       printf("address = 0x%.8x is out of bound of pmem [0x80000000, 0x87ffffff]",expr_val);
     }
@@ -170,7 +170,7 @@ static int cmd_x(char *args){
       if(i % 4 == 0){
         // printf("6666\n");
         // printf("%d\n",expr_val+i*4);
-        printf("0x%x : \n",expr_val+i*4);
+        printf("0x%x :",expr_val+i*4);
       }
       
       for(int j = 0;j <4;j++){
@@ -178,7 +178,7 @@ static int cmd_x(char *args){
         // printf("%.2x",re);
         uint8_t *pos = guest_to_host(expr_val+i*4+j);
         // *pos += 1;
-        printf("0x%.2x\t ",*pos);
+        printf("0x%.2x  ",*pos);
       }
       printf("\t");
       
