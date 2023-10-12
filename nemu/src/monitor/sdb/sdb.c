@@ -168,7 +168,7 @@ static int cmd_x(char *args){
     for(int i=0;i< n;i++){
       // printf("Debug:i is %d\n",i);
       if(i % 4 == 0){
-        // printf("6666\n");
+        printf("\n");
         // printf("%d\n",expr_val+i*4);
         printf("0x%x :",expr_val+i*4);
       }
