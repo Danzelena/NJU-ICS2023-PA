@@ -47,9 +47,9 @@ void init_wp_pool()
 }
 bool check_wp(){
   bool ret = true;
-  // if(head == NULL){
-  //   return true;
-  // }
+  if(head == NULL){
+    return true;
+  }
   for(WP *po = wp_pool;po!=head->next;po = po->next){
     bool su = true;
     int now = expr(po->expression,&su);
