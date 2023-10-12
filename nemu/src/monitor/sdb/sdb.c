@@ -109,7 +109,7 @@ static int cmd_info(char *args){
 								const char *description;
 								int (*handler)();
 				}arg_table [] = {
-								{	"r","infomation of register",info_r},
+								{"r","infomation of register",info_r},
 								{"w","infomation of watchpoint",info_w},
 				};
 				int i;
