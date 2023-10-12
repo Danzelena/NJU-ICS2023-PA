@@ -14,6 +14,7 @@
  ***************************************************************************************/
 
 #include <isa.h>
+#include<memory/paddr.h>
 
 /* We use the POSIX regex functions to process regular expressions.
  * Type 'man regex' for more information about POSIX regex functions.
@@ -142,8 +143,8 @@ static bool make_token(char *e)
           // printf("Debug:tok.str:%s\n",tok.str);
           break;
         }
-        // TODO:add a function to tell hex or dec
-case HEX:
+          // TODO:add a function to tell hex or dec
+        case HEX:
         {
           memset(tok.str, '\0', sizeof(tok.str));
           // convert hex to dec
@@ -158,9 +159,18 @@ case HEX:
           // strncpy(tok.str, substr_start + 2, substr_len - 2);
           break;
         }
-        // TODO:add function to handle REG flag
-case REG:
+          // TODO:add function to handle REG flag
+        case REG:
         {
+          bool suc = true;
+          char name[5];
+          // get name of register
+          memset(name,'\0',sizeof(name));
+          strncpy(name,substr_start + 1,substr_len-1);
+          assert(name[substr_len + 1] == '\0');
+          //get value of register
+          word_t val = isa_reg_str2val(name,&suc);
+          sprintf(tok.str,"%d",val);
           break;
         }
         // TODO:DEREF case
@@ -254,7 +264,7 @@ static int getMainop(Token *tokens, int begin, int end)
     {
       isInparetheses--;
     }
-    if (isCertainType(type))
+    if (isCertainType(type)||type == DEREF)
     {
       if (isInparetheses == 0)
       {
@@ -267,7 +277,7 @@ static int getMainop(Token *tokens, int begin, int end)
     }
   }
   // select the best op from okset
-// TODO:modift old rules
+  // TODO:modift old rules
   for (int k = okindex - 1; k >= 0; k--)
   {
     if (okset[k].type == AND || okset[k].type == OR)
@@ -320,9 +330,17 @@ u_int32_t eval(Token *tokens, int begin, int end)
   else
   {
     int op = getMainop(tokens, begin, end);
-    u_int32_t val1 = eval(tokens, begin, op - 1);
-    u_int32_t val2 = eval(tokens, op + 1, end);
     int op_type = tokens[op].type;
+    u_int32_t val1,val2;
+    if (op_type == DEREF){
+      val1 = -1;
+      val2 = eval(tokens,op+1,end);
+    }else{
+      val1 = eval(tokens, begin, op - 1);
+      val2 = eval(tokens, op + 1, end);
+    }
+    
+    
     u_int32_t ret;
     switch (op_type)
     {
@@ -346,7 +364,7 @@ u_int32_t eval(Token *tokens, int begin, int end)
       ret = val1 / val2;
       break;
     }
-// TODO:add more cases
+      // TODO:add more cases
     case TK_EQ:
       /*if equal returns 1,else return 0*/
       {
@@ -395,6 +413,10 @@ u_int32_t eval(Token *tokens, int begin, int end)
         ret = 0;
       }
       break;
+    }
+    case DEREF:{
+      uint8_t *pos = guest_to_host(val2);
+      ret = *pos;
     }
     default:
       assert(0);

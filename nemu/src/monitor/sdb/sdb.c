@@ -147,7 +147,7 @@ static int cmd_x(char *args){
     // assume expr is a 0x...
     paddr_t expr_val;
     expr_val = strtol(arg,NULL,16);
-    // printf("Debug:n is %d,expr_val is %d\n",n,expr_val);
+    printf("Debug:n is %d,expr_val is %d\n",n,expr_val);
     if (expr_val < 0x80000000 || expr_val > 0x87ffffff){
       printf("address = 0x%.8x is out of bound of pmem [0x80000000, 0x87ffffff]",expr_val);
     }
