@@ -424,6 +424,7 @@ u_int32_t eval(Token *tokens, int begin, int end)
     case DEREF:{
       uint8_t *pos = guest_to_host(val2);
       ret = *pos;
+      break;
     }
     default:
       assert(0);
