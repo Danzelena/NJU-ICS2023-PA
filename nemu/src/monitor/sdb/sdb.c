@@ -15,15 +15,17 @@
 
 #include <isa.h>
 #include <cpu/cpu.h>
-#include<memory/paddr.h>
+#include <memory/paddr.h>
 #include <readline/readline.h>
 #include <readline/history.h>
 #include "sdb.h"
+
 
 static int is_batch_mode = false;
 
 void init_regex();
 void init_wp_pool();
+void print_wp_pool();
 // static word_t paddr_read();
 
 /* We use the `readline' library to provide more flexibility to read from stdin. */
@@ -98,6 +100,7 @@ static int cmd_si(char *args){
 			return 0;
 }
 static int info_r();
+static int info_w();
 static int cmd_info(char *args){
 				char *arg = strtok(NULL, " ");
 				int num_arg = 1;//number of args in arg_table
@@ -107,7 +110,7 @@ static int cmd_info(char *args){
 								int (*handler)();
 				}arg_table [] = {
 								{	"r","infomation of register",info_r},
-								//{"w","infomation of watchpoint",info_w},
+								{"w","infomation of watchpoint",info_w},
 				};
 				int i;
 				if(arg == NULL){
@@ -132,6 +135,10 @@ isa_reg_display();
 return 0;
 }
 
+static int info_w(){
+  print_wp_pool();
+  return 0;
+}
 
 // finish ugly
 static int cmd_x(char *args){
