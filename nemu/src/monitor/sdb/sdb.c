@@ -103,7 +103,7 @@ static int info_r();
 static int info_w();
 static int cmd_info(char *args){
 				char *arg = strtok(NULL, " ");
-				int num_arg = 1;//number of args in arg_table
+				int num_arg = 2;//number of args in arg_table
 				struct{
 								const char *name;
 								const char *description;
