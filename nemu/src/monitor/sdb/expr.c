@@ -341,7 +341,7 @@ u_int32_t eval(Token *tokens, int begin, int end)
     // return the value of the DECber
     assert(!isCertainType(tokens[begin].type));
     char *num = tokens[begin].str;
-    int number = atoi(num);
+    u_int32_t number = atoi(num);
     return number;
   }
   else if (check_paretheses(tokens, begin, end) == true)
