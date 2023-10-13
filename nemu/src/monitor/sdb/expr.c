@@ -170,8 +170,14 @@ static bool make_token(char *e)
           strncpy(name,substr_start + 1,substr_len-1);
           assert(name[substr_len + 1] == '\0');
           //get value of register
-          word_t val = isa_reg_str2val(name,&suc);
-          printf("reg name:%s\n",name);
+          word_t val;
+          if(strcmp(name,"pc")==0){
+            val = cpu.pc;
+            suc = true;
+          }else{
+            val = isa_reg_str2val(name,&suc);
+          }
+          
           assert(suc);
           sprintf(tok.str,"%d",val);
           break;
@@ -319,7 +325,7 @@ static int getMainop(Token *tokens, int begin, int end)
       return okset[k].pos;
     }
   }
-  for (int k = okindex - 1; k >= 0; k--)
+  for (int k = 0; k <okindex; k++)
   {
     if (okset[k].type == DEREF)
     {
