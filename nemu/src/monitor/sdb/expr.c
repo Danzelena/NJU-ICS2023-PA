@@ -440,12 +440,13 @@ u_int32_t eval(Token *tokens, int begin, int end)
     }
     case NEG:{
       ret = (-1) * val2;
+      
       break;
     }
     default:
       assert(0);
     }
-    // printf("Debug: %d  %d = %d\n",val1,val2,ret);
+    printf("Debug: %d  %d = %d\n",val1,val2,ret);
     return ret;
   }
 }
