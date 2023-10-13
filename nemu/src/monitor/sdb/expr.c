@@ -179,7 +179,7 @@ static bool make_token(char *e)
           }
           
           assert(suc);
-          sprintf(tok.str,"%d",val);
+          sprintf(tok.str,"%u",val);
           break;
         }
         // TODO:DEREF case
