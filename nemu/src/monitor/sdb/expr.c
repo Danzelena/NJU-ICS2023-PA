@@ -61,7 +61,7 @@ static struct rule
     {"0x[0-9A-Fa-f]+", HEX}, // HEX number
     {"[0-9]+", DEC},         // DEC number
 
-    {"\\$[0-9a-z]+", REG}, // register
+    {"[\\$a-z][0-9a-z]", REG}, // register
 
     {"\\(", '('}, // left (
     {"\\)", ')'}, // right )
