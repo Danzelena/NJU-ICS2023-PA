@@ -311,7 +311,7 @@ static int getMainop(Token *tokens, int begin, int end)
       return okset[k].pos;
     }
   }
-    for (int k = okindex - 1; k >= 0; k--)
+    for (int k = 0; k <okindex; k++)
   {
     if (okset[k].type == NEG)
     {
