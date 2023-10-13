@@ -350,6 +350,7 @@ u_int32_t eval(Token *tokens, int begin, int end)
     assert(!isCertainType(tokens[begin].type));
     char *num = tokens[begin].str;
     u_int32_t number = strtoul(num,NULL,10);
+    printf("Debug:number=%u\n",number);
     return number;
   }
   else if (check_paretheses(tokens, begin, end) == true)
