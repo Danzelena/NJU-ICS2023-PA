@@ -36,7 +36,7 @@ void isa_reg_display()
     bool suc = true;
     word_t val = cpu.gpr[i];
     assert(suc);
-    printf("%s:%d\t", regs[i], val);
+    printf("%s:%x\t", regs[i], val);
   }
   printf("\n");
 }
@@ -56,5 +56,5 @@ word_t isa_reg_str2val(const char *s, bool *success)
   }
   printf("Fail!");
   *success = false;
-  return -1;
+  return 0;
 }
