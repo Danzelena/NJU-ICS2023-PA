@@ -32,6 +32,7 @@ enum
   TK_NEQ,
   AND,
   OR,
+  NEG,
   DEREF,
   /* TODO: Add more token types */
 
@@ -153,7 +154,7 @@ static bool make_token(char *e)
           strncpy(hexstr, substr_start + 2, substr_len - 2);
           assert(hexstr[substr_len + 1] == '\0');
           int dec = strtol(hexstr, NULL, 16);
-          assert(dec < 10000);
+          // assert(dec < 10000);
           sprintf(tok.str, "%d", dec);
           printf("Debug:hex=%s,dex=%d\n", hexstr, dec);
           // strncpy(tok.str, substr_start + 2, substr_len - 2);
@@ -177,6 +178,9 @@ static bool make_token(char *e)
         // TODO:DEREF case
         case DEREF:
         {
+          break;
+        }
+        case NEG:{
           break;
         }
         default:
@@ -265,7 +269,7 @@ static int getMainop(Token *tokens, int begin, int end)
     {
       isInparetheses--;
     }
-    if (isCertainType(type)||type == DEREF)
+    if (isCertainType(type)||type == DEREF || type == NEG)
     {
       if (isInparetheses == 0)
       {
@@ -307,6 +311,13 @@ static int getMainop(Token *tokens, int begin, int end)
       return okset[k].pos;
     }
   }
+    for (int k = okindex - 1; k >= 0; k--)
+  {
+    if (okset[k].type == NEG)
+    {
+      return okset[k].pos;
+    }
+  }
   for (int k = okindex - 1; k >= 0; k--)
   {
     if (okset[k].type == DEREF)
@@ -340,7 +351,7 @@ u_int32_t eval(Token *tokens, int begin, int end)
     int op = getMainop(tokens, begin, end);
     int op_type = tokens[op].type;
     u_int32_t val1,val2;
-    if (op_type == DEREF){
+    if (op_type == DEREF||op_type == NEG){
       val1 = -1;
       val2 = eval(tokens,op+1,end);
     }else{
@@ -427,6 +438,10 @@ u_int32_t eval(Token *tokens, int begin, int end)
       ret = *pos;
       break;
     }
+    case NEG:{
+      ret = (-1) * val2;
+      break;
+    }
     default:
       assert(0);
     }
@@ -458,6 +473,8 @@ word_t expr(char *e, bool *success)
     if (tokens[j].type == '*' && (j == 0 || isCertainType(tokens[j - 1].type)))
     {
       tokens[j].type = DEREF;
+    }else if(tokens[j].type == '-' && (j==0||isCertainType(tokens[j-1].type))){
+      tokens[j].type = NEG;
     }
   }
   int len = nr_token;
