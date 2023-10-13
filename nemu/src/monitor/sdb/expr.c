@@ -171,6 +171,7 @@ static bool make_token(char *e)
           assert(name[substr_len + 1] == '\0');
           //get value of register
           word_t val = isa_reg_str2val(name,&suc);
+          printf("reg name:%s\n",name);
           assert(suc);
           sprintf(tok.str,"%d",val);
           break;
