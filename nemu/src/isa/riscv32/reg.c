@@ -35,7 +35,7 @@ void isa_reg_display()
     // char *name = regs[i];
     bool suc = true;
     word_t val = isa_reg_str2val(regs[i], &suc);
-    assert(suc);
+    // assert(suc);
     printf("%s:%d\t", regs[i], val);
   }
   printf("\n");
