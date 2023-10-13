@@ -361,7 +361,7 @@ u_int32_t eval(Token *tokens, int begin, int end)
   {
     int op = getMainop(tokens, begin, end);
     int op_type = tokens[op].type;
-    long int val1,val2;
+    u_int32_t val1,val2;
     if (op_type == DEREF||op_type == NEG){
       printf("Debug:op=%d,begin=%d,end=%d\n",op,begin,end);
       val1 = -1;
@@ -372,7 +372,7 @@ u_int32_t eval(Token *tokens, int begin, int end)
     }
     
     
-    long int ret;
+    int ret;
     switch (op_type)
     {
     case '+':
