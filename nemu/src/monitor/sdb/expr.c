@@ -61,7 +61,7 @@ static struct rule
     {"0x[0-9A-Fa-f]+", HEX}, // HEX number
     {"[0-9]+", DEC},         // DEC number
 
-    {"[\\$a-z][0-9a-z]+", REG}, // register
+    {"\\$[\\$a-z][0-9a-z]+", REG}, // register
 
     {"\\(", '('}, // left (
     {"\\)", ')'}, // right )
@@ -164,7 +164,7 @@ static bool make_token(char *e)
         case REG:
         {
           bool suc = true;
-          char name[5];
+          char name[10];
           // get name of register
           memset(name,'\0',sizeof(name));
           strncpy(name,substr_start + 1,substr_len-1);
