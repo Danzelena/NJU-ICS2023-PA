@@ -171,14 +171,14 @@ static bool make_token(char *e)
           assert(name[substr_len + 1] == '\0');
           //get value of register
           word_t val;
-          printf("Debug:val=%u\n",val);
+          
           if(strcmp(name,"pc")==0){
             val = cpu.pc;
             suc = true;
           }else{
             val = isa_reg_str2val(name,&suc);
           }
-          
+          printf("Debug:val=%u\n",val);
           assert(suc);
           sprintf(tok.str,"%u",val);
           printf("Debug:tok.str=%s\n",tok.str);
