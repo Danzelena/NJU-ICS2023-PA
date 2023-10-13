@@ -218,6 +218,10 @@ static int cmd_help(char *args) {
 }
 
 static int cmd_p(char *args){
+  if (args == NULL){
+    printf("valid expression!!!\n");
+    return 0;
+  }
   bool su = true;
   bool *success = &su;
   if (*success){
