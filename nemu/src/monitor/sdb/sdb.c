@@ -222,7 +222,7 @@ static int cmd_p(char *args){
   bool *success = &su;
   if (*success){
     u_int32_t ret = expr(args,success);
-    printf("%d\n",ret);
+    printf("%u\n",ret);
   return ret;
 
   }else{
