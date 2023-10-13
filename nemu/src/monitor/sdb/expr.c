@@ -156,7 +156,7 @@ static bool make_token(char *e)
           int dec = strtol(hexstr, NULL, 16);
           // assert(dec < 10000);
           sprintf(tok.str, "%d", dec);
-          printf("Debug:hex=%s,dex=%d\n", hexstr, dec);
+          // printf("Debug:hex=%s,dex=%d\n", hexstr, dec);
           // strncpy(tok.str, substr_start + 2, substr_len - 2);
           break;
         }
@@ -338,6 +338,7 @@ u_int32_t eval(Token *tokens, int begin, int end)
   else if (begin == end)
   {
     // return the value of the DECber
+    assert(!isCertainType(tokens[begin].type));
     char *num = tokens[begin].str;
     int number = atoi(num);
     return number;
@@ -448,7 +449,7 @@ u_int32_t eval(Token *tokens, int begin, int end)
     default:
       assert(0);
     }
-    printf("Debug: %d  %d = %d\n",val1,val2,ret);
+    // printf("Debug: %d  %d = %d\n",val1,val2,ret);
     return ret;
   }
 }
