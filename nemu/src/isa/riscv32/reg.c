@@ -48,7 +48,7 @@ word_t isa_reg_str2val(const char *s, bool *success)
     return cpu.gpr[0];
   }
 
-  for (int i = 1; i < ARRLEN(regs); i++){
+  for (int i = 1; i < ARRLEN(regs); ++i){
     if (strcmp(regs[i], s) == 0){//跳过$
       *success = true;
       return cpu.gpr[i];
