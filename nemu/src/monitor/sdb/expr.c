@@ -361,7 +361,7 @@ u_int32_t eval(Token *tokens, int begin, int end)
     }
     
     
-    u_int32_t ret;
+    int ret;
     switch (op_type)
     {
     case '+':
