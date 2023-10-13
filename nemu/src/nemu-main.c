@@ -21,7 +21,7 @@ void am_init_monitor();
 void engine_start();
 int is_exit_status_bad();
 
-#define CONFIG_DEBUG 0
+// #define CONFIG_DEBUG 0
 #define INPUT_PATH "./tools/gen-expr/input"
 #define TEST_LOOP 100
 
