@@ -178,7 +178,7 @@ static bool make_token(char *e)
           }else{
             val = isa_reg_str2val(name,&suc);
           }
-          printf("Debug:val=%u\n",val);
+          printf("Debug:val=%x\n",val);
           assert(suc);
           sprintf(tok.str,"%u",val);
           printf("Debug:tok.str=%s\n",tok.str);
