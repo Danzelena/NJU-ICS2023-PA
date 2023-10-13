@@ -348,6 +348,7 @@ u_int32_t eval(Token *tokens, int begin, int end)
   }
   else
   {
+    // printf("D")
     int op = getMainop(tokens, begin, end);
     int op_type = tokens[op].type;
     u_int32_t val1,val2;
