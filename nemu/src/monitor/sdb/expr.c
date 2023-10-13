@@ -465,7 +465,7 @@ u_int32_t eval(Token *tokens, int begin, int end)
 bool isCertainType(int type)
 {
   if (type == '+' || type == '-' || type == '*' || type == '/' 
-  || type == NEG||
+  || type == NEG|| type == DEREF||type == '('||
    type == TK_EQ || type == TK_NEQ || type == AND || type == OR)
   {
     return true;
