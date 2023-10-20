@@ -87,6 +87,8 @@ finish:
 
 
 // --- pattern matching wrappers for decode ---
+// if stand for 'Match!'
+
 #define INSTPAT(pattern, ...) do { \
   uint64_t key, mask, shift; \
   pattern_decode(pattern, STRLEN(pattern), &key, &mask, &shift); \

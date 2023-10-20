@@ -26,9 +26,10 @@ enum {
   TYPE_I, TYPE_U, TYPE_S,
   TYPE_N, // none
 };
-
+// get val in Register to src
 #define src1R() do { *src1 = R(rs1); } while (0)
 #define src2R() do { *src2 = R(rs2); } while (0)
+// get imm val in inst
 #define immI() do { *imm = SEXT(BITS(i, 31, 20), 12); } while(0)
 #define immU() do { *imm = SEXT(BITS(i, 31, 12), 20) << 12; } while(0)
 #define immS() do { *imm = (SEXT(BITS(i, 31, 25), 7) << 5) | BITS(i, 11, 7); } while(0)
@@ -47,15 +48,20 @@ static void decode_operand(Decode *s, int *rd, word_t *src1, word_t *src2, word_
 
 static int decode_exec(Decode *s) {
   int rd = 0;
+  // stand for:
+  // rd->目的操作数的寄存器号码
   word_t src1 = 0, src2 = 0, imm = 0;
   s->dnpc = s->snpc;
-
+// decode op and operand
 #define INSTPAT_INST(s) ((s)->isa.inst.val)
 #define INSTPAT_MATCH(s, name, type, ... /* execute body */ ) { \
   decode_operand(s, &rd, &src1, &src2, &imm, concat(TYPE_, type)); \
   __VA_ARGS__ ; \
 }
 
+  // instruction pattern
+  // format:
+  // (string,instruction name,type,operation)
   INSTPAT_START();
   INSTPAT("??????? ????? ????? ??? ????? 00101 11", auipc  , U, R(rd) = s->pc + imm);
   INSTPAT("??????? ????? ????? 100 ????? 00000 11", lbu    , I, R(rd) = Mr(src1 + imm, 1));
@@ -71,6 +77,7 @@ static int decode_exec(Decode *s) {
 }
 
 int isa_exec_once(Decode *s) {
+  // will modift s->snpc,so snpc is next inst's pc
   s->isa.inst.val = inst_fetch(&s->snpc, 4);
   return decode_exec(s);
 }
