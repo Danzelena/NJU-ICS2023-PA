@@ -42,7 +42,7 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
   //scan all the watchpoint
   if(!check_wp()){
   nemu_state.state = NEMU_STOP;
-  printf("at &pc = %x\n", cpu.pc);
+  printf("at &pc = %x\n", _this->pc);
 
   }
   
