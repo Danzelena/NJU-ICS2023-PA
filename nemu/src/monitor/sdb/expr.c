@@ -178,10 +178,10 @@ static bool make_token(char *e)
           }else{
             val = isa_reg_str2val(name,&suc);
           }
-          printf("Debug:val=%x\n",val);
+          // printf("Debug:val=%x\n",val);
           assert(suc);
           sprintf(tok.str,"%u",val);
-          printf("Debug:tok.str=%s\n",tok.str);
+          // printf("Debug:tok.str=%s\n",tok.str);
           break;
         }
         // TODO:DEREF case
@@ -350,7 +350,7 @@ u_int32_t eval(Token *tokens, int begin, int end)
     assert(!isCertainType(tokens[begin].type));
     char *num = tokens[begin].str;
     u_int32_t number = strtoul(num,NULL,10);
-    printf("Debug:number=%u\n",number);
+    // printf("Debug:number=%u\n",number);s
     return number;
   }
   else if (check_paretheses(tokens, begin, end) == true)
@@ -363,7 +363,7 @@ u_int32_t eval(Token *tokens, int begin, int end)
     int op_type = tokens[op].type;
     u_int32_t val1,val2;
     if (op_type == DEREF||op_type == NEG){
-      printf("Debug:op=%d,begin=%d,end=%d\n",op,begin,end);
+      // printf("Debug:op=%d,begin=%d,end=%d\n",op,begin,end);
       val1 = -1;
       val2 = eval(tokens,op+1,end);
     }else{
