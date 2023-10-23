@@ -62,26 +62,32 @@ bool check_wp(){
 }
 void print_wp_pool()
 {
-  printf("range1:\n");
-  for (int i = 0; i < NR_WP; i++)
-  {
-    printf("%d ", wp_pool[i].NO);
-  }
-  printf("\n");
-  WP *po = wp_pool;
-  printf("range2:\n");
-  while (po != NULL)
-  {
-    printf("%d ", po->NO);
-    po = po->next;
-  }
-  printf("\n");
-  if (head != NULL)
-    printf("head=%d\n", head->NO);
-  else
-    printf("head=NULL\n");
-  printf("free_=%d\n", free_->NO);
-  printf("=================================\n");
+  printf("NO.\tCondation\n");
+  WP* cur = head;
+  while (cur){
+    printf("\e[1;36m%d\e[0m\t\e[0;32m%s\e[0m\n", cur->NO, cur->expression);
+    cur = cur->next;}
+  
+  // printf("range1:\n");
+  // for (int i = 0; i < NR_WP; i++)
+  // {
+  //   printf("%d ", wp_pool[i].NO);
+  // }
+  // printf("\n");
+  // WP *po = wp_pool;
+  // printf("range2:\n");
+  // while (po != NULL)
+  // {
+  //   printf("%d ", po->NO);
+  //   po = po->next;
+  // }
+  // printf("\n");
+  // if (head != NULL)
+  //   printf("head=%d\n", head->NO);
+  // else
+  //   printf("head=NULL\n");
+  // printf("free_=%d\n", free_->NO);
+  // printf("=================================\n");
 }
 /* TODO: Implement the functionality of watchpoint */
 int call_new_WP(char *expression,bool*success){
