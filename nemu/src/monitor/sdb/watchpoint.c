@@ -62,9 +62,9 @@ bool check_wp(){
 }
 void print_wp_pool()
 {
-  printf("NO.\tCondation\n");
+  printf("Num.\tWhat\n");
   WP* cur = head;
-  while (cur){
+  while (cur != free_){
     printf("\e[1;36m%d\e[0m\t\e[0;32m%s\e[0m\n", cur->NO, cur->expression);
     cur = cur->next;}
   
