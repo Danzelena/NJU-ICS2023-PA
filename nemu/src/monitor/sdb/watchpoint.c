@@ -46,6 +46,7 @@ void init_wp_pool()
   free_ = wp_pool;
 }
 bool check_wp(){
+
   bool ret = true;
   if(head == NULL){
     return true;
@@ -55,6 +56,14 @@ bool check_wp(){
     int now = expr(po->expression,&su);
     if(now!=po->lastval){
       ret = false;
+        printf("Continuing.\n");
+        printf("\n");
+
+        printf("Hard watchpoint %d,%s\n",po->NO,po->expression);
+
+        printf("Old value = %x\n", po->lastval);
+        printf("New value = %x\n", now);
+
     }
     po->lastval = now;
   }
