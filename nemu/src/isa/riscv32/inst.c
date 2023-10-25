@@ -37,6 +37,7 @@ enum {
 #define immS() do { *imm = (SEXT(BITS(i, 31, 25), 7) << 5) | BITS(i, 11, 7);} while(0)
 #define immJ() do { *imm = ((SEXT(BITS(i, 31, 31), 1) << 20) | BITS(i, 19, 12) << 12 | BITS(i, 20, 20) << 11 | BITS(i, 30, 21) << 1)&~1 ;} while(0)
 #define immB() do { *imm = ((SEXT(BITS(i, 31, 31), 1) << 12) | BITS(i, 7, 7) << 11 | BITS(i, 30, 25) << 5 | BITS(i, 11, 8) << 1)&~1;  }while(0)
+#define immR() do { *imm = SEXT(BITS(31, 25, 12), 12);}while(0)
 
 static void decode_operand(Decode *s, int *rd, word_t *src1, word_t *src2, word_t *imm, int type) {
   uint32_t i = s->isa.inst.val;
@@ -49,7 +50,7 @@ static void decode_operand(Decode *s, int *rd, word_t *src1, word_t *src2, word_
     case TYPE_S: src1R(); src2R(); immS(); break;
     case TYPE_J:                   immJ(); break;
     case TYPE_B: src1R(); src2R(); immB(); break;
-    case TYPE_R2: src1R(); src2R();         break;
+    case TYPE_R2: src1R(); src2R();immR(); break;
   }
 }
 
@@ -133,7 +134,7 @@ static int decode_exec(Decode *s) {
   // finish mersenne, pascal
 
   // or, xor, ori, xori
-  INSTPAT("0000000 ????? ????? 100 ????? 01100 11", xor    , R2, R(rd) = src1 ^ src2);
+  // INSTPAT("0000000 ????? ????? 100 ????? 01100 11", xor    , R2, R(rd) = src1 ^ src2);
   INSTPAT("0000000 ????? ????? 110 ????? 01100 11", or     , R2, R(rd) = src1 | src2);
   INSTPAT("??????? ????? ????? 110 ????? 00100 11", ori    , R2, R(rd) = src1 | imm);
   INSTPAT("??????? ????? ????? 100 ????? 00100 11", xori   , I, R(rd) = src1 ^ imm);
@@ -150,7 +151,7 @@ static int decode_exec(Decode *s) {
   // lh, lhu
   INSTPAT("??????? ????? ????? 001 ????? 00000 11", lh     , I, R(rd) = (sword_t)(((Mr(src1 + imm, 4) & 0b111111111111111111)<<16)>>16));
   INSTPAT("??????? ????? ????? 101 ????? 00000 11", lhu    , I, R(rd) = (word_t)(((Mr(src1 + imm, 4) & 0b111111111111111111)<<16)>>16));
-  // load-store fail!
+  // finish load-store 
 
   INSTPAT("0000000 00001 00000 000 00000 11100 11", ebreak , N, NEMUTRAP(s->pc, R(10))); // R(10) is $a0
   INSTPAT("??????? ????? ????? ??? ????? ????? ??", inv    , N, INV(s->pc));
