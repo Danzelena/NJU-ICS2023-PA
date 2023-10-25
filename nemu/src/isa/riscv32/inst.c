@@ -67,7 +67,7 @@ static int decode_exec(Decode *s) {
 }
 
 // test files
-//   add.c           fact.c        matrix-mul.c    pascal.c       string.c
+//   *add.c           *fact.c        matrix-mul.c    pascal.c       string.c
 // add-longlong.c  fib.c         max.c           prime.c        sub-longlong.c
 // bit.c           goldbach.c    mersenne.c      quick-sort.c   sum.c
 // bubble-sort.c   hello-str.c   min3.c          recursion.c    switch.c
