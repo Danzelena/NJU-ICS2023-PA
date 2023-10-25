@@ -73,7 +73,7 @@ static int decode_exec(Decode *s) {
 // *bubble-sort.c   hello-str.c   *min3.c          *recursion.c    *switch.c
 // crc32.c         *if-else.c     *mov-c.c         *select-sort.c  *to-lower-case.c
 // *div.c           *leap-year.c   *movsx.c         shift.c        unalign.c
-// *dummy.c         load-store.c  mul-longlong.c  *shuixianhua.c  wanshu.c
+// *dummy.c         load-store.c  mul-longlong.c  *shuixianhua.c  *wanshu.c
 
   // instruction pattern
   // format:
