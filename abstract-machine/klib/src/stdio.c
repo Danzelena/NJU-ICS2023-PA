@@ -19,6 +19,7 @@ int vsprintf(char *out, const char *fmt, va_list ap)
 
 int sprintf(char *out, const char *fmt, ...)
 {
+  // TODO:recode this code becase of terrible abstract!
   va_list ap;
   int d;
   char c;
