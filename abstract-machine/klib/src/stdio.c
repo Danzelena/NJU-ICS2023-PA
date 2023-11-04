@@ -23,13 +23,14 @@ int sprintf(char *out, const char *fmt, ...)
   int d;
   char c;
   char *s;
-
+  char *ret_poi = out;
   va_start(ap, fmt);
   while (*fmt)
   {
     switch (*fmt)
     {
     case '%':
+        *out = '\0';
       switch (*(fmt + 1))
       {
       case 's':
@@ -58,10 +59,13 @@ int sprintf(char *out, const char *fmt, ...)
 
     default:
       *out = *fmt;
+      out += 1;
       break;
     }
     fmt++;
   }
+  *out= '\0';
+  out = ret_poi;
   va_end(ap);
   return 0;
   // panic("Not implemented");
