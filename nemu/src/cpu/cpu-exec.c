@@ -26,6 +26,7 @@
  */
 #define MAX_INST_TO_PRINT 10
 #define IRING_LEN 15
+#define STR_LEN 50
 
 CPU_state cpu = {};
 uint64_t g_nr_guest_inst = 0;
@@ -55,9 +56,9 @@ void irbuf_init(struct iringbuf *rb,
 
   for (size_t i = 0;i < size;i++){
     // *(rb->buf_ptr + i) = NULL;
-    pool[i] = (char *)malloc(30*sizeof(char));
-    snprintf(pool[i], 30, "null inst");
-    // memset(pool[i], '\0', 30);
+    pool[i] = (char *)malloc(STR_LEN*sizeof(char));
+    snprintf(pool[i], STR_LEN, "null inst");
+    // memset(pool[i], '\0', STR_LEN);
   }
   rb->buf_ptr = pool;
   rb->buf_size = size;
@@ -70,7 +71,7 @@ size_t irbuf_push(struct iringbuf *rb, char *inst){
   // Log("before push inst");
   // irbuf_print(rb);
   
-  snprintf(rb->buf_ptr[rb->write_index],30,"%s",inst);
+  snprintf(rb->buf_ptr[rb->write_index],STR_LEN,"%s",inst);
   if(rb->write_index == rb->buf_size - 1){
     rb->write_index = 0;
   }else{
