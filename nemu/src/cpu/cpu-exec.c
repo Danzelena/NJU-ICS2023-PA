@@ -54,10 +54,10 @@ void irbuf_init(struct iringbuf *rb,
   
   rb->buf_ptr = pool;
   for (size_t i = 0;i < size;i++){
-    *(rb->buf_ptr + i) = (char *)malloc(30);
+    // *(rb->buf_ptr + i) = NULL;
     memset(*(rb->buf_ptr + i), '\0', 30);
   }
-  // rb->buf_ptr = pool;
+  rb->buf_ptr = pool;
   rb->buf_size = size;
   irbuf_print(rb);
 }
@@ -68,7 +68,7 @@ size_t irbuf_push(struct iringbuf *rb, char *inst){
   // Log("before push inst");
   // irbuf_print(rb);
   
-  strcpy(rb->buf_ptr[rb->write_index],inst);
+  sprintf(rb->buf_ptr[rb->write_index],"%s",inst);
   if(rb->write_index == rb->buf_size - 1){
     rb->write_index = 0;
   }else{
@@ -82,7 +82,7 @@ void irbuf_print(const struct iringbuf *rb){
   Log("iringbuf for debug:\n");
   size_t i;
   for(i = 0;i < rb->buf_size;i++){
-    if(*(rb->buf_ptr+i)!= NULL){
+    if(*(rb->buf_ptr+i)[0]!= '\0'){
       printf("%s\n", *(rb->buf_ptr + i));
     }
     else{
