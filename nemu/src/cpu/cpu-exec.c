@@ -98,7 +98,7 @@ void device_update();
 static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 #ifdef CONFIG_ITRACE_COND
 // TODO:add inst to iringbuf
-  if (ITRACE_COND) { /*log_write("%s\n", _this->logbuf); */irbuf_push(&irbuf, _this->logbuf);}
+  if (ITRACE_COND) { log_write("%s\n", _this->logbuf); irbuf_push(&irbuf, _this->logbuf);}
 #endif
   if (g_print_step) { IFDEF(CONFIG_ITRACE, puts(_this->logbuf)); }
   IFDEF(CONFIG_DIFFTEST, difftest_step(_this->pc, dnpc));
@@ -153,6 +153,8 @@ static void execute(uint64_t n) {
     Log("before trace_and_diff");
     irbuf_print(&irbuf);
     trace_and_difftest(&s, cpu.pc);
+        Log("after trace_and_diff");
+    irbuf_print(&irbuf);
     if (nemu_state.state != NEMU_RUNNING) break;
     IFDEF(CONFIG_DEVICE, device_update());
   }
