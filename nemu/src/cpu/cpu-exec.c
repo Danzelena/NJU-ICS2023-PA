@@ -64,16 +64,16 @@ void irbuf_init(struct iringbuf *rb,
 size_t irbuf_push(struct iringbuf *rb, char *inst){
   size_t ret = rb->write_index;
   printf("Debug:write_index = %d\n", (int)rb->write_index);
-  Log("before push inst");
-  irbuf_print(rb);
+  // Log("before push inst");
+  // irbuf_print(rb);
   rb->buf_ptr[rb->write_index] = inst;
   if(rb->write_index == rb->buf_size - 1){
     rb->write_index = 0;
   }else{
     rb->write_index += 1;
   }
-  Log("after push inst");
-  irbuf_print(rb);
+  // Log("after push inst");
+  // irbuf_print(rb);
   return ret;
 }
 void irbuf_print(struct iringbuf *rb){
@@ -150,7 +150,8 @@ static void execute(uint64_t n) {
   for (;n > 0; n --) {
     exec_once(&s, cpu.pc);
     g_nr_guest_inst ++;
-
+    Log("before trace_and_diff");
+    irbuf_print(&irbuf);
     trace_and_difftest(&s, cpu.pc);
     if (nemu_state.state != NEMU_RUNNING) break;
     IFDEF(CONFIG_DEVICE, device_update());
