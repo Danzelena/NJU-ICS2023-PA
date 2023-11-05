@@ -70,7 +70,7 @@ size_t irbuf_push(struct iringbuf *rb, char *inst){
   // Log("before push inst");
   // irbuf_print(rb);
   
-  sprintf(rb->buf_ptr[rb->write_index],"%s",inst);
+  snprintf(rb->buf_ptr[rb->write_index],30,"%s",inst);
   if(rb->write_index == rb->buf_size - 1){
     rb->write_index = 0;
   }else{
