@@ -41,12 +41,14 @@ char **irbuf_init(char **irbuf){
   }
   return irbuf;
 }
+void irbuf_print();
 char **irbuf_push(char **irbuf, char *inst){
   size_t i;
   for(i = IRING_LEN - 1;i > 0;i--){
     irbuf[i] = irbuf[i - 1];
   }
   irbuf[0] = inst;
+  irbuf_print(irbuf);
   return irbuf;
 }
 void irbuf_print(char **irbuf){
