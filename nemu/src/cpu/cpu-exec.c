@@ -52,10 +52,12 @@ void irbuf_init(struct iringbuf *rb,
 
   /*set buffer pool and size*/
   
-  rb->buf_ptr = pool;
+
   for (size_t i = 0;i < size;i++){
     // *(rb->buf_ptr + i) = NULL;
-    memset(*(rb->buf_ptr + i), '\0', 30);
+    pool[i] = (char *)malloc(30*sizeof(char));
+    snprintf(pool[i], 30, "null inst");
+    // memset(pool[i], '\0', 30);
   }
   rb->buf_ptr = pool;
   rb->buf_size = size;
