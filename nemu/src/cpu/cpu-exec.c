@@ -184,7 +184,8 @@ void cpu_exec(uint64_t n) {
   }
 
   uint64_t timer_start = get_time();
-
+Log("before execute");
+irbuf_print(&irbuf);
   execute(n);
 
   uint64_t timer_end = get_time();
