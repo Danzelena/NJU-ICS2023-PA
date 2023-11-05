@@ -86,7 +86,12 @@ void irbuf_print(const struct iringbuf *rb){
   size_t i;
   for(i = 0;i < rb->buf_size;i++){
     if(*(rb->buf_ptr+i)[0]!= '\0'){
-      printf("%s\n", *(rb->buf_ptr + i));
+      if(i == rb->write_index){
+        printf("---->%s\n",*(rb->buf_ptr + i));
+      }else{
+        printf("     %s\n", *(rb->buf_ptr + i));
+      }
+
     }
     else{
       printf("null inst\n");
