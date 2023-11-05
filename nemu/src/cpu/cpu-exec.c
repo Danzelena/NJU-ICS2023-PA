@@ -41,6 +41,7 @@ struct iringbuf{
 
 
 // TODO:handle iringbuf as a queue
+void irbuf_print();
 void irbuf_init(struct iringbuf *rb, 
                   // char **pool,
                   size_t size){
@@ -56,9 +57,9 @@ void irbuf_init(struct iringbuf *rb,
   }
   // rb->buf_ptr = pool;
   rb->buf_size = size;
-
+  irbuf_print(rb);
 }
-void irbuf_print();
+
 size_t irbuf_push(struct iringbuf *rb, char *inst){
   size_t ret = rb->write_index;
   rb->buf_ptr[rb->write_index] = inst;
@@ -75,7 +76,7 @@ void irbuf_print(struct iringbuf *rb){
   size_t i;
   for(i = 0;i < rb->buf_size;i++){
     if((rb->buf_ptr+i)!= NULL){
-      printf("%s\n", *(rb->buf_ptr+i));
+      printf("%s\n", *(rb->buf_ptr + i));
     }
     else{
       printf("null inst\n");
