@@ -148,6 +148,8 @@ static void execute(uint64_t n) {
 
 
   for (;n > 0; n --) {
+    Log("before exec_once");
+    irbuf_print(&irbuf);
     exec_once(&s, cpu.pc);
     g_nr_guest_inst ++;
     Log("before trace_and_diff");
