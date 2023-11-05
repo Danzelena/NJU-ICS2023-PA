@@ -68,6 +68,7 @@ size_t irbuf_push(struct iringbuf *rb, char *inst){
   }else{
     rb->write_index += 1;
   }
+  Log("after push inst");
   irbuf_print(rb);
   return ret;
 }
