@@ -38,19 +38,19 @@ struct iringbuf{
   size_t write_index;
   size_t buf_size;
 }irbuf;
-
+char *pool[IRING_LEN];
 
 // TODO:handle iringbuf as a queue
 void irbuf_print();
 void irbuf_init(struct iringbuf *rb, 
-                  // char **pool,
+                  char **pool,
                   size_t size){
   /*initialize read and write index*/
   rb->read_index = 0;
   rb->write_index = 5;
 
   /*set buffer pool and size*/
-  char *pool[IRING_LEN];
+  
   rb->buf_ptr = pool;
   for (size_t i = 0;i < size;i++){
     *(rb->buf_ptr + i) = NULL;
@@ -140,7 +140,8 @@ static void exec_once(Decode *s, vaddr_t pc) {
 static void execute(uint64_t n) {
   Decode s;
   // TODO: init iringbuf
-  irbuf_init(&irbuf, IRING_LEN);
+
+  irbuf_init(&irbuf, pool,IRING_LEN);
   printf("Debug:after init\n");
   irbuf_print(&irbuf);
   for (;n > 0; n --) {
