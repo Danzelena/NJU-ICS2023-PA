@@ -76,7 +76,7 @@ size_t irbuf_push(struct iringbuf *rb, char *inst){
   // irbuf_print(rb);
   return ret;
 }
-void irbuf_print(struct iringbuf *rb){
+void irbuf_print(const struct iringbuf *rb){
   Log("iringbuf for debug:\n");
   size_t i;
   for(i = 0;i < rb->buf_size;i++){
