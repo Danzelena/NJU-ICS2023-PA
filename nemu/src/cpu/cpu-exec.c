@@ -62,7 +62,7 @@ void irbuf_init(struct iringbuf *rb,
   }
   rb->buf_ptr = pool;
   rb->buf_size = size;
-  irbuf_print(rb);
+  // irbuf_print(rb);
 }
 
 size_t irbuf_push(struct iringbuf *rb, char *inst){
