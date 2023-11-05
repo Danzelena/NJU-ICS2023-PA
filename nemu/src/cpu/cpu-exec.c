@@ -54,7 +54,8 @@ void irbuf_init(struct iringbuf *rb,
   
   rb->buf_ptr = pool;
   for (size_t i = 0;i < size;i++){
-    *(rb->buf_ptr + i) = NULL;
+    *(rb->buf_ptr + i) = (char *)malloc(30);
+    memset(*(rb->buf_ptr + i), '\0', 30);
   }
   // rb->buf_ptr = pool;
   rb->buf_size = size;
@@ -66,7 +67,8 @@ size_t irbuf_push(struct iringbuf *rb, char *inst){
   printf("Debug:write_index = %d\n", (int)rb->write_index);
   // Log("before push inst");
   // irbuf_print(rb);
-  rb->buf_ptr[rb->write_index] = inst;
+  
+  strcpy(rb->buf_ptr[rb->write_index],inst);
   if(rb->write_index == rb->buf_size - 1){
     rb->write_index = 0;
   }else{
@@ -148,15 +150,15 @@ static void execute(uint64_t n) {
 
 
   for (;n > 0; n --) {
-    Log("before exec_once");
-    irbuf_print(&irbuf);
+    // Log("before exec_once");
+    // irbuf_print(&irbuf);
     exec_once(&s, cpu.pc);
     g_nr_guest_inst ++;
-    Log("before trace_and_diff");
-    irbuf_print(&irbuf);
+    // Log("before trace_and_diff");
+    // irbuf_print(&irbuf);
     trace_and_difftest(&s, cpu.pc);
-        Log("after trace_and_diff");
-    irbuf_print(&irbuf);
+    //     Log("after trace_and_diff");
+    // irbuf_print(&irbuf);
     if (nemu_state.state != NEMU_RUNNING) break;
     IFDEF(CONFIG_DEVICE, device_update());
   }
