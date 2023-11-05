@@ -62,9 +62,7 @@ void irbuf_init(struct iringbuf *rb,
 
 size_t irbuf_push(struct iringbuf *rb, char *inst){
   size_t ret = rb->write_index;
-  irbuf_print(rb);
   rb->buf_ptr[rb->write_index] = inst;
-  irbuf_print(rb);
   if(rb->write_index == rb->buf_size - 1){
     rb->write_index = 0;
   }else{
@@ -142,8 +140,7 @@ static void execute(uint64_t n) {
   // TODO: init iringbuf
 
   irbuf_init(&irbuf, pool,IRING_LEN);
-  printf("Debug:after init\n");
-  irbuf_print(&irbuf);
+
   for (;n > 0; n --) {
     exec_once(&s, cpu.pc);
     g_nr_guest_inst ++;
