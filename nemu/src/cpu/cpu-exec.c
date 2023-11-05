@@ -40,6 +40,7 @@ struct iringbuf{
 }irbuf;
 char *pool[IRING_LEN];
 
+
 // TODO:handle iringbuf as a queue
 void irbuf_print();
 void irbuf_init(struct iringbuf *rb, 
@@ -84,7 +85,10 @@ void irbuf_print(struct iringbuf *rb){
     }
   }
 }
-
+void iringbuf_init(){
+  // TODO: init iringbuf
+  irbuf_init(&irbuf, pool,IRING_LEN);
+}
 
 void device_update();
 
@@ -166,9 +170,7 @@ void assert_fail_msg() {
 
 /* Simulate how the CPU works. */
 void cpu_exec(uint64_t n) {
-    // TODO: init iringbuf
-
-  irbuf_init(&irbuf, pool,IRING_LEN);
+  iringbuf_init();
   g_print_step = (n < MAX_INST_TO_PRINT);
   switch (nemu_state.state) {
     case NEMU_END: case NEMU_ABORT:
