@@ -49,6 +49,8 @@ void irbuf_init(struct iringbuf *rb,
   rb->write_index = 0;
 
   /*set buffer pool and size*/
+  char *pool[IRING_LEN];
+  rb->buf_ptr = pool;
   for (size_t i = 0;i < size;i++){
     *(rb->buf_ptr + i) = NULL;
   }
