@@ -25,17 +25,44 @@
  * You can modify this value as you want.
  */
 #define MAX_INST_TO_PRINT 10
+#define IRING_LEN 15
 
 CPU_state cpu = {};
 uint64_t g_nr_guest_inst = 0;
 static uint64_t g_timer = 0; // unit: us
 static bool g_print_step = false;
+char *iringbuf[IRING_LEN];
+
+// TODO:handle iringbuf as a queue
+char **irbuf_init(char **irbuf){
+  size_t i;
+  for(i=0;i< IRING_LEN;i++){
+    irbuf[i] = NULL;
+  }
+  return irbuf;
+}
+char **irbuf_push(char **irbuf, char *inst){
+  size_t i;
+  for(i = IRING_LEN - 1;i > 0;i--){
+    irbuf[i] = irbuf[i - 1];
+  }
+  irbuf[0] = inst;
+  return irbuf;
+}
+void irbuf_print(char **irbuf){
+  size_t i;
+  for(i = 0;i < IRING_LEN;i++){
+    printf("%s\n", irbuf[i]);
+  }
+}
+
 
 void device_update();
 
 static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 #ifdef CONFIG_ITRACE_COND
-  if (ITRACE_COND) { log_write("%s\n", _this->logbuf); printf("%s\n", _this->logbuf);}
+// TODO:add inst to iringbuf
+  if (ITRACE_COND) { log_write("%s\n", _this->logbuf); irbuf_push(iringbuf, _this->logbuf);}
 #endif
   if (g_print_step) { IFDEF(CONFIG_ITRACE, puts(_this->logbuf)); }
   IFDEF(CONFIG_DIFFTEST, difftest_step(_this->pc, dnpc));
@@ -82,6 +109,9 @@ static void exec_once(Decode *s, vaddr_t pc) {
 
 static void execute(uint64_t n) {
   Decode s;
+  // TODO: init iringbuf
+  irbuf_init(iringbuf);
+
   for (;n > 0; n --) {
     exec_once(&s, cpu.pc);
     g_nr_guest_inst ++;
@@ -122,16 +152,21 @@ void cpu_exec(uint64_t n) {
   uint64_t timer_end = get_time();
   g_timer += timer_end - timer_start;
 
+
+// test and debug
+irbuf_print(iringbuf);
+
   switch (nemu_state.state) {
     case NEMU_RUNNING: nemu_state.state = NEMU_STOP; break;
 
     case NEMU_END: case NEMU_ABORT:
+      
       Log("nemu: %s at pc = " FMT_WORD,
           (nemu_state.state == NEMU_ABORT ? ANSI_FMT("ABORT", ANSI_FG_RED) :
            (nemu_state.halt_ret == 0 ? ANSI_FMT("HIT GOOD TRAP", ANSI_FG_GREEN) :
             ANSI_FMT("HIT BAD TRAP", ANSI_FG_RED))),
           nemu_state.halt_pc);
       // fall through
-    case NEMU_QUIT: statistic();
+    case NEMU_QUIT: irbuf_print(iringbuf);statistic();
   }
 }
