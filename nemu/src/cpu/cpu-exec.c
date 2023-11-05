@@ -53,7 +53,7 @@ void irbuf_print(char **irbuf){
   printf("iringbuf for debug:\n");
   size_t i;
   for(i = 0;i < IRING_LEN;i++){
-    if(irbuf != NULL){
+    if(irbuf[i] != NULL){
       printf("%s\n", irbuf[i]);
 
     }
