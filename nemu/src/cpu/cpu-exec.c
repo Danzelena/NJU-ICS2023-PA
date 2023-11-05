@@ -67,7 +67,7 @@ void irbuf_init(struct iringbuf *rb,
 
 size_t irbuf_push(struct iringbuf *rb, char *inst){
   size_t ret = rb->write_index;
-  printf("Debug:write_index = %d\n", (int)rb->write_index);
+  // printf("Debug:write_index = %d\n", (int)rb->write_index);
   // Log("before push inst");
   // irbuf_print(rb);
   
