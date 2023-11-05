@@ -75,7 +75,7 @@ void irbuf_print(struct iringbuf *rb){
   printf("iringbuf for debug:\n");
   size_t i;
   for(i = 0;i < rb->buf_size;i++){
-    if((rb->buf_ptr+i)!= NULL){
+    if(*(rb->buf_ptr+i)!= NULL){
       printf("%s\n", *(rb->buf_ptr + i));
     }
     else{
