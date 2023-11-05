@@ -47,7 +47,7 @@ void irbuf_init(struct iringbuf *rb,
                   size_t size){
   /*initialize read and write index*/
   rb->read_index = 0;
-  rb->write_index = 0;
+  rb->write_index = 5;
 
   /*set buffer pool and size*/
   char *pool[IRING_LEN];
