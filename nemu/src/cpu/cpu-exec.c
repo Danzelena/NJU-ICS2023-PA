@@ -31,33 +31,52 @@ CPU_state cpu = {};
 uint64_t g_nr_guest_inst = 0;
 static uint64_t g_timer = 0; // unit: us
 static bool g_print_step = false;
-char *iringbuf[IRING_LEN];
+
+struct iringbuf{
+  char ** buf_ptr;
+  size_t read_index;
+  size_t write_index;
+  size_t buf_size;
+}irbuf;
+
 
 // TODO:handle iringbuf as a queue
-char **irbuf_init(char **irbuf){
-  size_t i;
-  for(i=0;i< IRING_LEN;i++){
-    irbuf[i] = NULL;
+void irbuf_init(struct iringbuf *rb, 
+                  // char **pool,
+                  size_t size){
+  /*initialize read and write index*/
+  rb->read_index = 0;
+  rb->write_index = 0;
+
+  /*set buffer pool and size*/
+  for (size_t i = 0;i < size;i++){
+    *(rb->buf_ptr + i) = NULL;
   }
-  return irbuf;
+  // rb->buf_ptr = pool;
+  rb->buf_size = size;
+
 }
 void irbuf_print();
-char **irbuf_push(char **irbuf, char *inst){
-  size_t i;
-  for(i = IRING_LEN - 1;i > 0;i--){
-    irbuf[i] = irbuf[i - 1];
+size_t irbuf_push(struct iringbuf *rb, char *inst){
+  size_t ret = rb->write_index;
+  rb->buf_ptr[rb->write_index] = inst;
+  if(rb->write_index == rb->buf_size - 1){
+    rb->write_index = 0;
+  }else{
+    rb->write_index += 1;
   }
-  irbuf[0] = inst;
-  irbuf_print(irbuf);
-  return irbuf;
+  irbuf_print(rb);
+  return ret;
 }
-void irbuf_print(char **irbuf){
+void irbuf_print(struct iringbuf *rb){
   printf("iringbuf for debug:\n");
   size_t i;
-  for(i = 0;i < IRING_LEN;i++){
-    if(irbuf[i] != NULL){
-      printf("%s\n", irbuf[i]);
-
+  for(i = 0;i < rb->buf_size;i++){
+    if((rb->buf_ptr+i)!= NULL){
+      printf("%s\n", *(rb->buf_ptr+i));
+    }
+    else{
+      printf("null inst\n");
     }
   }
 }
@@ -68,7 +87,7 @@ void device_update();
 static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 #ifdef CONFIG_ITRACE_COND
 // TODO:add inst to iringbuf
-  if (ITRACE_COND) { log_write("%s\n", _this->logbuf); irbuf_push(iringbuf, _this->logbuf);}
+  if (ITRACE_COND) { log_write("%s\n", _this->logbuf); irbuf_push(&irbuf, _this->logbuf);}
 #endif
   if (g_print_step) { IFDEF(CONFIG_ITRACE, puts(_this->logbuf)); }
   IFDEF(CONFIG_DIFFTEST, difftest_step(_this->pc, dnpc));
@@ -116,7 +135,7 @@ static void exec_once(Decode *s, vaddr_t pc) {
 static void execute(uint64_t n) {
   Decode s;
   // TODO: init iringbuf
-  irbuf_init(iringbuf);
+  irbuf_init(&irbuf, IRING_LEN);
 
   for (;n > 0; n --) {
     exec_once(&s, cpu.pc);
@@ -160,7 +179,7 @@ void cpu_exec(uint64_t n) {
 
 
 // test and debug
-irbuf_print(iringbuf);
+irbuf_print(&irbuf);
 
   switch (nemu_state.state) {
     case NEMU_RUNNING: nemu_state.state = NEMU_STOP; break;
@@ -173,6 +192,6 @@ irbuf_print(iringbuf);
             ANSI_FMT("HIT BAD TRAP", ANSI_FG_RED))),
           nemu_state.halt_pc);
       // fall through
-    case NEMU_QUIT: irbuf_print(iringbuf);statistic();
+    case NEMU_QUIT: irbuf_print(&irbuf);statistic();
   }
 }
