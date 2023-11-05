@@ -57,7 +57,7 @@ void irbuf_init(struct iringbuf *rb,
   for (size_t i = 0;i < size;i++){
     // *(rb->buf_ptr + i) = NULL;
     pool[i] = (char *)malloc(STR_LEN*sizeof(char));
-    snprintf(pool[i], STR_LEN, "null inst");
+    snprintf(pool[i], STR_LEN, "(no instruction)");
     // memset(pool[i], '\0', STR_LEN);
   }
   rb->buf_ptr = pool;
