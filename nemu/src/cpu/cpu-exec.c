@@ -50,9 +50,13 @@ char **irbuf_push(char **irbuf, char *inst){
   return irbuf;
 }
 void irbuf_print(char **irbuf){
+  printf("iringbuf for debug:\n");
   size_t i;
   for(i = 0;i < IRING_LEN;i++){
-    printf("%s\n", irbuf[i]);
+    if(irbuf != NULL){
+      printf("%s\n", irbuf[i]);
+
+    }
   }
 }
 
