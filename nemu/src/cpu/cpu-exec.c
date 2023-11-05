@@ -62,7 +62,9 @@ void irbuf_init(struct iringbuf *rb,
 
 size_t irbuf_push(struct iringbuf *rb, char *inst){
   size_t ret = rb->write_index;
+  irbuf_print(rb);
   rb->buf_ptr[rb->write_index] = inst;
+  irbuf_print(rb);
   if(rb->write_index == rb->buf_size - 1){
     rb->write_index = 0;
   }else{
