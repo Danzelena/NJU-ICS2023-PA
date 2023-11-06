@@ -69,6 +69,9 @@ static long load_img() {
 }
 
 static int parse_args(int argc, char *argv[]) {
+
+  // TODO:add something to put ELF file to NEMU
+  
 				/* list many option to choose*/
   const struct option table[] = {
     {"batch"    , no_argument      , NULL, 'b'},
