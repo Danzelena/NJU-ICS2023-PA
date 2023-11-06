@@ -24,7 +24,7 @@ typedef struct watchpoint
   char expression[32];
   int lastval;
 
-  /* TODO: Add more members if necessary */
+  /* TO DO: Add more members if necessary */
 
 } WP;
 
@@ -99,7 +99,7 @@ void print_wp_pool()
   // printf("free_=%d\n", free_->NO);
   // printf("=================================\n");
 }
-/* TODO: Implement the functionality of watchpoint */
+/* TO DO: Implement the functionality of watchpoint */
 int call_new_WP(char *expression,bool*success){
   WP *wp = new_wp(expression,success);
   return wp->NO;

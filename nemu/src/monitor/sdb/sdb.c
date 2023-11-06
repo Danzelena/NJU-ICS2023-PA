@@ -85,7 +85,7 @@ static struct {
   {"p","eval the expr",cmd_p},
 	{"w","if value of expr changed,stop",cmd_w},
 	{"d","del the N.th watchpoint",cmd_d},
-					/*TODO*/
+					/*TO DO*/
 };
 #define NR_CMD ARRLEN(cmd_table)
 int isValid(char*);
