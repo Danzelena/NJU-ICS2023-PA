@@ -262,6 +262,9 @@ void sdb_set_batch_mode() {
 }
 
 void sdb_mainloop() {
+  /*init the iringbuff*/
+  iringbuf_init();
+
   if (is_batch_mode) {
     cmd_c(NULL);
     return;
