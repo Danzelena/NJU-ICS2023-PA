@@ -56,7 +56,7 @@ word_t paddr_read(paddr_t addr, int len) {
   #ifdef CONFIG_MTRACE_COND
   log_write("read memory at addr = 0x%lx with %d bytes", (unsigned long)addr, len);
   #endif
-  IFDEF(CONFIG_MTRACE, Log("read memory at addr = 0x%lx with %d bytes", (unsigned long)addr, len);)
+  IFDEF(CONFIG_MTRACE, printf("read memory at addr = 0x%lx with %d bytes", (unsigned long)addr, len);)
 
   if (likely(in_pmem(addr))) return pmem_read(addr, len);
   IFDEF(CONFIG_DEVICE, return mmio_read(addr, len));
@@ -66,7 +66,10 @@ word_t paddr_read(paddr_t addr, int len) {
 
 void paddr_write(paddr_t addr, int len, word_t data) {
   //TODO: mark write which memory
-  Log("write memory at addr = 0x%lx with %d bytes", (unsigned long)addr, len);
+  #ifdef CONFIG_MTRACE_COND
+  log_write("write memory at addr = 0x%lx with %d bytes", (unsigned long)addr, len);
+  #endif
+  IFDEF(CONFIG_MTRACE, printf("write memory at addr = 0x%lx with %d bytes", (unsigned long)addr, len);)
 
   if (likely(in_pmem(addr))) { pmem_write(addr, len, data); return; }
   IFDEF(CONFIG_DEVICE, mmio_write(addr, len, data); return);
