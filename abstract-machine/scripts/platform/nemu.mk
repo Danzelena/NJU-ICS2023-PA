@@ -13,7 +13,7 @@ LDFLAGS   += -T $(AM_HOME)/scripts/linker.ld \
 LDFLAGS   += --gc-sections -e _start
 NEMUFLAGS += -l $(shell dirname $(IMAGE).elf)/nemu-log.txt
 #TODO:add something so that NEMU can read ELF file
-# NEMUFLAGS += -a $(IMAGE)
+NEMUFLAGS += -a $($(IMAGE).elf)/
 # $(warning $(IMAGE))
 
 
