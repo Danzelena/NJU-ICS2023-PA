@@ -3,4 +3,4 @@
 #include <memory/paddr.h>
 
 void init_ftrace(const char *fn);
-char *gen_func_name(uint64_t addr);
+char *gen_func_name(uint32_t addr);
