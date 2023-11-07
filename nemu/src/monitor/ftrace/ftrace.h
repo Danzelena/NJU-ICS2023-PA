@@ -1,0 +1,1 @@
+void ftrace_call(word_t pc);
