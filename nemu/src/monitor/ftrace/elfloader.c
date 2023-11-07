@@ -98,7 +98,7 @@ char *gen_func_name(uint32_t addr)
       uint32_t Size = symbol.st_size;
       if (Value <= addr && addr < Value + Size)
       {
-        printf("symbol name = %s\n", symbol_name);
+        // printf("symbol name = %s\n", symbol_name);
         return symbol_name;
       }
     }
