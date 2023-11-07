@@ -55,7 +55,9 @@ void init_ftrace(const char *fn)
         {
           str = &section[i];
         }
+        free(name);
       }
+      
 
       // read string table
       fseek(file, str->sh_offset, SEEK_SET);
