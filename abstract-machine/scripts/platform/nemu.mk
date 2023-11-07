@@ -14,7 +14,8 @@ LDFLAGS   += --gc-sections -e _start
 NEMUFLAGS += -l $(shell dirname $(IMAGE).elf)/nemu-log.txt
 #TODO:add something so that NEMU can read ELF file
 # NEMUFLAGS += -a $(IMAGE)
-$(warning $(IMAGE))
+# $(warning $(IMAGE))
+
 
 
 CFLAGS += -DMAINARGS=\"$(mainargs)\"
