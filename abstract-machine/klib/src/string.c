@@ -78,6 +78,7 @@ int strncmp(const char *s1, const char *s2, size_t n) {
 
 // fill a memory with a constant byte
 void *memset(void *s, int c, size_t n) {
+//				return NULL;
   size_t i;
   unsigned char *p = s;
   for(i = 0;i < n;i ++){
