@@ -29,7 +29,7 @@ bool isa_difftest_checkregs(CPU_state *ref_r, vaddr_t pc) {
   int reg_num = 32;
   for(i = 0;i < reg_num;i++){
     if((*ref_r).gpr[i] != cpu.gpr[i]){
-      printf("Fault:register %s",regs_native[i]);
+      printf("Fault:register %s\n",regs_native[i]);
       return false;
     }
   }
