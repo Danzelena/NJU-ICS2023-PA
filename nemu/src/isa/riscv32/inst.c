@@ -136,7 +136,7 @@ static int decode_exec(Decode *s) {
   // 0x800000ac: 02 fc 97 b3 mulh       a5, s9, a5 
   // s9      :aeb1c2aa
   // a5      :aeb1c2aa
-  INSTPAT("0000001 ????? ????? 001 ????? 01100 11", mulh   ,R2, R(rd) = (sword_t)((int64_t)((int32_t)src1 * (int32_t)src2)));
+  INSTPAT("0000001 ????? ????? 001 ????? 01100 11", mulh   ,R2, R(rd) = (sword_t)(((int64_t)((int64_t)src1 * (int64_t)src2))>> XLEN ));
 
   INSTPAT("0000000 ????? ????? 100 ????? 01100 11", xor    ,R2, R(rd) = src1 ^ src2);
   INSTPAT("0000000 ????? ????? 011 ????? 01100 11", sltu   ,R2, if((word_t)src1 < (word_t)src2){R(rd) = 1;}else{R(rd) = 0;});
