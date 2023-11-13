@@ -84,14 +84,18 @@ void init_difftest(char *ref_so_file, long img_size, int port) {
   void (*ref_difftest_init)(int) = dlsym(handle, "difftest_init");
   assert(ref_difftest_init);
 
-  Log("Differential testing666: %s", ANSI_FMT("ON", ANSI_FG_GREEN));
+  Log("Differential testing: %s", ANSI_FMT("ON", ANSI_FG_GREEN));
   Log("The result of every instruction will be compared with %s. "
       "This will help you a lot for debugging, but also significantly reduce the performance. "
       "If it is not necessary, you can turn it off in menuconfig.", ref_so_file);
 
+  /*initialize REF's DiffTest*/
   ref_difftest_init(port);
+  /*copy DUT's memory to REF*/
   ref_difftest_memcpy(RESET_VECTOR, guest_to_host(RESET_VECTOR), img_size, DIFFTEST_TO_REF);
+  /*copy DUT's register to REF*/
   ref_difftest_regcpy(&cpu, DIFFTEST_TO_REF);
+  /*then REF and DUT is at the same environment ^_^ */
 }
 
 static void checkregs(CPU_state *ref, vaddr_t pc) {
@@ -102,6 +106,7 @@ static void checkregs(CPU_state *ref, vaddr_t pc) {
   }
 }
 
+// will be called in mainloop in cpu_exec(),make REF do the same intr as NEMU,and return register in REF
 void difftest_step(vaddr_t pc, vaddr_t npc) {
   CPU_state ref_r;
 
