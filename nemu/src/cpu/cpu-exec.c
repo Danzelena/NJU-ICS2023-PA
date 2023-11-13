@@ -82,7 +82,7 @@ size_t irbuf_push(struct iringbuf *rb, char *inst){
   return ret;
 }
 void irbuf_print(const struct iringbuf *rb){
-  Log("iringbuf for debug:\n");
+  Log("iringbuf for debug(Note:):\n");
   size_t i;
   for(i = 0;i < rb->buf_size;i++){
     if(*(rb->buf_ptr+i)[0]!= '\0'){
@@ -219,7 +219,7 @@ void cpu_exec(uint64_t n) {
            (nemu_state.halt_ret == 0 ? ANSI_FMT("HIT GOOD TRAP", ANSI_FG_GREEN) :
             ANSI_FMT("HIT BAD TRAP", ANSI_FG_RED))),
           nemu_state.halt_pc);
-          irbuf_print(&irbuf);
+          if(nemu_state.state == NEMU_ABORT){irbuf_print(&irbuf);}
       // fall through
     case NEMU_QUIT: statistic();
   }
