@@ -17,7 +17,16 @@
 #include <cpu/difftest.h>
 #include "../local-include/reg.h"
 
+//*ref_r like: {gpr = {0, 0, 0, 0, 0, 2147483648, 0 <repeats 26 times>}, pc = 2147483652}
+// pc : 2147483648
 bool isa_difftest_checkregs(CPU_state *ref_r, vaddr_t pc) {
+  size_t i;
+  int reg_num = 32;
+  for(i = 0;i < reg_num;i++){
+    if((*ref_r).gpr[i] == cpu.gpr[i]){
+      return false;
+    }
+  }
   return true;
   // return false;
 }

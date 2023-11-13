@@ -36,6 +36,7 @@ void isa_reg_display()
   }
 }
 
+// return name=s register's value, and if success
 word_t isa_reg_str2val(const char *s, bool *success)
 {
   *success = true;

@@ -109,7 +109,7 @@ static void checkregs(CPU_state *ref, vaddr_t pc) {
 // will be called in mainloop in cpu_exec(),make REF do the same intr as NEMU,and return register in REF
 void difftest_step(vaddr_t pc, vaddr_t npc) {
   CPU_state ref_r;
-
+  // skip_dut_nr_inst : 0
   if (skip_dut_nr_inst > 0) {
     ref_difftest_regcpy(&ref_r, DIFFTEST_TO_DUT);
     if (ref_r.pc == npc) {
@@ -122,7 +122,7 @@ void difftest_step(vaddr_t pc, vaddr_t npc) {
       panic("can not catch up with ref.pc = " FMT_WORD " at pc = " FMT_WORD, ref_r.pc, pc);
     return;
   }
-
+  // is_skip_ref : false
   if (is_skip_ref) {
     // to skip the checking of an instruction, just copy the reg state to reference design
     ref_difftest_regcpy(&cpu, DIFFTEST_TO_REF);
