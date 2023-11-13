@@ -7,6 +7,7 @@ void ftrace_call(word_t pc){
     // for(int i = 0;i < cnt;i++){
     //     printf(" ");
     // }
+    return;
     char *func = gen_func_name(pc);
     
     printf("%s\n",func);
