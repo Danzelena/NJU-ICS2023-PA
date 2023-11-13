@@ -131,6 +131,10 @@ static int decode_exec(Decode *s) {
   // rem, remu, mulh, xor, sltu, divu
   INSTPAT("0000001 ????? ????? 110 ????? 01100 11", rem    , R2, R(rd) = (sword_t)src1 % (sword_t)src2);
   INSTPAT("0000001 ????? ????? 111 ????? 01100 11", remu   ,R2, R(rd) = (word_t)src1 % (word_t)src2);
+
+  // Fault:register a5 Should: 19d29ab9, But: db1a18e4
+  // 0x800000ac: 02 fc 97 b3 mulh       a5, s9, a5 
+  // s9      :aeb1c2aa
   INSTPAT("0000001 ????? ????? 001 ????? 01100 11", mulh   ,R2, R(rd) = (sword_t)SEXT((int64_t)((int64_t)src1 * (int64_t)src2) , XLEN));
   INSTPAT("0000000 ????? ????? 100 ????? 01100 11", xor    ,R2, R(rd) = src1 ^ src2);
   INSTPAT("0000000 ????? ????? 011 ????? 01100 11", sltu   ,R2, if((word_t)src1 < (word_t)src2){R(rd) = 1;}else{R(rd) = 0;});
