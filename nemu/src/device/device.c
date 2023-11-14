@@ -43,8 +43,8 @@ void device_update() {
     return;
   }
   last = now;
-
-  // IFDEF(CONFIG_HAS_VGA, vga_update_screen());
+  /*这个代码运行会导致内存泄漏,如果不开启LeakSantitizer:就会大面积报错找不到原因*/
+  IFDEF(CONFIG_HAS_VGA, vga_update_screen());
 
 #ifndef CONFIG_TARGET_AM
   SDL_Event event;
@@ -85,7 +85,8 @@ void init_device() {
   /*if define, init it*/
   IFDEF(CONFIG_HAS_SERIAL, init_serial());
   IFDEF(CONFIG_HAS_TIMER, init_timer());
-  // IFDEF(CONFIG_HAS_VGA, init_vga());// do something about SDL, include create windows, set version mode
+  /*这个代码运行会导致内存泄漏,如果不开启LeakSantitizer:就会大面积报错找不到原因*/
+  IFDEF(CONFIG_HAS_VGA, init_vga());// do something about SDL, include create windows, set version mode
   IFDEF(CONFIG_HAS_KEYBOARD, init_i8042());
   IFDEF(CONFIG_HAS_AUDIO, init_audio());
   IFDEF(CONFIG_HAS_DISK, init_disk());
