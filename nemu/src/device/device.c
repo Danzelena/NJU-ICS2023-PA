@@ -44,7 +44,7 @@ void device_update() {
   }
   last = now;
   /*这个代码运行会导致内存泄漏,如果不开启LeakSantitizer:就会大面积报错找不到原因*/
-  IFDEF(CONFIG_HAS_VGA, vga_update_screen());
+  // IFDEF(CONFIG_HAS_VGA, vga_update_screen());
 
 #ifndef CONFIG_TARGET_AM
   SDL_Event event;
