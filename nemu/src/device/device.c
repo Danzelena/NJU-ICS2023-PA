@@ -12,6 +12,7 @@
 *
 * See the Mulan PSL v2 for more details.
 ***************************************************************************************/
+/*和SDL库相关的代码*/
 
 #include <common.h>
 #include <utils.h>
@@ -33,9 +34,11 @@ void init_alarm();
 void send_key(uint8_t, bool);
 void vga_update_screen();
 
+/* cpu_exec()执行完每条指令后就会调用device_update() */
 void device_update() {
   static uint64_t last = 0;
   uint64_t now = get_time();
+  /* 检查距离上一次设备更新是否超过一定时间, 若是, 尝试刷新屏幕 */
   if (now - last < 1000000 / TIMER_HZ) {
     return;
   }
@@ -47,6 +50,7 @@ void device_update() {
   SDL_Event event;
   while (SDL_PollEvent(&event)) {
     switch (event.type) {
+      // If click on 'x' bottom
       case SDL_QUIT:
         nemu_state.state = NEMU_QUIT;
         break;
@@ -75,15 +79,18 @@ void sdl_clear_event_queue() {
 
 void init_device() {
   IFDEF(CONFIG_TARGET_AM, ioe_init());
+  /*call to init*/
   init_map();
 
+  /*if define, init it*/
   IFDEF(CONFIG_HAS_SERIAL, init_serial());
   IFDEF(CONFIG_HAS_TIMER, init_timer());
-  IFDEF(CONFIG_HAS_VGA, init_vga());
+  IFDEF(CONFIG_HAS_VGA, init_vga());// do something about SDL, include create windows, set version mode
   IFDEF(CONFIG_HAS_KEYBOARD, init_i8042());
   IFDEF(CONFIG_HAS_AUDIO, init_audio());
   IFDEF(CONFIG_HAS_DISK, init_disk());
   IFDEF(CONFIG_HAS_SDCARD, init_sdcard());
 
+  /*inti 定时器,will be used in PA4*/
   IFNDEF(CONFIG_TARGET_AM, init_alarm());
 }

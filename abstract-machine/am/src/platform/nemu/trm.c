@@ -9,7 +9,7 @@ Area heap = RANGE(&_heap_start, PMEM_END);
 #define MAINARGS ""
 #endif
 static const char mainargs[] = MAINARGS;
-// 用来输出一个字符
+// 用来输出一个字符,将字符输出到串口
 void putch(char ch) {
   outb(SERIAL_PORT, ch);
 }
