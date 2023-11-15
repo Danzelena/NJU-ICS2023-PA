@@ -8,8 +8,8 @@ void __am_timer_init() {
 }
 
 void __am_timer_uptime(AM_TIMER_UPTIME_T *uptime) {
-  uptime->us = ((uint64_t)inl(RTC_ADDR + 4) << 32) | (uint64_t)inl(RTC_ADDR);
-  printf("us: %d\n",(int)uptime->us);
+  uptime->us = (uint64_t)((uint64_t)inl(RTC_ADDR + 4)<< 32) | (uint64_t)inl(RTC_ADDR);
+  printf("us: %d\n",(unsigned long)uptime->us);
   // uptime->us = 0;
 }
 
