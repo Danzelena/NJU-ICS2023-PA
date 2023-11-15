@@ -87,11 +87,11 @@ void init_device() {
   IFDEF(CONFIG_HAS_TIMER, init_timer());
   /*这个代码运行会导致内存泄漏,如果不开启LeakSantitizer:就会大面积报错找不到原因*/
   // IFDEF(CONFIG_HAS_VGA, init_vga());// do something about SDL, include create windows, set version mode
-  IFDEF(CONFIG_HAS_KEYBOARD, init_i8042());
-  IFDEF(CONFIG_HAS_AUDIO, init_audio());
-  IFDEF(CONFIG_HAS_DISK, init_disk());
-  IFDEF(CONFIG_HAS_SDCARD, init_sdcard());
+  // IFDEF(CONFIG_HAS_KEYBOARD, init_i8042());
+  // IFDEF(CONFIG_HAS_AUDIO, init_audio());
+  // IFDEF(CONFIG_HAS_DISK, init_disk());
+  // IFDEF(CONFIG_HAS_SDCARD, init_sdcard());
 
   /*inti 定时器,will be used in PA4*/
-  IFNDEF(CONFIG_TARGET_AM, init_alarm());
+  // IFNDEF(CONFIG_TARGET_AM, init_alarm());
 }
