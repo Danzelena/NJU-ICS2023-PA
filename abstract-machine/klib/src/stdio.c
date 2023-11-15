@@ -52,7 +52,9 @@ int snprintf(char *out, size_t n, const char *fmt, ...) {
 
 int vsnprintf(char *out, size_t n, const char *fmt, va_list ap) {
   char buffer[128];
+  // char cha;
   char *txt, cha;
+  // int len;
   int num, len;
   unsigned int unum;
   uint32_t pointer;
@@ -138,6 +140,7 @@ int vsnprintf(char *out, size_t n, const char *fmt, va_list ap) {
 }
 
 #endif
+
 
 
 // #define LEN 10
