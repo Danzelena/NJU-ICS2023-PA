@@ -9,7 +9,7 @@
 extern "C" {
 #endif
 
-// link lib function to klib
+// TODO:choose to link lib function to klib
 #define __NATIVE_USE_KLIB__
 
 // string.h

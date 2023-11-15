@@ -4,110 +4,266 @@
 #include <stdarg.h>
 
 #if !defined(__ISA_NATIVE__) || defined(__NATIVE_USE_KLIB__)
-#define LEN 10
 
-char *itoa();
-int printf(const char *fmt, ...)
-{
-  panic("Not implemented");
+/*TODO:fix this biggggggg BUG!!!*/
+int vsprintf(char *out, const char *fmt, va_list ap);
+int vsnprintf(char *out, size_t n, const char *fmt, va_list ap);
+
+int printf(const char *fmt, ...) {
+  char buffer[2048];
+  va_list arg;
+  va_start (arg, fmt);
+  
+  int done = vsprintf(buffer, fmt, arg);
+
+  putstr(buffer);
+
+  va_end(arg);
+  return done;
 }
 
-int vsprintf(char *out, const char *fmt, va_list ap)
-{
-  panic("Not implemented");
+static char HEX_CHARACTERS[] = "0123456789ABCDEF";
+#define BIT_WIDE_HEX 8
+
+int vsprintf(char *out, const char *fmt, va_list ap) {
+  return vsnprintf(out, -1, fmt, ap);
 }
 
-int sprintf(char *out, const char *fmt, ...)
-{
-  // TODO:recode this code becase of terrible abstract!
-  va_list ap;
-  int d;
-  char c;
-  char *s;
-  char *ret_poi = out;
-  va_start(ap, fmt);
-  while (*fmt)
-  {
-    switch (*fmt)
+int sprintf(char *out, const char *fmt, ...) {
+  va_list valist;
+  va_start(valist, fmt);
+
+  int res = vsprintf(out ,fmt, valist);
+  va_end(valist);
+  return res;
+}
+
+int snprintf(char *out, size_t n, const char *fmt, ...) {
+  va_list arg;
+  va_start (arg, fmt);
+
+  int done = vsnprintf(out, n, fmt, arg);
+
+  va_end(arg);
+  return done;
+}
+
+#define append(x) {out[j++]=x; if (j >= n) {break;}}
+
+int vsnprintf(char *out, size_t n, const char *fmt, va_list ap) {
+  char buffer[128];
+  char *txt, cha;
+  int num, len;
+  unsigned int unum;
+  uint32_t pointer;
+  
+  
+  int state = 0, i, j;//模仿一个状态机
+  for (i = 0, j = 0; fmt[i] != '\0'; ++i){
+    switch (state)
     {
-    case '%':
-        *out = '\0';
-      switch (*(fmt + 1))
+    case 0:
+      if (fmt[i] != '%'){
+        append(fmt[i]);
+      } else
+        state = 1;
+      break;
+    
+    case 1:
+      switch (fmt[i])
       {
       case 's':
-        s = va_arg(ap, char *);
-        out = strcat(out, s);
-        out += strlen(s);
+        txt = va_arg(ap, char*);
+        for (int k = 0; txt[k] !='\0'; ++k)
+          append(txt[k]);
         break;
+      
       case 'd':
-        char snum[LEN];
-
-        d = va_arg(ap, int);
-        itoa(d, snum);
-        out = strcat(out, snum);
-        out += strlen(snum);
+        num = va_arg(ap, int);
+        if(num == 0){
+          append('0');
+          break;
+        }
+        if (num < 0){
+          append('-');
+          num = 0 - num;
+        }
+        for (len = 0; num ; num /= 10, ++len)
+          //buffer[len] = num % 10 + '0';//逆序的
+          buffer[len] = HEX_CHARACTERS[num % 10];//逆序的
+        for (int k = len - 1; k >= 0; --k)
+          append(buffer[k]);
         break;
-
+      
       case 'c':
-        // need a cast here becase va_arg only takes fully promoted types
-        c = (char)va_arg(ap, int);
-        out = strcat(out, &c);
-        out += 1;
+        cha = (char)va_arg(ap, int);
+        append(cha);
         break;
+
+      case 'p':
+        pointer = va_arg(ap, uint32_t);
+        for (len = 0; pointer ; pointer /= 16, ++len)
+          buffer[len] = HEX_CHARACTERS[pointer % 16];//逆序的
+        for (int k = 0; k < BIT_WIDE_HEX - len; ++k)
+          append('0');
+
+        for (int k = len - 1; k >= 0; --k)
+          append(buffer[k]);
+        break;
+
+      case 'x':
+        unum = va_arg(ap, unsigned int);
+        if(unum == 0){
+          append('0');
+          break;
+        }
+        for (len = 0; unum ; unum >>= 4, ++len)
+          buffer[len] = HEX_CHARACTERS[unum & 0xF];//逆序的
+
+        for (int k = len - 1; k >= 0; --k)
+          append(buffer[k]);
+        break;  
+
+      default:
+        assert(0);
       }
-      fmt++;
+      state = 0;
       break;
-
-    default:
-      *out = *fmt;
-      out += 1;
-      break;
+      
     }
-    fmt++;
   }
-  *out= '\0';
-  out = ret_poi;
-  va_end(ap);
-  return 0;
-  // panic("Not implemented");
+
+  out[j] = '\0';
+  return j;
 }
 
-int snprintf(char *out, size_t n, const char *fmt, ...)
-{
-  panic("Not implemented");
-}
-
-int vsnprintf(char *out, size_t n, const char *fmt, va_list ap)
-{
-  panic("Not implemented");
-}
-
-// dec for common use
-char *itoa(int val, char *str)
-{
-  char *ret = str;
-  if (val < 0)
-  {
-    *str = '-';
-    str++;
-    val = -val;
-  }
-  int num = val;
-  int cnt = -1;
-  while (num > 0)
-  {
-    num /= 10;
-    cnt++;
-  }
-  int len = cnt;
-  while (cnt >= 0)
-  {
-    *(str + cnt) = '0' + val % 10;
-    cnt--;
-    val /= 10;
-  }
-  //   *str = '0' + val%10;
-  *(str + len + 1) = '\0';
-  return ret;
-}
 #endif
+
+
+// #define LEN 10
+// #define BUFSIZE 
+// char *itoa();
+// int printf(const char *fmt, ...)
+// {
+//   // putch('0');
+//   char buf[BUFSIZE];
+//   memset(buf, '\0',BUFSIZE);
+//   va_list args;
+
+//   va_start(args, fmt);
+//   // printf("Target1\n");
+//   if(sprintf(buf, fmt, args) == 0){
+//     // printf("Debug:\n", buf);
+//     putstr(buf);
+    
+//   }else{
+//     // printf("Fail to printf beacuse sprintf fail!\n");
+//     return -1;
+//   }
+//   va_end(args);
+//   free(buf);
+//   return 0;
+//   panic("Not implemented");
+// }
+
+// int vsprintf(char *out, const char *fmt, va_list ap)
+// {
+//   return vsnprintf(out, -1, fmt, ap);
+//   // panic("Not implemented");
+// }
+
+// int sprintf(char *out, const char *fmt, ...)
+// {
+//   // TODO:recode this code becase of terrible abstract!
+//   va_list ap;
+//   int d;
+//   char c;
+//   char *s;
+//   char *ret_poi = out;
+//   va_start(ap, fmt);
+//   while (*fmt)
+//   {
+//     switch (*fmt)
+//     {
+//     case '%':
+//         *out = '\0';
+//       switch (*(fmt + 1))
+//       {
+//       case 's':
+//         s = va_arg(ap, char *);
+//         out = strcat(out, s);
+//         out += strlen(s);
+//         break;
+//       case 'd':
+//         char snum[LEN];
+
+//         d = va_arg(ap, int);
+//         itoa(d, snum);
+//         out = strcat(out, snum);
+//         out += strlen(snum);
+//         break;
+
+//       case 'c':
+//         // need a cast here becase va_arg only takes fully promoted types
+//         c = (char)va_arg(ap, int);
+//         out = strcat(out, &c);
+//         out += 1;
+//         break;
+//       }
+//       fmt++;
+//       break;
+
+//     default:
+//       *out = *fmt;
+//       out += 1;
+//       break;
+//     }
+//     fmt++;
+//   }
+//   *out= '\0';
+//   out = ret_poi;
+//   va_end(ap);
+//   return 0;
+//   // panic("Not implemented");
+// }
+
+// int snprintf(char *out, size_t n, const char *fmt, ...)
+// {
+//   panic("Not implemented");
+// }
+
+// int vsnprintf(char *out, size_t n, const char *fmt, va_list ap)
+// {
+//   //TODO: quickly implementit!!!
+//   panic("Not implemented");
+// }
+
+// // dec for common use
+// char *itoa(int val, char *str)
+// {
+//   char *ret = str;
+//   if (val < 0)
+//   {
+//     *str = '-';
+//     str++;
+//     val = -val;
+//   }
+//   int num = val;
+//   int cnt = -1;
+//   while (num > 0)
+//   {
+//     num /= 10;
+//     cnt++;
+//   }
+//   int len = cnt;
+//   while (cnt >= 0)
+//   {
+//     *(str + cnt) = '0' + val % 10;
+//     cnt--;
+//     val /= 10;
+//   }
+//   //   *str = '0' + val%10;
+//   *(str + len + 1) = '\0';
+//   return ret;
+// }
+// #endif
