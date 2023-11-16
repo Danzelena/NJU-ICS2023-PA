@@ -37,6 +37,7 @@ void *malloc(size_t size) {
   panic("Not implemented");
 #endif
   return NULL;
+  
 }
 
 void free(void *ptr) {
