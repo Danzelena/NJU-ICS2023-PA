@@ -14,7 +14,7 @@ AM_DEVREG( 4, TIMER_CONFIG, RD, bool present, has_rtc);
 AM_DEVREG( 5, TIMER_RTC,    RD, int year, month, day, hour, minute, second);//Real Time Clock
 AM_DEVREG( 6, TIMER_UPTIME, RD, uint64_t us);// AM system start time, 可以读出系统启动后的微秒数
 AM_DEVREG( 7, INPUT_CONFIG, RD, bool present);
-AM_DEVREG( 8, INPUT_KEYBRD, RD, bool keydown; int keycode);
+AM_DEVREG( 8, INPUT_KEYBRD, RD, bool keydown; int keycode);// keydown=true:按下按键,false:释放按键;没有按键时:keycode=AM_KEY_NONE
 AM_DEVREG( 9, GPU_CONFIG,   RD, bool present, has_accel; int width, height, vmemsz);
 AM_DEVREG(10, GPU_STATUS,   RD, bool ready);
 AM_DEVREG(11, GPU_FBDRAW,   WR, int x, y; void *pixels; int w, h; bool sync);
