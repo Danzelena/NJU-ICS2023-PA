@@ -35,14 +35,14 @@ void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl)
   // printf("NoUpdate\n");
   // }
   int width = (int)(inl(VGACTL_ADDR) >> 16); // TODO: get the correct width
-  // int height = (int)(inw(VGACTL_ADDR));      // TODO: get the correct height
+  int height = (int)(inw(VGACTL_ADDR));      // TODO: get the correct height
   // printf("width: %d, high:%d\n", width, height); // expected 400*300
 
   uint32_t *fb = (uint32_t *)(uintptr_t)FB_ADDR;
   int i, j;
-  for (j = ctl->y; j < ctl->y + ctl->h *32; j++)
+  for (j = ctl->y; j < ctl->y + height / 32 ; j++)
   {
-    for (i = ctl->x; i < ctl->x + ctl->w*32; i++)
+    for (i = ctl->x; i < ctl->x + width / 32; i++)
     {
 
       // printf("(gpu_write)x:%d,y:%d,w:%d,h:%d\n", i, j, ctl->w, ctl->h);
