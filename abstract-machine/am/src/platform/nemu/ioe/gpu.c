@@ -40,9 +40,9 @@ void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl)
 
   uint32_t *fb = (uint32_t *)(uintptr_t)FB_ADDR;
   int i, j;
-  for (j = ctl->y; j < ctl->y + ctl->h; j++)
+  for (i = ctl->x; i < ctl->x + ctl->w; i++)
   {
-    for (i = ctl->x; i < ctl->x + ctl->w; i++)
+    for (j = ctl->y; j < ctl->y + ctl->h; j++)
     {
 
       // printf("(gpu_write)x:%d,y:%d,w:%d,h:%d\n", i, j, ctl->w, ctl->h);
