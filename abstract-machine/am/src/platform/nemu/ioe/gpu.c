@@ -41,7 +41,7 @@ void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl)
       if (i >= ctl->x && i < ctl->x + ctl->w && j >= ctl->y && j < ctl->y + ctl->h)
       {
         printf("(gpu_write)x:%d,y:%d,w:%d,h:%d\n", i, j, ctl->w, ctl->h);
-        fb[i * width + j] = ((uint32_t *)ctl->pixels)[(i - ctl->x) * width + (j - ctl->y)];
+        fb[j * width + i] = ((uint32_t *)ctl->pixels)[(j - ctl->y) * width + (i - ctl->x)];
       }
     }
   }
