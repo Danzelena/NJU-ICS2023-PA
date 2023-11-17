@@ -11,7 +11,7 @@ void __am_gpu_init()
   int h = (int)(inw(VGACTL_ADDR)); // TODO: get the correct height
   printf("width: %d, high:%d\n", w, h);// expected 400*300
   uint32_t *fb = (uint32_t *)(uintptr_t)FB_ADDR;
-  for (i = 0; i < w * h; i+=2)
+  for (i = w * h; i < 2 * w * h; i++)
     fb[i] = i;
   outl(SYNC_ADDR, 1);
 }
