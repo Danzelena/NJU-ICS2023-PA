@@ -46,7 +46,7 @@ void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl)
     {
 
       // printf("(gpu_write)x:%d,y:%d,w:%d,h:%d\n", i, j, ctl->w, ctl->h);
-      fb[j * width + i] = ((uint32_t *)ctl->pixels)[(j - ctl->y) * 14 + (i - ctl->x)];
+      fb[j * width + i] = ((uint32_t *)ctl->pixels)[(j - ctl->y) * 8 + (i - ctl->x)];
     }
   }
 }
