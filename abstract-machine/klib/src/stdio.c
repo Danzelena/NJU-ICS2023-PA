@@ -10,15 +10,16 @@
 static char HEX_CHARACTERS[] = "0123456789abcdef";
 #define BIT_WIDE_HEX 8
 int vsprintf(char *out, const char *fmt, va_list args);
-
+int vsnprintf(char *out, size_t n, const char *fmt, va_list args);
 int printf(const char *fmt, ...)
 {
+	// putstr(fmt);
 	char buf[2048];
 	va_list arg;
 	va_start(arg, fmt);
 
 	int flag = vsprintf(buf, fmt, arg);
-
+	// putstr("Target2:\n");
 	putstr(buf);
 
 	va_end(arg);
@@ -45,10 +46,18 @@ int snprintf(char *out, size_t n, const char *fmt, ...)
 	va_end(arg);
 	return flag;
 }
-#define append(x) {out[j++]=x; if (j >= n) {break;}}
+#define append(x)     \
+	{                 \
+		out[j++] = x; \
+		if (j >= n)   \
+		{             \
+			break;    \
+		}             \
+	}
 
 int vsnprintf(char *out, size_t n, const char *fmt, va_list args)
 {
+	// putstr("call vsnprintf\n");
 	char buffer[128];
 	char *txt, cha;
 	int num, len;
@@ -61,6 +70,8 @@ int vsnprintf(char *out, size_t n, const char *fmt, va_list args)
 		switch (state)
 		{
 		case 0:
+			// putstr("state = 0\n");
+
 			if (fmt[i] != '%')
 			{
 				out[j] = fmt[i];
@@ -72,10 +83,13 @@ int vsnprintf(char *out, size_t n, const char *fmt, va_list args)
 			}
 			else
 			{
+				// putstr("change state from 0 to 1\n");
 				state = 1;
 				break;
 			}
+			break;
 		case 1:
+			// putstr("state = 1\n");
 			switch (fmt[i])
 			{
 			case 's':
@@ -95,24 +109,19 @@ int vsnprintf(char *out, size_t n, const char *fmt, va_list args)
 				num = va_arg(args, int);
 				if (num == 0)
 				{
-					out[j] = '0';
-					j++;
+					append('0');
+					break;
 				}
-				else if (num < 0)
+				if (num < 0)
 				{
-					out[i] = '-';
-					j++;
-					num = -num;
+					append('-');
+					num = 0 - num;
 				}
-				for (len = 0; num; num /= 10, len++)
-				{
-					buffer[len] = HEX_CHARACTERS[num % 10];
-				}
-				for (int k = len - 1; k >= 0; k--)
-				{
-					out[i] = buffer[k];
-					j++;
-				}
+				for (len = 0; num; num /= 10, ++len)
+					// buffer[len] = num % 10 + '0';//逆序的
+					buffer[len] = HEX_CHARACTERS[num % 10]; // 逆序的
+				for (int k = len - 1; k >= 0; --k)
+					append(buffer[k]);
 				break;
 
 			case 'c':

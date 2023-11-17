@@ -10,7 +10,7 @@ extern "C" {
 #endif
 
 // TODO:choose to link lib function to klib when NATIVE
-// #define __NATIVE_USE_KLIB__
+#define __NATIVE_USE_KLIB__
 
 // string.h
 void  *memset    (void *s, int c, size_t n);
@@ -43,10 +43,18 @@ int    vsnprintf (char *str, size_t size, const char *format, va_list ap);
 #ifdef NDEBUG
   #define assert(ignore) ((void)0)
 #else
-  #define assert(cond) \
+/* #define assert(cond) \
+  //   do { \
+  //     if (!(cond)) { \
+  //       printf("Assertion fail at %s:%d\n", __FILE__, __LINE__); \
+  //       halt(1); \
+  //     } \
+  //   } while (0)
+*/
+
+      #define assert(cond) \
     do { \
       if (!(cond)) { \
-        printf("Assertion fail at %s:%d\n", __FILE__, __LINE__); \
         halt(1); \
       } \
     } while (0)
