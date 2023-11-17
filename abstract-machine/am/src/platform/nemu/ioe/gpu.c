@@ -6,14 +6,14 @@
 
 void __am_gpu_init()
 {
-  int i;
-  int w = (int)(inl(VGACTL_ADDR) >> 16); // TODO: get the correct width
-  int h = (int)(inw(VGACTL_ADDR));       // TODO: get the correct height
-  printf("width: %d, high:%d\n", w, h);  // expected 400*300
-  uint32_t *fb = (uint32_t *)(uintptr_t)FB_ADDR;
-  for (i = 0; i < w * h; i++)
-    fb[i] = i + 120;
-  outl(SYNC_ADDR, 1);
+  // int i;
+  // int w = (int)(inl(VGACTL_ADDR) >> 16); // TODO: get the correct width
+  // int h = (int)(inw(VGACTL_ADDR));       // TODO: get the correct height
+  // printf("width: %d, high:%d\n", w, h);  // expected 400*300
+  // uint32_t *fb = (uint32_t *)(uintptr_t)FB_ADDR;
+  // for (i = 0; i < w * h; i++)
+  //   fb[i] = i + 120;
+  // outl(SYNC_ADDR, 1);
 }
 
 void __am_gpu_config(AM_GPU_CONFIG_T *cfg)
