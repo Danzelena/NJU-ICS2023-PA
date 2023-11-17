@@ -39,14 +39,15 @@ void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl)
   // printf("width: %d, high:%d\n", width, height); // expected 400*300
 
   uint32_t *fb = (uint32_t *)(uintptr_t)FB_ADDR;
-  int i, j;
+  int i, j, k = 0;
   for (j = ctl->y; j < ctl->y + ctl->h ; j++)
   {
     for (i = ctl->x; i < ctl->x + ctl->w; i++)
     {
 
       // printf("(gpu_write)x:%d,y:%d,w:%d,h:%d\n", i, j, ctl->w, ctl->h);
-      fb[j * width + i] = ((uint32_t *)ctl->pixels)[(j - ctl->y) * 8 + (i - ctl->x)];
+      fb[j * width + i] = ((uint32_t *)ctl->pixels)[k];
+      k++;
     }
   }
 }
