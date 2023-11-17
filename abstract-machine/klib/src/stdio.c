@@ -60,7 +60,7 @@ int vsnprintf(char *out, size_t n, const char *fmt, va_list args)
 	// putstr("call vsnprintf\n");
 	char buffer[128];
 	char *txt, cha;
-	int num, len;
+	int num, len, num_flag = 0;
 	unsigned int unum;
 	uint32_t pointer;
 
@@ -106,6 +106,7 @@ int vsnprintf(char *out, size_t n, const char *fmt, va_list args)
 				break;
 
 			case 'd':
+
 				num = va_arg(args, int);
 				if (num == 0)
 				{
@@ -114,6 +115,7 @@ int vsnprintf(char *out, size_t n, const char *fmt, va_list args)
 				}
 				if (num < 0)
 				{
+					putstr("num < 0\n");
 					append('-');
 					num = 0 - num;
 				}
@@ -154,10 +156,43 @@ int vsnprintf(char *out, size_t n, const char *fmt, va_list args)
 					append(buffer[k]);
 				break;
 
+				// case '0':case'1':case'2':case'3':case'4':case'5':case'6':case'7':case'8':case'9':
+				
+
 			default:
+				/*case (number)*/
+				if(fmt[i] >= '0' && fmt[i] <= '9'){
+					// printf("get (num)d\n");
+					int n_len = fmt[i] - '0';
+					// printf("n_len = %d\n",n_len);
+					char buf[20];
+
+					/* fmt = "%3d\n", then sim_fmt = "%d"*/
+					char sim_fmt[3];
+					sim_fmt[0] = '%';
+					sim_fmt[1] = fmt[i+1];
+					sim_fmt[2] = '\0';
+					va_list sim_args;
+					va_copy(sim_args, args);
+					int flag = vsnprintf(buf, n_len,sim_fmt, sim_args);
+					// printf("flag = %d\n", flag);
+					if(flag < n_len){
+						/* %6d but 123 */
+						for(int sp = 0;sp < n_len - flag;sp ++){
+							append(' ');
+						}
+					}
+					num_flag = 1;
+					break;
+				}
+				
+				putstr(fmt + i);
+				printf("\n");
+				printf("Can't parse sign: %c\n", fmt[i]);
 				assert(0);
 			}
-			state = 0;
+			state = num_flag;
+			num_flag = 0;
 			break;
 
 		default:
@@ -165,6 +200,7 @@ int vsnprintf(char *out, size_t n, const char *fmt, va_list args)
 		}
 	}
 	out[j] = '\0';
+	
 	return j;
 }
 
