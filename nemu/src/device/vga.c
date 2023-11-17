@@ -72,7 +72,7 @@ static inline void update_screen() {
 #endif
 
 void vga_update_screen() {
-
+  // nemu update screen hardware supprt
   if (vgactl_port_base[1] & 0x1){
     update_screen();
     vgactl_port_base[1] = 0;
@@ -83,15 +83,15 @@ void vga_update_screen() {
 
 void init_vga() {
   vgactl_port_base = (uint32_t *)new_space(8);
-  vgactl_port_base[0] = (screen_width() << 16) | screen_height();
+  vgactl_port_base[0] = (screen_width() << 16) | screen_height();// screen_width | screen_height
 #ifdef CONFIG_HAS_PORT_IO
   add_pio_map ("vgactl", CONFIG_VGA_CTL_PORT, vgactl_port_base, 8, NULL);
 #else
   add_mmio_map("vgactl", CONFIG_VGA_CTL_MMIO, vgactl_port_base, 8, NULL);
 #endif
 
-  vmem = new_space(screen_size());
-  add_mmio_map("vmem", CONFIG_FB_ADDR, vmem, screen_size(), NULL);
+  vmem = new_space(screen_size());// screen_size = 300 * 400 * (8 + 8 + 8 + 8)
+  add_mmio_map("vmem", CONFIG_FB_ADDR, vmem, screen_size(), NULL);// 用于映射到video memory的MMIO空间
   IFDEF(CONFIG_VGA_SHOW_SCREEN, init_screen());
   IFDEF(CONFIG_VGA_SHOW_SCREEN, memset(vmem, 0, screen_size()));
 }
