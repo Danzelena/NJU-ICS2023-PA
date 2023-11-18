@@ -84,22 +84,22 @@ void ftrace_init()
     init();
 }
 
-void func_init(Frame fun, char *name){
-    fun.name = name;
-    fun.deep = 0;
+void func_init(Frame *fun, char *name){
+    fun->name = name;
+    fun->deep = 0;
 }
 void ftrace_call(word_t pc, bool call)
 {
 
     char *func_name = gen_func_name(pc);
-    printf("name:%s\n", func_name);
+    
     if (call)
     {
         /* call */
         Frame func;
-        func_init(func, func_name);
+        func_init(&func, func_name);
         Frame *function = &func;
-
+        printf("name:%s\n", function->name);
         push(fstack, function);
         func_print(function, true);
     }
