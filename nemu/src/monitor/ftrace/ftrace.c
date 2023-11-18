@@ -3,8 +3,6 @@
 
 #define STACK_MAX_DEEP 100
 
-
-
 typedef struct Frame
 {
     char *name;
@@ -22,13 +20,14 @@ typedef struct FuncStack
 FuncStack *fstack;
 
 void init()
-{   
+{
     fstack = (FuncStack *)malloc(sizeof(FuncStack));
-    if(fstack == NULL){
+    if (fstack == NULL)
+    {
         Log("(ftrace)Error: Memory allocation failed!");
         Assert(0, "Memory allocation failed!");
     }
-    
+
     fstack->top = -1;
 }
 void push(FuncStack *fs, Frame *f)
@@ -84,7 +83,8 @@ void ftrace_init()
     init();
 }
 
-void func_init(Frame *fun, char *name, word_t pc){
+void func_init(Frame *fun, char *name, word_t pc)
+{
     fun->name = name;
     fun->deep = 0;
     fun->pc = pc;
@@ -102,8 +102,10 @@ void ftrace_call(word_t pc, bool call)
         func_init(&func, func_name, pc);
         Frame *function = &func;
         push(fstack, function);
-        func_print(function, true);
-        printf("top:%d\n", fstack->top);
+        // func_print(function, true);
+        printf("(push)%s, %d\n", function->name, function->deep);
+        print(fstack);
+        // printf("top:%d\n", fstack->top);
     }
     else
     {
@@ -112,10 +114,12 @@ void ftrace_call(word_t pc, bool call)
         do
         {
             pop_func = pop(fstack);
-            printf("pop function:%s\n", pop_func->name);
+            printf("(pop)%s, %d\n", pop_func->name, pop_func->deep);
+            print(fstack);
+
             /* code */
         } while (strcmp(pop_func->name, func_name) == 0);
-        func_print(pop_func, false);
+        // func_print(pop_func, false);
     }
 }
 
