@@ -121,6 +121,9 @@ void ftrace_call(word_t pc, bool call)
         {
             pop_func = pop(fstack);
             name = pop_func->name;
+            if(strcmp(name, func_name) != 0){
+                free(pop_func);
+            }
         } while (strcmp(name, func_name) != 0);
         func_print(pop_func, false);
         free(pop_func);
