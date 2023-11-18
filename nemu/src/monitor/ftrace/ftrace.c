@@ -107,7 +107,7 @@ void ftrace_call(word_t pc, bool call)
         // Frame *function = &func;
         push(fstack, function);
         func_print(function, true);
-        printf("top = %d", fstack->top);
+        printf("top = %d\n", fstack->top);
 
         
     }
