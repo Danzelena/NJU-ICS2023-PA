@@ -93,14 +93,14 @@ void ftrace_call(word_t pc, bool call)
 {
 
     char *func_name = gen_func_name(pc);
-    
+    printf("name:%s\n", func_name);
+
     if (call)
     {
         /* call */
         Frame func;
         func_init(&func, func_name, pc);
         Frame *function = &func;
-        // printf("name:%s\n", function->name);
         push(fstack, function);
         func_print(function, true);
     }
