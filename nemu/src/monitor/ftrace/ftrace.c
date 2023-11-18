@@ -126,7 +126,7 @@ void ftrace_call(word_t pc, bool call)
         } while (strcmp(pop_func->name, func_name) != 0);
         func_print(pop_func, false);
     }
-    free(function);
+    // free(function);
 }
 
 void ftrace_print()
