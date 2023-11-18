@@ -110,6 +110,7 @@ void ftrace_call(word_t pc, bool call)
         // printf("(push)%s, %d\n", function->name, function->deep);
         // print(fstack);
         // printf("top:%d\n", fstack->top);
+        free(function);
     }
     else
     {
