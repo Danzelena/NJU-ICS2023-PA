@@ -106,7 +106,7 @@ void ftrace_call(word_t pc, bool call)
         // function = &func;
         // Frame *function = &func;
         push(fstack, function);
-        // func_print(function, true);
+        func_print(function, true);
 
         
     }
@@ -123,7 +123,7 @@ void ftrace_call(word_t pc, bool call)
                 free(pop_func);
             }
         } while (strcmp(name, func_name) != 0);
-        // func_print(pop_func, false);
+        func_print(pop_func, false);
         free(pop_func);
     }
     
