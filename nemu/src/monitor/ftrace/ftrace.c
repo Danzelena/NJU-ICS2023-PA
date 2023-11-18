@@ -135,8 +135,11 @@ void ftrace_print()
 }
 void ftrace_free(){
     printf("free\n");
-    free(fstack);
-    free(function);
+    for(int i = 0;i <= fstack->top;i++){
+        free((fstack->func)[i]);
+    }
+    // free(fstack);
+    // free(function);
 }
 // int cnt = 0;
 // char *lastfunc;
