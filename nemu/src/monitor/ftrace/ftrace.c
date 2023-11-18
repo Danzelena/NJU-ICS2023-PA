@@ -65,7 +65,7 @@ void func_print(Frame *func, bool call)
     printf("%x", func->pc);
     for (i = 0; i < func->deep; i++)
     {
-        printf("   ");
+        printf(" ");
     }
     if (call)
     {
