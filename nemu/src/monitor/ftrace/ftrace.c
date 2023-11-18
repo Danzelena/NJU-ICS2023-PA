@@ -126,14 +126,16 @@ void ftrace_call(word_t pc, bool call)
         } while (strcmp(pop_func->name, func_name) != 0);
         func_print(pop_func, false);
     }
-    free(function);
+    // free(function);
 }
 
 void ftrace_print()
 {
     print(fstack);
 }
-
+void ftrace_free(){
+    free(fstack);
+}
 // int cnt = 0;
 // char *lastfunc;
 // TODO:simluate a function call stack to print
