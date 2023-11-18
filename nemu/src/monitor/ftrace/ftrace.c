@@ -112,7 +112,7 @@ void ftrace_call(word_t pc, bool call)
         do
         {
             pop_func = pop(fstack);
-
+            printf("pop function:%s\n", pop_func->name);
             /* code */
         } while (strcmp(pop_func->name, func_name) == 0);
         func_print(pop_func, false);
