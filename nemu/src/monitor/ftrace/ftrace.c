@@ -120,16 +120,12 @@ void ftrace_call(word_t pc, bool call)
         do
         {
             pop_func = pop(fstack);
-            // printf("(pop)%s, %d\n", pop_func->name, pop_func->deep);
-            // print(fstack);
             name = pop_func->name;
-            
-            /* code */
         } while (strcmp(name, func_name) != 0);
         func_print(pop_func, false);
         free(pop_func);
     }
-    // free(function);
+    
 }
 
 void ftrace_print()
