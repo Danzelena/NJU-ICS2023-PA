@@ -18,9 +18,17 @@ typedef struct FuncStack
     Frame *func[STACK_MAX_DEEP];
     int top;
 } FuncStack;
+
 FuncStack *fstack;
+
 void init(FuncStack *fs)
-{
+{   
+    fs = (FuncStack *)malloc(sizeof(FuncStack));
+    if(fstack == NULL){
+        Log("(ftrace)Error: Memory allocation failed!");
+        Assert(0, "Memory allocation failed!");
+    }
+    
     fs->top = -1;
 }
 void push(FuncStack *fs, Frame *f)
