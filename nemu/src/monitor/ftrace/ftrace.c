@@ -136,6 +136,7 @@ void ftrace_print()
 void ftrace_free(){
     printf("free\n");
     free(fstack);
+    free(function);
 }
 // int cnt = 0;
 // char *lastfunc;
