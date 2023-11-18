@@ -24,7 +24,7 @@ FuncStack *fstack;
 void init(FuncStack *fs)
 {   
     fs = (FuncStack *)malloc(sizeof(FuncStack));
-    if(fstack == NULL){
+    if(fs == NULL){
         Log("(ftrace)Error: Memory allocation failed!");
         Assert(0, "Memory allocation failed!");
     }
