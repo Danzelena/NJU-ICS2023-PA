@@ -93,7 +93,7 @@ void ftrace_call(word_t pc, bool call)
 {
 
     char *func_name = gen_func_name(pc);
-    printf("name:%s\n", func_name);
+    printf("name:%s\n, pc:%x", func_name, pc);
 
     if (call)
     {
