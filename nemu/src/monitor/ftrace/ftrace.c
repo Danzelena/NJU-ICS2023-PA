@@ -94,7 +94,7 @@ void ftrace_call(word_t pc, bool call)
 {
 
     char *func_name = gen_func_name(pc);
-    printf("name:%s\n, pc:%x\n", func_name, pc);
+    // printf("name:%s\n, pc:%x\n", func_name, pc);
 
     if (call)
     {
@@ -106,9 +106,9 @@ void ftrace_call(word_t pc, bool call)
         // function = &func;
         // Frame *function = &func;
         push(fstack, function);
-        // func_print(function, true);
-        printf("(push)%s, %d\n", function->name, function->deep);
-        print(fstack);
+        func_print(function, true);
+        // printf("(push)%s, %d\n", function->name, function->deep);
+        // print(fstack);
         // printf("top:%d\n", fstack->top);
     }
     else
@@ -118,12 +118,12 @@ void ftrace_call(word_t pc, bool call)
         do
         {
             pop_func = pop(fstack);
-            printf("(pop)%s, %d\n", pop_func->name, pop_func->deep);
-            print(fstack);
+            // printf("(pop)%s, %d\n", pop_func->name, pop_func->deep);
+            // print(fstack);
 
             /* code */
         } while (strcmp(pop_func->name, func_name) != 0);
-        // func_print(pop_func, false);
+        func_print(pop_func, false);
     }
 }
 
