@@ -122,7 +122,7 @@ void ftrace_call(word_t pc, bool call)
             print(fstack);
 
             /* code */
-        } while (strcmp(pop_func->name, func_name) == 0);
+        } while (strcmp(pop_func->name, func_name) != 0);
         // func_print(pop_func, false);
     }
 }
