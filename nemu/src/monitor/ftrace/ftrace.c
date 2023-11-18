@@ -134,6 +134,7 @@ void ftrace_print()
     print(fstack);
 }
 void ftrace_free(){
+    printf("free\n");
     free(fstack);
 }
 // int cnt = 0;
