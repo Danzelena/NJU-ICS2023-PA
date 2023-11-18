@@ -21,15 +21,15 @@ typedef struct FuncStack
 
 FuncStack *fstack;
 
-void init(FuncStack *fs)
+void init()
 {   
-    fs = (FuncStack *)malloc(sizeof(FuncStack));
-    if(fs == NULL){
+    fstack = (FuncStack *)malloc(sizeof(FuncStack));
+    if(fstack == NULL){
         Log("(ftrace)Error: Memory allocation failed!");
         Assert(0, "Memory allocation failed!");
     }
     
-    fs->top = -1;
+    fstack->top = -1;
 }
 void push(FuncStack *fs, Frame *f)
 {
@@ -81,7 +81,7 @@ void ftrace_init()
 {
     // FuncStack *fstack;
 
-    init(fstack);
+    init();
 }
 
 void func_init(Frame fun, char *name){
