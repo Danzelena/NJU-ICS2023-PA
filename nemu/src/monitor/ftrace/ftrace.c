@@ -89,7 +89,7 @@ void func_init(Frame *fun, char *name, word_t pc)
     fun->deep = 0;
     fun->pc = pc;
 }
-
+Frame *function;
 void ftrace_call(word_t pc, bool call)
 {
 
@@ -100,7 +100,7 @@ void ftrace_call(word_t pc, bool call)
     {
         /* call */
         
-        Frame *function = (Frame*)malloc(sizeof(Frame));
+        function = (Frame*)malloc(sizeof(Frame));
         // Frame func;
         func_init(function, func_name, pc);
         // function = &func;
@@ -110,7 +110,7 @@ void ftrace_call(word_t pc, bool call)
         // printf("(push)%s, %d\n", function->name, function->deep);
         // print(fstack);
         // printf("top:%d\n", fstack->top);
-        free(function);
+        
     }
     else
     {
@@ -126,6 +126,7 @@ void ftrace_call(word_t pc, bool call)
         } while (strcmp(pop_func->name, func_name) != 0);
         func_print(pop_func, false);
     }
+    free(function);
 }
 
 void ftrace_print()
