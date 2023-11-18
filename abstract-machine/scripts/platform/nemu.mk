@@ -15,7 +15,7 @@ NEMUFLAGS += -l $(shell dirname $(IMAGE).elf)/nemu-log.txt
 #TODO:add batch mode in NEMU
 NEMUFLAGS += -b
 #TODO:add something so that NEMU can read ELF file
-# NEMUFLAGS += -a $(IMAGE).elf
+NEMUFLAGS += -a $(IMAGE).elf
 # $(warning $(IMAGE).elf)
 
 
