@@ -19,6 +19,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include "sdb.h"
+#include "../ftrace/ftrace.h"
 
 
 static int is_batch_mode = false;
@@ -68,6 +69,7 @@ static int cmd_info(char *args);
 static int cmd_p(char *args);
 static int cmd_w(char *args);
 static int cmd_d(char *args);
+static int cmd_bt();
 
 static struct {
   const char *name;
@@ -85,6 +87,7 @@ static struct {
   {"p","eval the expr",cmd_p},
 	{"w","if value of expr changed,stop",cmd_w},
 	{"d","del the N.th watchpoint",cmd_d},
+  {"bt", "print the function call stack", cmd_bt},
 					/*TO DO*/
 };
 #define NR_CMD ARRLEN(cmd_table)
@@ -255,6 +258,12 @@ static int cmd_w(char *args){
 static int cmd_d(char *args){
   int no = atoi(args);
   del_WP(no);
+  return 0;
+}
+
+
+static int cmd_bt(){
+  ftrace_print();
   return 0;
 }
 void sdb_set_batch_mode() {

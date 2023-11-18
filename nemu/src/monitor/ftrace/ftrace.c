@@ -106,10 +106,8 @@ void ftrace_call(word_t pc, bool call)
         // function = &func;
         // Frame *function = &func;
         push(fstack, function);
-        func_print(function, true);
-        // printf("(push)%s, %d\n", function->name, function->deep);
-        // print(fstack);
-        // printf("top:%d\n", fstack->top);
+        // func_print(function, true);
+
         
     }
     else
@@ -125,18 +123,18 @@ void ftrace_call(word_t pc, bool call)
                 free(pop_func);
             }
         } while (strcmp(name, func_name) != 0);
-        func_print(pop_func, false);
+        // func_print(pop_func, false);
         free(pop_func);
     }
     
 }
-
-void ftrace_print()
+int ftrace_print()
 {
     print(fstack);
+    return 0;
 }
 void ftrace_free(){
-    printf("free\n");
+    // printf("free\n");
     for(int i = 0;i <= fstack->top;i++){
         free((fstack->func)[i]);
     }
