@@ -1,1 +1,4 @@
-void ftrace_call(word_t pc);
+void ftrace_call(word_t pc, bool call);
+void ftrace_init();
+
+

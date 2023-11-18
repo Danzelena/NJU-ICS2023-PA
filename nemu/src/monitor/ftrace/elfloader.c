@@ -9,6 +9,9 @@ Elf32_Shdr *sym = NULL;
 void init_ftrace(const char *fn)
 {
 //   char buff[255];
+
+  ftrace_init();
+  
   if (fn != NULL)
   {
     FILE *fp = fopen(fn, "rb");
