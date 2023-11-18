@@ -39,9 +39,13 @@ enum {
 #define immJ() do { *imm = ((SEXT(BITS(i, 31, 31), 1) << 20) | BITS(i, 19, 12) << 12 | BITS(i, 20, 20) << 11 | BITS(i, 30, 21) << 1)&~1 ;} while(0)
 #define immB() do { *imm = ((SEXT(BITS(i, 31, 31), 1) << 12) | BITS(i, 7, 7) << 11 | BITS(i, 30, 25) << 5 | BITS(i, 11, 8) << 1)&~1;  }while(0)
 
+
+int rs1 = 0;
 static void decode_operand(Decode *s, int *rd, word_t *src1, word_t *src2, word_t *imm, int type) {
   uint32_t i = s->isa.inst.val;
-  int rs1 = BITS(i, 19, 15);
+  // int rs1 = BITS(i, 19, 15);
+  rs1 = BITS(i, 19, 15);
+
   int rs2 = BITS(i, 24, 20);
   *rd     = BITS(i, 11, 7);
   switch (type) {
@@ -59,6 +63,7 @@ static int decode_exec(Decode *s) {
   // stand for:
   // rd->目的操作数的寄存器号码
   word_t src1 = 0, src2 = 0, imm = 0;
+  
   s->dnpc = s->snpc;
 // decode op and operand
 #define INSTPAT_INST(s) ((s)->isa.inst.val)
@@ -90,7 +95,7 @@ static int decode_exec(Decode *s) {
 
   // TODO:function call : ftrace!(call and ret)
   INSTPAT("??????? ????? ????? ??? ????? 11011 11", jal    , J, R(rd) = s->pc + 4; s->dnpc = s->pc + imm;if(rd != 0){ftrace_call(s->dnpc,true);});
-  INSTPAT("??????? ????? ????? 000 ????? 11001 11", jalr   , I, R(rd) = s->pc + 4;s->dnpc = ((imm + src1)&~1);if(rd == 0){ftrace_call(s->pc,false);}else{ftrace_call(s->dnpc,true);});
+  INSTPAT("??????? ????? ????? 000 ????? 11001 11", jalr   , I, R(rd) = s->pc + 4;s->dnpc = ((imm + src1)&~1);if(rd == 0 && rs1 == 1){ftrace_call(s->pc,false);}else{ftrace_call(s->dnpc,true);});
   // ret;jalr x0,0(x1)
 
 
