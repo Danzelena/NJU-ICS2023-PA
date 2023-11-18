@@ -89,6 +89,9 @@ void func_init(Frame *fun, char *name, word_t pc)
     fun->deep = 0;
     fun->pc = pc;
 }
+Frame func;
+Frame *function;
+
 void ftrace_call(word_t pc, bool call)
 {
 
@@ -98,9 +101,10 @@ void ftrace_call(word_t pc, bool call)
     if (call)
     {
         /* call */
-        Frame func;
+        // Frame func;
         func_init(&func, func_name, pc);
-        Frame *function = &func;
+        function = &func;
+        // Frame *function = &func;
         push(fstack, function);
         // func_print(function, true);
         printf("(push)%s, %d\n", function->name, function->deep);
