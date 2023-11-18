@@ -99,7 +99,7 @@ void ftrace_call(word_t pc, bool call)
         Frame func;
         func_init(&func, func_name);
         Frame *function = &func;
-        printf("name:%s\n", function->name);
+        // printf("name:%s\n", function->name);
         push(fstack, function);
         func_print(function, true);
     }
