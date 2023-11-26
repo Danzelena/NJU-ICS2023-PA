@@ -24,16 +24,17 @@ uint8_t* new_space(int size);
 typedef struct {
   const char *name;
   // we treat ioaddr_t as paddr_t here
-  paddr_t low;
-  paddr_t high;
-  void *space;
-  io_callback_t callback;
+  paddr_t low;// 映射的起始地址
+  paddr_t high;// 映射的结束地址
+  void *space;// 映射的目标空间
+  io_callback_t callback;// 回调函数
 } IOMap;
 
 static inline bool map_inside(IOMap *map, paddr_t addr) {
   return (addr >= map->low && addr <= map->high);
 }
 
+// 调用`difftest_skip_ref`实现状态同步
 static inline int find_mapid_by_addr(IOMap *maps, int size, paddr_t addr) {
   int i;
   for (i = 0; i < size; i ++) {

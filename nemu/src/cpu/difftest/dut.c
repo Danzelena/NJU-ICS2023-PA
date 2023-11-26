@@ -63,9 +63,12 @@ void init_difftest(char *ref_so_file, long img_size, int port) {
   assert(ref_so_file != NULL);
 
   void *handle;
+  /*打开传入的动态库文件ref_so_file*/
+  // dlopen 用于动态库装载
   handle = dlopen(ref_so_file, RTLD_LAZY);
   assert(handle);
 
+  // dlsym 从制定的库中获得指定的函数
   ref_difftest_memcpy = dlsym(handle, "difftest_memcpy");
   assert(ref_difftest_memcpy);
 
@@ -86,9 +89,13 @@ void init_difftest(char *ref_so_file, long img_size, int port) {
       "This will help you a lot for debugging, but also significantly reduce the performance. "
       "If it is not necessary, you can turn it off in menuconfig.", ref_so_file);
 
+  /*initialize REF's DiffTest*/
   ref_difftest_init(port);
+  /*copy DUT's memory to REF*/
   ref_difftest_memcpy(RESET_VECTOR, guest_to_host(RESET_VECTOR), img_size, DIFFTEST_TO_REF);
+  /*copy DUT's register to REF*/
   ref_difftest_regcpy(&cpu, DIFFTEST_TO_REF);
+  /*then REF and DUT is at the same environment ^_^ */
 }
 
 static void checkregs(CPU_state *ref, vaddr_t pc) {
@@ -99,9 +106,10 @@ static void checkregs(CPU_state *ref, vaddr_t pc) {
   }
 }
 
+// will be called in mainloop in cpu_exec(),make REF do the same intr as NEMU,and return register in REF
 void difftest_step(vaddr_t pc, vaddr_t npc) {
   CPU_state ref_r;
-
+  // skip_dut_nr_inst : 0
   if (skip_dut_nr_inst > 0) {
     ref_difftest_regcpy(&ref_r, DIFFTEST_TO_DUT);
     if (ref_r.pc == npc) {
@@ -114,7 +122,7 @@ void difftest_step(vaddr_t pc, vaddr_t npc) {
       panic("can not catch up with ref.pc = " FMT_WORD " at pc = " FMT_WORD, ref_r.pc, pc);
     return;
   }
-
+  // is_skip_ref : false
   if (is_skip_ref) {
     // to skip the checking of an instruction, just copy the reg state to reference design
     ref_difftest_regcpy(&cpu, DIFFTEST_TO_REF);

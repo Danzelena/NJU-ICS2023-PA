@@ -28,19 +28,15 @@ void isa_reg_display()
   int reg_num = 32;
   for (i = 0; i < reg_num; i++)
   {
-    if (i % 8 == 0)
-    {
-      printf("\n");
-    }
     // char *name = regs[i];
     bool suc = true;
     word_t val = cpu.gpr[i];
     assert(suc);
-    printf("%s:%x\t", regs[i], val);
+    printf("%s\t:%x\n", regs[i], val);
   }
-  printf("\n");
 }
 
+// return name=s register's value, and if success
 word_t isa_reg_str2val(const char *s, bool *success)
 {
   *success = true;

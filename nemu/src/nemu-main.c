@@ -33,7 +33,7 @@ int main(int argc, char *argv[]) {
 #else
   init_monitor(argc, argv);
 #endif 
-  IFDEF(CONFIG_DEBUG,test_cmd_q());
+  // IFDEF(CONFIG_DEBUG,test_cmd_q());
 
   /* Start engine. */
   engine_start();

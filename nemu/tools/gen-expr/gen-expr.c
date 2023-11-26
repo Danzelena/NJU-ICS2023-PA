@@ -67,7 +67,6 @@ static void gen_num(){
   strcat(buf,num_str);
 }
 static void gen_rand_expr() {
-  // TODO
   switch(choose(5)){
     case 0:{
       gen('(');

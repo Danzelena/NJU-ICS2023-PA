@@ -52,14 +52,35 @@ void init_mem() {
 }
 
 word_t paddr_read(paddr_t addr, int len) {
+  //TODO: mark read which memory
+  #ifdef CONFIG_MTRACE_COND
+  if(likely(in_pmem(addr))){
+    log_write("read memory at addr = 0x%lx with %d bytes", (unsigned long)addr, len);
+  }
+  #endif
+  IFDEF(CONFIG_MTRACE, printf("read memory at addr = 0x%lx with %d bytes\n", (unsigned long)addr, len);)
+
+  // 如果在物理内存空间中,就访问真正的内存空间
   if (likely(in_pmem(addr))) return pmem_read(addr, len);
+
+  // 否则,访问相应的设备
   IFDEF(CONFIG_DEVICE, return mmio_read(addr, len));
   out_of_bound(addr);
   return 0;
 }
 
 void paddr_write(paddr_t addr, int len, word_t data) {
-  if (likely(in_pmem(addr))) { pmem_write(addr, len, data); return; }
+  //TODO: mark write which memory
+  #ifdef CONFIG_MTRACE_COND
+  if(likely(in_pmem(addr))){
+    log_write("write memory at addr = 0x%lx with %d bytes", (unsigned long)addr, len);
+  }
+  #endif
+  IFDEF(CONFIG_MTRACE, printf("write memory at addr = 0x%lx with %d bytes\n", (unsigned long)addr, len);)
+
+  // 如果在物理内存空间中,就访问真正的内存空间
+  if (likely(in_pmem(addr))) { pmem_write(addr, len, data); return; } 
+  // 否则,访问相应的设备
   IFDEF(CONFIG_DEVICE, mmio_write(addr, len, data); return);
   out_of_bound(addr);
 }

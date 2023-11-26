@@ -18,6 +18,7 @@
 #include <cpu/difftest.h>
 #include <locale.h>
 #include "../monitor/sdb/sdb.h"
+#include "../monitor/ftrace/elfloader.h"
 
 /* The assembly code of instructions executed is only output to the screen
  * when the number of instructions executed is less than this value.
@@ -25,24 +26,98 @@
  * You can modify this value as you want.
  */
 #define MAX_INST_TO_PRINT 10
+#define IRING_LEN 15
+#define STR_LEN 50
 
 CPU_state cpu = {};
 uint64_t g_nr_guest_inst = 0;
 static uint64_t g_timer = 0; // unit: us
 static bool g_print_step = false;
 
+struct iringbuf{
+  char ** buf_ptr;
+  size_t read_index;
+  size_t write_index;
+  size_t buf_size;
+}irbuf;
+char *pool[IRING_LEN];
+
+
+// TODO:handle iringbuf as a queue
+void irbuf_print();
+void irbuf_init(struct iringbuf *rb, 
+                  char **pool,
+                  size_t size){
+  /*initialize read and write index*/
+  rb->read_index = 0;
+  rb->write_index = 5;
+
+  /*set buffer pool and size*/
+  
+
+  for (size_t i = 0;i < size;i++){
+    // *(rb->buf_ptr + i) = NULL;
+    pool[i] = (char *)malloc(STR_LEN*sizeof(char));
+    snprintf(pool[i], STR_LEN, "(no instruction)");
+    // memset(pool[i], '\0', STR_LEN);
+  }
+  rb->buf_ptr = pool;
+  rb->buf_size = size;
+  // irbuf_print(rb);
+}
+
+size_t irbuf_push(struct iringbuf *rb, char *inst){
+  size_t ret = rb->write_index;
+  // printf("Debug:write_index = %d\n", (int)rb->write_index);
+  // Log("before push inst");
+  // irbuf_print(rb);
+  
+  snprintf(rb->buf_ptr[rb->write_index],STR_LEN,"%s",inst);
+  if(rb->write_index == rb->buf_size - 1){
+    rb->write_index = 0;
+  }else{
+    rb->write_index += 1;
+  }
+  // Log("after push inst");
+  // irbuf_print(rb);
+  return ret;
+}
+void irbuf_print(const struct iringbuf *rb){
+  Log("iringbuf for debug(Note:):\n");
+  size_t i;
+  for(i = 0;i < rb->buf_size;i++){
+    if(*(rb->buf_ptr+i)[0]!= '\0'){
+      if(i == rb->write_index){
+        printf("---->%s\n",*(rb->buf_ptr + i));
+      }else{
+        printf("     %s\n", *(rb->buf_ptr + i));
+      }
+
+    }
+    else{
+      printf("null inst\n");
+    }
+  }
+}
+void iringbuf_init(){
+  // TODO: init iringbuf
+  irbuf_init(&irbuf, pool,IRING_LEN);
+}
+
 void device_update();
 
 static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 #ifdef CONFIG_ITRACE_COND
-  if (ITRACE_COND) { log_write("%s\n", _this->logbuf); }
+// TODO:add inst to iringbuf
+  if (ITRACE_COND) { log_write("%s\n", _this->logbuf); irbuf_push(&irbuf, _this->logbuf);}
 #endif
   if (g_print_step) { IFDEF(CONFIG_ITRACE, puts(_this->logbuf)); }
   IFDEF(CONFIG_DIFFTEST, difftest_step(_this->pc, dnpc));
   //scan all the watchpoint
   if(!check_wp()){
   nemu_state.state = NEMU_STOP;
-  printf("count to watchpoint!\n");
+  printf("at &pc = %x\n", _this->pc);
+
   }
   
 }
@@ -50,7 +125,8 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 static void exec_once(Decode *s, vaddr_t pc) {
   s->pc = pc;
   s->snpc = pc;
-  isa_exec_once(s);
+  
+  isa_exec_once(s);// will modify s->snpc to next inst's pc
   cpu.pc = s->dnpc;
 #ifdef CONFIG_ITRACE
   char *p = s->logbuf;
@@ -80,10 +156,18 @@ static void exec_once(Decode *s, vaddr_t pc) {
 
 static void execute(uint64_t n) {
   Decode s;
+
+
   for (;n > 0; n --) {
+    // Log("before exec_once");
+    // irbuf_print(&irbuf);
     exec_once(&s, cpu.pc);
     g_nr_guest_inst ++;
+    // Log("before trace_and_diff");
+    // irbuf_print(&irbuf);
     trace_and_difftest(&s, cpu.pc);
+    //     Log("after trace_and_diff");
+    // irbuf_print(&irbuf);
     if (nemu_state.state != NEMU_RUNNING) break;
     IFDEF(CONFIG_DEVICE, device_update());
   }
@@ -105,6 +189,7 @@ void assert_fail_msg() {
 
 /* Simulate how the CPU works. */
 void cpu_exec(uint64_t n) {
+  // iringbuf_init();
   g_print_step = (n < MAX_INST_TO_PRINT);
   switch (nemu_state.state) {
     case NEMU_END: case NEMU_ABORT:
@@ -114,22 +199,32 @@ void cpu_exec(uint64_t n) {
   }
 
   uint64_t timer_start = get_time();
-
+// Log("before execute");
+// irbuf_print(&irbuf);
   execute(n);
 
   uint64_t timer_end = get_time();
   g_timer += timer_end - timer_start;
 
+
+// // test and debug
+// irbuf_print(&irbuf);
+
   switch (nemu_state.state) {
     case NEMU_RUNNING: nemu_state.state = NEMU_STOP; break;
 
     case NEMU_END: case NEMU_ABORT:
+      
       Log("nemu: %s at pc = " FMT_WORD,
           (nemu_state.state == NEMU_ABORT ? ANSI_FMT("ABORT", ANSI_FG_RED) :
            (nemu_state.halt_ret == 0 ? ANSI_FMT("HIT GOOD TRAP", ANSI_FG_GREEN) :
             ANSI_FMT("HIT BAD TRAP", ANSI_FG_RED))),
           nemu_state.halt_pc);
+          if(nemu_state.state == NEMU_ABORT){irbuf_print(&irbuf);}
       // fall through
     case NEMU_QUIT: statistic();
   }
+
+
+  ftrace_free();
 }

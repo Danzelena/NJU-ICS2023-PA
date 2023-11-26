@@ -11,13 +11,13 @@ AM_DEVREG( 1, UART_CONFIG,  RD, bool present);
 AM_DEVREG( 2, UART_TX,      WR, char data);
 AM_DEVREG( 3, UART_RX,      RD, char data);
 AM_DEVREG( 4, TIMER_CONFIG, RD, bool present, has_rtc);
-AM_DEVREG( 5, TIMER_RTC,    RD, int year, month, day, hour, minute, second);
-AM_DEVREG( 6, TIMER_UPTIME, RD, uint64_t us);
+AM_DEVREG( 5, TIMER_RTC,    RD, int year, month, day, hour, minute, second);//Real Time Clock
+AM_DEVREG( 6, TIMER_UPTIME, RD, uint64_t us);// AM system start time, 可以读出系统启动后的微秒数
 AM_DEVREG( 7, INPUT_CONFIG, RD, bool present);
-AM_DEVREG( 8, INPUT_KEYBRD, RD, bool keydown; int keycode);
-AM_DEVREG( 9, GPU_CONFIG,   RD, bool present, has_accel; int width, height, vmemsz);
+AM_DEVREG( 8, INPUT_KEYBRD, RD, bool keydown; int keycode);// keydown=true:按下按键,false:释放按键;没有按键时:keycode=AM_KEY_NONE
+AM_DEVREG( 9, GPU_CONFIG,   RD, bool present, has_accel; int width, height, vmemsz);// 控制器信息, width & height, screen_size is fixed
 AM_DEVREG(10, GPU_STATUS,   RD, bool ready);
-AM_DEVREG(11, GPU_FBDRAW,   WR, int x, y; void *pixels; int w, h; bool sync);
+AM_DEVREG(11, GPU_FBDRAW,   WR, int x, y; void *pixels; int w, h; bool sync);// 帧缓冲控制器, 向(x,y)处绘制w * h的矩形图像, 图像像素按行优先方式存储在pixels中, 每个像素用32位整数以00RRGGBB的方式描述颜色. 若sync为true, 则马上将帧缓冲中的内容同步到屏幕上.
 AM_DEVREG(12, GPU_MEMCPY,   WR, uint32_t dest; void *src; int size);
 AM_DEVREG(13, GPU_RENDER,   WR, uint32_t root);
 AM_DEVREG(14, AUDIO_CONFIG, RD, bool present; int bufsize);

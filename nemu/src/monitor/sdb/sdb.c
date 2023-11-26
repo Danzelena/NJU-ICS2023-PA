@@ -85,7 +85,7 @@ static struct {
   {"p","eval the expr",cmd_p},
 	{"w","if value of expr changed,stop",cmd_w},
 	{"d","del the N.th watchpoint",cmd_d},
-					/*TODO*/
+					/*TO DO*/
 };
 #define NR_CMD ARRLEN(cmd_table)
 int isValid(char*);
@@ -225,7 +225,7 @@ static int cmd_p(char *args){
   bool su = true;
   bool *success = &su;
   if (*success){
-    u_int32_t ret = expr(args,success);
+    uint32_t ret = expr(args,success);
     printf("%u\n",ret);
   return ret;
 
@@ -240,7 +240,10 @@ static int cmd_p(char *args){
 /* set watchpoints */
 static int cmd_w(char *args){
   bool suc = true;
-  call_new_WP(args, &suc);
+  int no = call_new_WP(args, &suc);
+  if (suc){
+    printf("Hardware watchpoint %d, %s\n",no,args);
+  }
   if (!suc){
     Log("Fail to do new_WP!\n");
     assert(0);
@@ -259,6 +262,9 @@ void sdb_set_batch_mode() {
 }
 
 void sdb_mainloop() {
+  /*init the iringbuff*/
+  iringbuf_init();
+
   if (is_batch_mode) {
     cmd_c(NULL);
     return;

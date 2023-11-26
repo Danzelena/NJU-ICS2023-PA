@@ -34,7 +34,7 @@ enum
   OR,
   NEG,
   DEREF,
-  /* TODO: Add more token types */
+  /* TO DO: Add more token types */
 
 };
 
@@ -44,7 +44,7 @@ static struct rule
   int token_type;
 } rules[] = {
 
-    /* TODO: Add more rules.
+    /* TO DO: Add more rules.
      * Pay attention to the precedence level of different rules.
      */
 
@@ -100,7 +100,7 @@ typedef struct token
   int type;
   char str[32];
 } Token;
-// TODO: determine to change 32
+// TO DO: determine to change 32
 static Token tokens[25565] __attribute__((used)) = {};
 static int nr_token __attribute__((used)) = 0;
 
@@ -127,7 +127,7 @@ static bool make_token(char *e)
 
         position += substr_len;
 
-        /* TODO: Now a new token is recognized with rules[i]. Add codes
+        /* TO DO: Now a new token is recognized with rules[i]. Add codes
          * to record the token in the array `tokens'. For certain types
          * of tokens, some extra actions should be performed.
          */
@@ -144,7 +144,7 @@ static bool make_token(char *e)
           // printf("Debug:tok.str:%s\n",tok.str);
           break;
         }
-          // TODO:add a function to tell hex or dec
+          // TO DO:add a function to tell hex or dec
         case HEX:
         {
           memset(tok.str, '\0', sizeof(tok.str));
@@ -160,7 +160,7 @@ static bool make_token(char *e)
           // strncpy(tok.str, substr_start + 2, substr_len - 2);
           break;
         }
-          // TODO:add function to handle REG flag
+          // TO DO:add function to handle REG flag
         case REG:
         {
           bool suc = true;
@@ -178,13 +178,13 @@ static bool make_token(char *e)
           }else{
             val = isa_reg_str2val(name,&suc);
           }
-          printf("Debug:val=%x\n",val);
+          // printf("Debug:val=%x\n",val);
           assert(suc);
           sprintf(tok.str,"%u",val);
-          printf("Debug:tok.str=%s\n",tok.str);
+          // printf("Debug:tok.str=%s\n",tok.str);
           break;
         }
-        // TODO:DEREF case
+        // TO DO:DEREF case
         case DEREF:
         {
           break;
@@ -291,7 +291,7 @@ static int getMainop(Token *tokens, int begin, int end)
     }
   }
   // select the best op from okset
-  // TODO:modift old rules
+  // TO DO:modift old rules
   for (int k = okindex - 1; k >= 0; k--)
   {
     if (okset[k].type == AND || okset[k].type == OR)
@@ -350,7 +350,7 @@ u_int32_t eval(Token *tokens, int begin, int end)
     assert(!isCertainType(tokens[begin].type));
     char *num = tokens[begin].str;
     u_int32_t number = strtoul(num,NULL,10);
-    printf("Debug:number=%u\n",number);
+    // printf("Debug:number=%u\n",number);s
     return number;
   }
   else if (check_paretheses(tokens, begin, end) == true)
@@ -363,7 +363,7 @@ u_int32_t eval(Token *tokens, int begin, int end)
     int op_type = tokens[op].type;
     u_int32_t val1,val2;
     if (op_type == DEREF||op_type == NEG){
-      printf("Debug:op=%d,begin=%d,end=%d\n",op,begin,end);
+      // printf("Debug:op=%d,begin=%d,end=%d\n",op,begin,end);
       val1 = -1;
       val2 = eval(tokens,op+1,end);
     }else{
@@ -395,7 +395,7 @@ u_int32_t eval(Token *tokens, int begin, int end)
       ret = val1 / val2;
       break;
     }
-      // TODO:add more cases
+      // TO DO:add more cases
     case TK_EQ:
       /*if equal returns 1,else return 0*/
       {
@@ -480,9 +480,9 @@ word_t expr(char *e, bool *success)
     return 0;
   }
 
-  /* TODO: Insert codes to evaluate the expression. */
+  /* TO DO: Insert codes to evaluate the expression. */
 
-  // TODO:handle pointer case
+  // TO DO:handle pointer case
   for (int j = 0; j < nr_token; j++)
   {
     if (tokens[j].type == '*' && (j == 0 || isCertainType(tokens[j - 1].type)))

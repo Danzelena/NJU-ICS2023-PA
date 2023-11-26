@@ -24,7 +24,7 @@ typedef struct watchpoint
   char expression[32];
   int lastval;
 
-  /* TODO: Add more members if necessary */
+  /* TO DO: Add more members if necessary */
 
 } WP;
 
@@ -46,6 +46,7 @@ void init_wp_pool()
   free_ = wp_pool;
 }
 bool check_wp(){
+
   bool ret = true;
   if(head == NULL){
     return true;
@@ -55,6 +56,14 @@ bool check_wp(){
     int now = expr(po->expression,&su);
     if(now!=po->lastval){
       ret = false;
+        printf("Continuing.\n");
+        printf("\n");
+
+        printf("Hard watchpoint %d,%s\n",po->NO,po->expression);
+
+        printf("Old value = %x\n", po->lastval);
+        printf("New value = %x\n", now);
+
     }
     po->lastval = now;
   }
@@ -62,28 +71,35 @@ bool check_wp(){
 }
 void print_wp_pool()
 {
-  printf("range1:\n");
-  for (int i = 0; i < NR_WP; i++)
-  {
-    printf("%d ", wp_pool[i].NO);
-  }
-  printf("\n");
-  WP *po = wp_pool;
-  printf("range2:\n");
-  while (po != NULL)
-  {
-    printf("%d ", po->NO);
-    po = po->next;
-  }
-  printf("\n");
-  if (head != NULL)
-    printf("head=%d\n", head->NO);
-  else
-    printf("head=NULL\n");
-  printf("free_=%d\n", free_->NO);
-  printf("=================================\n");
+  printf("Num.\tWhat\n");
+  WP* cur = head;
+  if (cur == NULL){return;}
+  while (cur != free_){
+    printf("\e[1;36m%d\e[0m\t\e[0;32m%s\e[0m\n", cur->NO, cur->expression);
+    cur = cur->next;}
+  
+  // printf("range1:\n");
+  // for (int i = 0; i < NR_WP; i++)
+  // {
+  //   printf("%d ", wp_pool[i].NO);
+  // }
+  // printf("\n");
+  // WP *po = wp_pool;
+  // printf("range2:\n");
+  // while (po != NULL)
+  // {
+  //   printf("%d ", po->NO);
+  //   po = po->next;
+  // }
+  // printf("\n");
+  // if (head != NULL)
+  //   printf("head=%d\n", head->NO);
+  // else
+  //   printf("head=NULL\n");
+  // printf("free_=%d\n", free_->NO);
+  // printf("=================================\n");
 }
-/* TODO: Implement the functionality of watchpoint */
+/* TO DO: Implement the functionality of watchpoint */
 int call_new_WP(char *expression,bool*success){
   WP *wp = new_wp(expression,success);
   return wp->NO;

@@ -12,6 +12,7 @@
 *
 * See the Mulan PSL v2 for more details.
 ***************************************************************************************/
+/* simlulate how 串口 works*/
 
 #include <utils.h>
 #include <device/map.h>
@@ -43,8 +44,10 @@ static void serial_io_handler(uint32_t offset, int len, bool is_write) {
 void init_serial() {
   serial_base = new_space(8);
 #ifdef CONFIG_HAS_PORT_IO
+  /* 注册 0x3F8(CONFIG_SERIAL_MMIO)处长度为8个字节的端口 */
   add_pio_map ("serial", CONFIG_SERIAL_PORT, serial_base, 8, serial_io_handler);
 #else
+  /* 注册 0x3F8(CONFIG_SERIAL_MMIO)处长度为8个字节的MMIO空间 */
   add_mmio_map("serial", CONFIG_SERIAL_MMIO, serial_base, 8, serial_io_handler);
 #endif
 

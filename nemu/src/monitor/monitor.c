@@ -15,6 +15,7 @@
 
 #include <isa.h>
 #include <memory/paddr.h>
+#include "ftrace/elfloader.h"
 
 void init_rand();
 void init_log(const char *log_file);
@@ -23,6 +24,7 @@ void init_difftest(char *ref_so_file, long img_size, int port);
 void init_device();
 void init_sdb();
 void init_disasm(const char *triple);
+void init_ftrace();
 
 static void welcome() {
   Log("Trace: %s", MUXDEF(CONFIG_TRACE, ANSI_FMT("ON", ANSI_FG_GREEN), ANSI_FMT("OFF", ANSI_FG_RED)));
@@ -45,6 +47,8 @@ static char *log_file = NULL;
 static char *diff_so_file = NULL;
 static char *img_file = NULL;
 static int difftest_port = 1234;
+static char *file_name = NULL;
+// FILE *file = NULL;
 
 static long load_img() {
   if (img_file == NULL) {
@@ -53,7 +57,7 @@ static long load_img() {
   }
 
   FILE *fp = fopen(img_file, "rb");
-  Assert(fp, "Can not open '%s'", img_file);
+  Assert(fp,"Can not open '%s'", img_file);
 
   fseek(fp, 0, SEEK_END);
   long size = ftell(fp);
@@ -67,6 +71,52 @@ static long load_img() {
   fclose(fp);
   return size;
 }
+//TODO:func to load and parse ELF file
+// static void init_ftrace(char *fn) {
+
+//   if(fn != NULL){
+//     FILE *fp = fopen(fn, "w");
+//     Assert(fp, "Can't open '%s'", fn);
+//     file = fp;
+//   }
+//   if(file){
+//     // read the header
+//     Elf32_Ehdr  header;
+//     fread(&header, sizeof(header), 1, file);
+
+//     // check elf
+//     if(memcmp(header.e_ident, ELFMAG, SELFMAG) == 0){
+//       // valid elf
+//       // section table
+//       Elf32_Off sec_off = header.e_shoff;
+//       uint16_t sec_num = header.e_shnum;
+      
+//       Assert(sec_off != 0,"may have section table\n");
+//       uint32_t sec_addr;
+//       if(sec_off != 0){
+//         sec_addr = &header + sec_off;
+//       }
+      
+//       // get sym and str table
+//       Elf32_Shdr *sym;
+//       Elf32_Shdr *str;
+//       for(uint16_t i = 0;i < sec_num;i++){
+//         Elf32_Shdr *section = sec_addr + i;
+//         if(section -> sh_type == SHT_SYMTAB){
+//           sym = section;
+//         }else{
+//           str = section;
+//         }
+//       }
+
+    
+      
+//     }
+//     // close file
+//     fclose(file);
+//   }
+  
+// }
 
 static int parse_args(int argc, char *argv[]) {
 				/* list many option to choose*/
@@ -76,16 +126,19 @@ static int parse_args(int argc, char *argv[]) {
     {"diff"     , required_argument, NULL, 'd'},
     {"port"     , required_argument, NULL, 'p'},
     {"help"     , no_argument      , NULL, 'h'},
+    {"load"     , required_argument, NULL, 'a'},
     {0          , 0                , NULL,  0 },
   };
   int o;
 /*	use function getopt_long() to get the parameter in argv*/
-  while ( (o = getopt_long(argc, argv, "-bhl:d:p:", table, NULL)) != -1) {
+  while ( (o = getopt_long(argc, argv, "-bhl:d:p:a:", table, NULL)) != -1) {
     switch (o) {
       case 'b': sdb_set_batch_mode(); break;
       case 'p': sscanf(optarg, "%d", &difftest_port); break;
       case 'l': log_file = optarg; break;
       case 'd': diff_so_file = optarg; break;
+      //TODO:add a func to load ELF file
+      case 'a': file_name = optarg;break;
       case 1: img_file = optarg; return 0;
       default:
         printf("Usage: %s [OPTION...] IMAGE [args]\n\n", argv[0]);
@@ -93,6 +146,7 @@ static int parse_args(int argc, char *argv[]) {
         printf("\t-l,--log=FILE           output log to FILE\n");
         printf("\t-d,--diff=REF_SO        run DiffTest with reference REF_SO\n");
         printf("\t-p,--port=PORT          run DiffTest with port PORT\n");
+        printf("\t-a,--load=FILE          load a file to nemu\n");
         printf("\n");
         exit(0);
     }
@@ -126,6 +180,10 @@ void init_monitor(int argc, char *argv[]) {
 
   /* Initialize differential testing. */
   init_difftest(diff_so_file, img_size, difftest_port);
+
+  /* Initialize ftrace */
+  init_ftrace(file_name);
+  //TODO:add function call
 
   /* Initialize the simple debugger. */
   init_sdb();

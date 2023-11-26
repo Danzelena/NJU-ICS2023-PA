@@ -1,3 +1,4 @@
+# include硬件架构和软件平台的makefile
 include $(AM_HOME)/scripts/isa/riscv.mk
 include $(AM_HOME)/scripts/platform/nemu.mk
 CFLAGS  += -DISA_H=\"riscv/riscv.h\"
