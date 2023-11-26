@@ -26,7 +26,7 @@ CFLAGS  := -O2 -MMD -Wall -Werror $(INCLUDES) $(CFLAGS)
 LDFLAGS := -O2 $(LDFLAGS)
 
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o) $(CXXSRC:%.cc=$(OBJ_DIR)/%.o)
-
+PRO_OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.i)
 # Compilation patterns
 $(OBJ_DIR)/%.i: %.c
 	@echo + CC $<
@@ -55,7 +55,7 @@ $(OBJ_DIR)/%.o: %.cc
 
 app: $(BINARY)
 
-$(BINARY):: $(OBJS) $(ARCHIVES)
+$(BINARY):: $(OBJS) $(ARCHIVES) $(PRO_OBJS)
 	@echo + LD $@
 	@$(LD) -o $@ $(OBJS) $(LDFLAGS) $(ARCHIVES) $(LIBS)
 
