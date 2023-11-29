@@ -22,6 +22,7 @@ extern void __am_asm_trap(void);
 
 bool cte_init(Context*(*handler)(Event, Context*)) {
   // initialize exception entry
+  // READ: 直接将异常入口地址设置到mtvec寄存器中,__am_asm_trap is a asm function,put address of the function to reg
   asm volatile("csrw mtvec, %0" : : "r"(__am_asm_trap));
 
   // register event handler
