@@ -18,7 +18,7 @@
 
 #include <common.h>
 
-#define SR_NUM 4
+#define SR_NUM 0x500
 typedef struct {
   word_t gpr[MUXDEF(CONFIG_RVE, 16, 32)];
   vaddr_t pc;

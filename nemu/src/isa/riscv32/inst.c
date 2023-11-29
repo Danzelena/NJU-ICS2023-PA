@@ -20,6 +20,7 @@
 #include <cpu/decode.h>
 
 #define XLEN 32
+#define SR(i) sr(i)
 #define R(i) gpr(i)
 #define Mr vaddr_read
 #define Mw vaddr_write
@@ -170,7 +171,7 @@ static int decode_exec(Decode *s) {
   // sh
   INSTPAT("??????? ????? ????? 001 ????? 01000 11", sh     , S, Mw(src1 + imm, 2, src2));
 
-  // srl, srli, bgeu
+  // srl, srli, bgeu 
   INSTPAT("0000000 ????? ????? 101 ????? 01100 11", srl    , R2, R(rd) = (word_t)src1 >> src2);
   INSTPAT("000000? ????? ????? 101 ????? 00100 11", srli   , I, R(rd) = (word_t)src1 >> (imm & 0b111111));
   INSTPAT("??????? ????? ????? 111 ????? 11000 11", bgeu   , B, if((word_t)src1 >= (word_t)src2){s->dnpc = s->pc + imm;});
@@ -182,8 +183,13 @@ static int decode_exec(Decode *s) {
 
   // slti
 
-  // TODO: implement ecall
-  // INSTPAT("0000000 00000 00000 000 00000 11100 11", ecall  , N, isa_raise_intr());
+  // TODO: implement ecall, csrw(csrrs)
+  // csrw : CSRs[csr] = x[rs1] csrrs x0,csr,rs1
+  // csrw mtvec, %0
+  // equal to : 
+  word_t t;
+  INSTPAT("0000000 00000 00000 000 00000 11100 11", ecall  , N, s->dnpc = isa_raise_intr(8,s->pc));
+  INSTPAT("??????? ????? ????? 110 ????? 11100 11", csrrs  , I, t = SR(imm),SR(imm) = (t | src1);R(rd) = t);
   
   INSTPAT("0000000 00001 00000 000 00000 11100 11", ebreak , N, NEMUTRAP(s->pc, R(10))); // R(10) is $a0
   INSTPAT("??????? ????? ????? ??? ????? ????? ??", inv    , N, INV(s->pc));
