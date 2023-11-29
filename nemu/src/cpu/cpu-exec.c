@@ -162,6 +162,11 @@ static void execute(uint64_t n) {
     // Log("before exec_once");
     // irbuf_print(&irbuf);
     exec_once(&s, cpu.pc);
+
+
+    #ifdef CONFIG_FTRACE_COND
+      ftrace_print();
+    #endif
     g_nr_guest_inst ++;
     // Log("before trace_and_diff");
     // irbuf_print(&irbuf);
@@ -209,9 +214,7 @@ void cpu_exec(uint64_t n) {
 
 // // test and debug
 // irbuf_print(&irbuf);
-#ifdef CONFIG_FTRACE_COND
-ftrace_print();
-#endif
+
 
   switch (nemu_state.state) {
     case NEMU_RUNNING: nemu_state.state = NEMU_STOP; break;
