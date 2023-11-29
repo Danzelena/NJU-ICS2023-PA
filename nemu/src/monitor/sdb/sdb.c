@@ -69,7 +69,7 @@ static int cmd_info(char *args);
 static int cmd_p(char *args);
 static int cmd_w(char *args);
 static int cmd_d(char *args);
-static int cmd_bt();
+// static int cmd_bt();
 
 static struct {
   const char *name;
@@ -87,7 +87,7 @@ static struct {
   {"p","eval the expr",cmd_p},
 	{"w","if value of expr changed,stop",cmd_w},
 	{"d","del the N.th watchpoint",cmd_d},
-  {"bt", "print the function call stack", cmd_bt},
+  // {"bt", "print the function call stack", cmd_bt},
 					/*TO DO*/
 };
 #define NR_CMD ARRLEN(cmd_table)
@@ -261,11 +261,11 @@ static int cmd_d(char *args){
   return 0;
 }
 
-
-static int cmd_bt(){
-  ftrace_print();
-  return 0;
-}
+// FORWARD : implement bt mode
+// static int cmd_bt(){
+//   ftrace_print();
+//   return 0;
+// }
 void sdb_set_batch_mode() {
   is_batch_mode = true;
 }
@@ -328,7 +328,7 @@ void init_sdb() {
   init_regex();
   
   if(is_batch_mode){
-    #ifdef Ftrace
+    #ifdef CONFIG_FTRACE_COND
     extern char *file_name;
     init_ftrace(file_name);
     #endif

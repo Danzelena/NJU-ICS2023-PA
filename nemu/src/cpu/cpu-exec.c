@@ -225,6 +225,7 @@ void cpu_exec(uint64_t n) {
     case NEMU_QUIT: statistic();
   }
 
-
-  ftrace_free();
+  #ifdef CONDFIG_FTRACE_COND
+    ftrace_free();
+  #endif
 }
