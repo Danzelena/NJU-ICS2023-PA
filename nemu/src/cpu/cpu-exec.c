@@ -209,6 +209,9 @@ void cpu_exec(uint64_t n) {
 
 // // test and debug
 // irbuf_print(&irbuf);
+#ifdef CONFIG_FTRACE_COND
+ftrace_print();
+#endif
 
   switch (nemu_state.state) {
     case NEMU_RUNNING: nemu_state.state = NEMU_STOP; break;
@@ -221,7 +224,7 @@ void cpu_exec(uint64_t n) {
             ANSI_FMT("HIT BAD TRAP", ANSI_FG_RED))),
           nemu_state.halt_pc);
           if(nemu_state.state == NEMU_ABORT){irbuf_print(&irbuf);}
-          
+
           // #ifdef CONFIG_FTRACE_COND
           // // ftrace_print();
           // #endif
