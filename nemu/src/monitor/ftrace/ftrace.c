@@ -51,14 +51,6 @@ Frame *pop(FuncStack *fs)
     }
     return fs->func[fs->top--];
 }
-void print(FuncStack *fs)
-{
-    int i;
-    for (i = 0; i <= fs->top; i++)
-    {
-        printf("(ftrace)%s : deep=%d\n", fs->func[i]->name, fs->func[i]->deep);
-    }
-}
 void func_print(Frame *func, bool call)
 {
     int i;
@@ -131,7 +123,13 @@ void ftrace_call(word_t pc, bool call)
 }
 int ftrace_print()
 {
-    print(fstack);
+    // print(fstack);
+    int i;
+    for (i = 0; i <= fstack->top; i++)
+    {
+        // FORWARD:Log in a only file
+        Log("(ftrace)%s : deep=%d\n", fstack->func[i]->name, fstack->func[i]->deep);
+    }
     return 0;
 }
 void ftrace_free(){
