@@ -221,10 +221,14 @@ void cpu_exec(uint64_t n) {
             ANSI_FMT("HIT BAD TRAP", ANSI_FG_RED))),
           nemu_state.halt_pc);
           if(nemu_state.state == NEMU_ABORT){irbuf_print(&irbuf);}
+
+          #ifdef CONFIG_FTRACE_COND
+          ftrace_print();
+          #endif
       // fall through
     case NEMU_QUIT: statistic();
   }
-
+  
   #ifdef CONDFIG_FTRACE_COND
     ftrace_free();
   #endif
