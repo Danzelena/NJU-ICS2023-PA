@@ -1,7 +1,7 @@
 #include "elfloader.h"
 // #include "ftrace.h"
 
-#define STACK_MAX_DEEP 20480000
+#define STACK_MAX_DEEP 2048
 
 typedef struct Frame
 {

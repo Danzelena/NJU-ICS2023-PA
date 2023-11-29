@@ -47,7 +47,7 @@ static char *log_file = NULL;
 static char *diff_so_file = NULL;
 static char *img_file = NULL;
 static int difftest_port = 1234;
-static char *file_name = NULL;
+char *file_name = NULL;
 // FILE *file = NULL;
 
 static long load_img() {
@@ -182,8 +182,8 @@ void init_monitor(int argc, char *argv[]) {
   init_difftest(diff_so_file, img_size, difftest_port);
 
   /* Initialize ftrace */
-  init_ftrace(file_name);
-  //TODO:add function call
+  // init_ftrace(file_name);
+  //add function call
 
   /* Initialize the simple debugger. */
   init_sdb();

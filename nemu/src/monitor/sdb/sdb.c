@@ -21,7 +21,7 @@
 #include "sdb.h"
 #include "../ftrace/ftrace.h"
 
-
+#define Ftrace
 static int is_batch_mode = false;
 
 void init_regex();
@@ -326,7 +326,13 @@ int isValid(char *str){
 void init_sdb() {
   /* Compile the regular expressions. */
   init_regex();
-
+  
+  if(is_batch_mode){
+    #ifdef Ftrace
+    extern char *file_name;
+    init_ftrace(file_name);
+    #endif
+  }
   /* Initialize the watchpoint pool. */
   init_wp_pool();
 }
