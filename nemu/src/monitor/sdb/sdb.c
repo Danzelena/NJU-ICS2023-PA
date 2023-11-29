@@ -21,7 +21,6 @@
 #include "sdb.h"
 #include "../ftrace/ftrace.h"
 
-#define Ftrace
 static int is_batch_mode = false;
 
 void init_regex();
