@@ -2,13 +2,18 @@
 #include <riscv/riscv.h>
 #include <klib.h>
 
-static Context* (*user_handler)(Event, Context*) = NULL;
+static Context *(*user_handler)(Event, Context *) = NULL;
 
-Context* __am_irq_handle(Context *c) {
-  if (user_handler) {
+Context *__am_irq_handle(Context *c)
+{
+  if (user_handler)
+  {
     Event ev = {0};
-    switch (c->mcause) {
-      default: ev.event = EVENT_ERROR; break;
+    switch (c->mcause)
+    {
+    default:
+      ev.event = EVENT_ERROR;
+      break;
     }
 
     c = user_handler(ev, c);
@@ -20,9 +25,13 @@ Context* __am_irq_handle(Context *c) {
 
 extern void __am_asm_trap(void);
 
-bool cte_init(Context*(*handler)(Event, Context*)) {
+bool cte_init(Context *(*handler)(Event, Context *))
+{
   // initialize exception entry
+  uint64_t val = 0x1800;
   // READ: 直接将异常入口地址设置到mtvec寄存器中,__am_asm_trap is a asm function,put address of the function to reg
+  asm volatile("csrw mstatus, %0"::"r"(val):);
+
   asm volatile("csrw mtvec, %0" : : "r"(__am_asm_trap));
 
   // register event handler
@@ -31,11 +40,13 @@ bool cte_init(Context*(*handler)(Event, Context*)) {
   return true;
 }
 
-Context *kcontext(Area kstack, void (*entry)(void *), void *arg) {
+Context *kcontext(Area kstack, void (*entry)(void *), void *arg)
+{
   return NULL;
 }
 
-void yield() {
+void yield()
+{
 #ifdef __riscv_e
   asm volatile("li a5, -1; ecall");
 #else
@@ -43,9 +54,11 @@ void yield() {
 #endif
 }
 
-bool ienabled() {
+bool ienabled()
+{
   return false;
 }
 
-void iset(bool enable) {
+void iset(bool enable)
+{
 }
