@@ -37,6 +37,10 @@ void isa_reg_display()
     assert(suc);
     printf("%s\t:%x\n", regs[i], val);
   }
+  printf("mtvec\t:%x\n",cpu.sr[mtvec]);
+  printf("mepc\t:%x\n",cpu.sr[mepc]);
+  printf("mstatus\t:%x\n",cpu.sr[mstatus]);
+  printf("mcause\t:%x\n",cpu.sr[mcause]);
   // FORWARD:print sr regs;
 }
 
