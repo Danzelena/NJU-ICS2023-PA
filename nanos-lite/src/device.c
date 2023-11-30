@@ -1,5 +1,5 @@
 #include <common.h>
-
+/* 设备抽象 */
 #if defined(MULTIPROGRAM) && !defined(TIME_SHARING)
 # define MULTIPROGRAM_YIELD() yield()
 #else
