@@ -17,12 +17,14 @@ Context *__am_irq_handle(Context *c)
   printf("mepc;%x\n",c->mepc);
 
 
-
+  // 把执行流切换的原因打包成事件,然后user_handle()
   if (user_handler)
   {
     Event ev = {0};
     switch (c->mcause)
     {
+    case 0xb:
+      ev.event = EVENT_YIELD;break;
     default:
       ev.event = EVENT_ERROR;
       break;
