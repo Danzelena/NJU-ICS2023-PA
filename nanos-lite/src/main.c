@@ -9,23 +9,23 @@ void init_proc(void);
 
 int main() {
   extern const char logo[];
-  printf("%s", logo);
+  printf("%s", logo);// 打印 Project-N logo
   Log("'Hello World!' from Nanos-lite");
   Log("Build time: %s, %s", __TIME__, __DATE__);
 
   init_mm();
 
-  init_device();
+  init_device();//目前init_device()会直接调用ioe_init()
 
-  init_ramdisk();
+  init_ramdisk();// init 磁盘
 
 #ifdef HAS_CTE
   init_irq();
 #endif
 
-  init_fs();
+  init_fs();// 初始化文件系统
 
-  init_proc();
+  init_proc();// 创建进程
 
   Log("Finish initialization");
 
