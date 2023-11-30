@@ -23,8 +23,7 @@ const char *regs[] = {
     "s8", "s9", "s10", "s11", "t3", "t4", "t5", "t6"};
 
 const char *sr[] = {
-  "mtvec", "mepc", "mstatus", "mcause"
-};
+    "mtvec", "mepc", "mstatus", "mcause"};
 void isa_reg_display()
 {
   int i;
@@ -37,10 +36,10 @@ void isa_reg_display()
     assert(suc);
     printf("%s\t:%x\n", regs[i], val);
   }
-  printf("mtvec\t:%x\n",cpu.sr[mtvec]);
-  printf("mepc\t:%x\n",cpu.sr[mepc]);
-  printf("mstatus\t:%x\n",cpu.sr[mstatus]);
-  printf("mcause\t:%x\n",cpu.sr[mcause]);
+  printf("mtvec\t:%x\n", cpu.sr[mtvec]);
+  printf("mepc\t:%x\n", cpu.sr[mepc]);
+  printf("mstatus\t:%x\n", cpu.sr[mstatus]);
+  printf("mcause\t:%x\n", cpu.sr[mcause]);
   // FORWARD:print sr regs;
 }
 
@@ -48,17 +47,45 @@ void isa_reg_display()
 word_t isa_reg_str2val(const char *s, bool *success)
 {
   *success = true;
-  if (strcmp(s, regs[0]) == 0){
+  if (strcmp(s, regs[0]) == 0)
+  {
     return cpu.gpr[0];
   }
 
-  for (int i = 1; i < ARRLEN(regs); ++i){
-    if (strcmp(regs[i], s) == 0){//跳过$
+  for (int i = 1; i < ARRLEN(regs); ++i)
+  {
+    if (strcmp(regs[i], s) == 0)
+    { // 跳过$
       *success = true;
       return cpu.gpr[i];
     }
   }
-  printf("Fail!");
+  for (int i = 1; i < 4; ++i)
+  {
+    if (strcmp(sr[i], s) == 0)
+    {
+      //"mtvec", "mepc", "mstatus", "mcause"
+      *success = true;
+      switch (i)
+      {
+      case 0:
+        return cpu.sr[mtvec];
+        break;
+      case 1:
+        return cpu.sr[mepc];
+        break;
+      case 2:
+        return cpu.sr[mstatus];
+        break;
+      case 3:
+        return cpu.sr[mcause];
+        break;
+      default:
+        break;
+      }
+    }
+  }
+  printf("Sorry:ail to find this register!");
   *success = false;
   return 0;
 }
