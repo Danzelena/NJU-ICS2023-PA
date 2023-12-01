@@ -100,7 +100,7 @@ uintptr_t elf_loader(uintptr_t file_off, bool *suc)
       printf("Debug:program%d:O=0x%x,V=0x%x\n",program_cnt,Offset,VirtAddr);
 
 
-      if(ProAddr == 0 && program_cnt == 1){
+      if(ProAddr == 0 && program_cnt == 0){
         ProAddr = (uintptr_t)VirtAddr;
       }
       uint64_t FileSiz = program->p_filesz;
