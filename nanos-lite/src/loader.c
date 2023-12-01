@@ -41,6 +41,7 @@ static uintptr_t loader(PCB *pcb, const char *filename)
     assert(0);
   }
   // TODO();
+  printf("proaddr=%lx",proaddr);
   return proaddr;
 }
 
