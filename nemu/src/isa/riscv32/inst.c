@@ -188,7 +188,7 @@ static int decode_exec(Decode *s) {
   // csrw mtvec, %0
   // equal to : /me/
   word_t t;
-  INSTPAT("0000000 00000 00000 000 00000 11100 11", ecall  , N, s->dnpc = isa_raise_intr(0xb,s->pc));
+  INSTPAT("0000000 00000 00000 000 00000 11100 11", ecall  , N, s->dnpc = isa_raise_intr(0x4,s->pc));
   INSTPAT("??????? ????? ????? 001 ????? 11100 11", csrrs  , I, t = SR(imm),SR(imm) = (t | src1);R(rd) = t);
   INSTPAT("??????? ????? ????? 010 ????? 11100 11", csrr   , I, R(rd) = SR(imm));
 
