@@ -101,7 +101,7 @@ uintptr_t elf_loader(uintptr_t file_off, bool *suc)
 
 
       if(ProAddr == 0 && program_cnt == 1){
-        ProAddr = (uintptr_t)VirtAddr + 0xb4;
+        ProAddr = (uintptr_t)VirtAddr + 0x3fc;
       }
       uint64_t FileSiz = program->p_filesz;
       uint64_t MemSiz = program->p_memsz;
