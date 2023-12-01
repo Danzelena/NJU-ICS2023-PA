@@ -25,7 +25,7 @@
 // #endif
 
 size_t ramdisk_read(void *buf, size_t offset, size_t len);
-void elf_loader(uintptr_t file_off, bool *suc);
+uintptr_t elf_loader(uintptr_t file_off, bool *suc);
 static uintptr_t loader(PCB *pcb, const char *filename)
 {
   // 从ramdisk中打开elf
@@ -34,13 +34,14 @@ static uintptr_t loader(PCB *pcb, const char *filename)
   // *suc = false;
   // elf处理函数
   // elf_handle();
-  elf_loader(file_off, &suc);
+  uintptr_t proaddr = 0;
+  proaddr = elf_loader(file_off, &suc);
   if(!(suc)){
     panic("Sorry! Can't load ELF file\n");
     assert(0);
   }
   // TODO();
-  return 0;
+  return proaddr;
 }
 
 void naive_uload(PCB *pcb, const char *filename)
@@ -51,7 +52,7 @@ void naive_uload(PCB *pcb, const char *filename)
 }
 
 // elf_handle function
-void elf_loader(uintptr_t file_off, bool *suc)
+uintptr_t elf_loader(uintptr_t file_off, bool *suc)
 {
 
   Elf_Ehdr header;
@@ -80,6 +81,7 @@ void elf_loader(uintptr_t file_off, bool *suc)
   // BUG:may have buf because malloc of klib is not implement!'
 
   size_t program_cnt;
+  uintptr_t ProAddr = 0;
   for (program_cnt = 0; program_cnt < header.e_phnum; program_cnt++)
   {
     // 每次读取一个segenment
@@ -93,6 +95,9 @@ void elf_loader(uintptr_t file_off, bool *suc)
 
       Elf_Off Offset = program->p_offset;
       Elf_Addr VirtAddr = program->p_vaddr;
+      if(ProAddr == 0){
+        ProAddr = (uintptr_t)VirtAddr;
+      }
       uint64_t FileSiz = program->p_filesz;
       uint64_t MemSiz = program->p_memsz;
 
@@ -102,9 +107,12 @@ void elf_loader(uintptr_t file_off, bool *suc)
       memset((char*)VirtAddr + FileSiz,0,MemSiz - FileSiz);
 
 
-      *suc = true;
+      
     }
+    
   }
+  *suc = true;
+  return ProAddr;
 }
 
 // 找到program header table<=>(Program Table offset)
