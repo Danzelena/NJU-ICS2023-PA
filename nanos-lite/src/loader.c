@@ -41,7 +41,7 @@ static uintptr_t loader(PCB *pcb, const char *filename)
     assert(0);
   }
   // TODO();
-  printf("proaddr=%x",proaddr);
+  printf("proaddr=%x\n",proaddr);
   return proaddr;
 }
 
@@ -80,7 +80,7 @@ uintptr_t elf_loader(uintptr_t file_off, bool *suc)
 
   Elf_Off program_off = header.e_phoff;
   // BUG:may have buf because malloc of klib is not implement!'
-
+  printf("Debug:program_off=0x%x\n",program_off);
   size_t program_cnt;
   uintptr_t ProAddr = 0;
   for (program_cnt = 0; program_cnt < header.e_phnum; program_cnt++)
@@ -96,14 +96,19 @@ uintptr_t elf_loader(uintptr_t file_off, bool *suc)
 
       Elf_Off Offset = program->p_offset;
       Elf_Addr VirtAddr = program->p_vaddr;
-      if(ProAddr == 0){
+
+      printf("Debug:program%d:O=0x%x,V=0x%x\n",program_cnt,Offset,VirtAddr);
+
+
+      if(ProAddr == 0 && program_cnt == 1){
         ProAddr = (uintptr_t)VirtAddr;
       }
       uint64_t FileSiz = program->p_filesz;
       uint64_t MemSiz = program->p_memsz;
+      printf("Debug:F=0x%x,M=0x%x\n",FileSiz,MemSiz);
 
       // [VirtAddr,VirtAddr + MemSiz]<- Ramdisk[0 + Program Table Offset + Segment offset]
-      ramdisk_read((char*)VirtAddr,Offset,MemSiz);
+      ramdisk_read((char*)VirtAddr,file_off + Offset,MemSiz);
       // memcpy((char*)VirtAddr,program,MemSiz);
       memset((char*)VirtAddr + FileSiz,0,MemSiz - FileSiz);
 
