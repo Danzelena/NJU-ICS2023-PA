@@ -1,18 +1,31 @@
 #include <common.h>
 
-static Context* do_event(Event e, Context* c) {
-  switch (e.event) {
-    case EVENT_YIELD:
-      printf("event_yield\n");
-      
-      break;
-    default: panic("Unhandled event ID = %d", e.event);
+static Context *do_event(Event e, Context *c)
+{
+  switch (e.event)
+  {
+  case EVENT_YIELD:
+    printf("event_yield\n");
+    /* Debug */
+    printf("DEBUG:Context message:\n");
+    // printf("gpr:\n");
+    // for (size_t i = 0; i < 32; i++)
+    // {
+    //   printf("%x\n", (unsigned long)c->gpr[i]);
+    // }
+    printf("mcause;%x\n", c->mcause);
+    printf("mstatus;%x\n", c->mstatus);
+    printf("mepc;%x\n", c->mepc);
+    break;
+  default:
+    panic("Unhandled event ID = %d", e.event);
   }
 
   return c;
 }
 
-void init_irq(void) {
+void init_irq(void)
+{
   Log("Initializing interrupt/exception handler...");
   cte_init(do_event);
 }
