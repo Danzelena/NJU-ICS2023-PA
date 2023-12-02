@@ -18,6 +18,7 @@ void do_syscall(Context *c) {
       // int val = 0;
       // asm volatile("li (GPRx), %0");
       c->GPRx = 0;
+      break;
     case SYS_exit:
       // printf("exit!Ohhh\n");
       // status: GPR2
