@@ -2,7 +2,7 @@
 #define ARCH_H__
 
 #ifdef __riscv_e
-#define NR_REGS 16
+#define NR_REGS 16:
 #else
 #define NR_REGS 32
 #endif
