@@ -16,9 +16,9 @@ void do_syscall(Context *c) {
     case SYS_yield:
       yield();
       // int val = 0;
-      int val =0;
-      asm volatile("li a0, 123" : : "r"(val));
-      // c->GPRx = 0;
+      // int val =0;
+      // asm volatile("li a0, 123" : : "r"(val));
+      c->GPRx = 0;
       // panic("a0:%d",c->GPRx);
       break;
     case SYS_exit:
