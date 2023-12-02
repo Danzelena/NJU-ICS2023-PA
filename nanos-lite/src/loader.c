@@ -104,6 +104,7 @@ uintptr_t elf_loader(uintptr_t file_off, bool *suc)
 
         // BUG: modify '0x3fc'!!!
         // and consider what depends on regs: `mcause`
+        printf("e_entry:%x\n",header.e_entry);
         ProAddr = (uintptr_t)VirtAddr + 0x3fc;
       }
       uint64_t FileSiz = program->p_filesz;
