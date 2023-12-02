@@ -22,7 +22,7 @@ static Context *do_event(Event e, Context *c)
   case EVENT_SYSCALL:
     printf("This is a syscall!\n");
     do_syscall(c);
-    panic("Syscall ID = %d", e.event);
+    // panic("Syscall ID = %d", e.event);
 
   default:
     panic("Unhandled event ID = %d", e.event);

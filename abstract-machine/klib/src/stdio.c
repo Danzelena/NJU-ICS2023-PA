@@ -115,7 +115,7 @@ int vsnprintf(char *out, size_t n, const char *fmt, va_list args)
 				}
 				if (num < 0)
 				{
-					putstr("num < 0\n");
+					// putstr("num < 0\n");
 					append('-');
 					num = 0 - num;
 				}
