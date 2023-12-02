@@ -82,7 +82,6 @@ uintptr_t elf_loader(uintptr_t file_off, bool *suc)
   // BUG:may have buf because malloc of klib is not implement!'
   printf("Debug:program_off=0x%x\n",program_off);
   size_t program_cnt;
-  uintptr_t ProAddr = 0;
   for (program_cnt = 0; program_cnt < header.e_phnum; program_cnt++)
   {
     // 每次读取一个segenment
@@ -100,13 +99,7 @@ uintptr_t elf_loader(uintptr_t file_off, bool *suc)
       printf("Debug:program%d:O=0x%x,V=0x%x\n",program_cnt,Offset,VirtAddr);
 
 
-      if(ProAddr == 0 && program_cnt == 1){
-
-        // BUG: modify '0x3fc'!!!
-        // and consider what depends on regs: `mcause`
-        printf("e_entry:%x\n",header.e_entry);
-        ProAddr = (uintptr_t)VirtAddr + 0x3fc;
-      }
+      
       uint64_t FileSiz = program->p_filesz;
       uint64_t MemSiz = program->p_memsz;
       printf("Debug:F=0x%x,M=0x%x\n",FileSiz,MemSiz);
@@ -122,7 +115,7 @@ uintptr_t elf_loader(uintptr_t file_off, bool *suc)
     
   }
   *suc = true;
-  return ProAddr;
+  return header.e_entry;
 }
 
 // 找到program header table<=>(Program Table offset)
