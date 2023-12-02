@@ -24,6 +24,8 @@
 #define GPR4 _args(4, ARGS_ARRAY)
 #define GPRx _args(5, ARGS_ARRAY)
 
+// RISCV32
+// _arg0, ecall a7,a0,a1,a2,a0
 // ISA-depedent definitions
 #if defined(__ISA_X86__)
 # define ARGS_ARRAY ("int $0x80", "eax", "ebx", "ecx", "edx", "eax")
@@ -45,6 +47,12 @@
 #error _syscall_ is not implemented
 #endif
 
+
+// RISCV32
+// _arg0(ecall a7,a0,a1,a2,a0)
+// ecall ?
+
+// put parameter to register , then execute system call
 intptr_t _syscall_(intptr_t type, intptr_t a0, intptr_t a1, intptr_t a2) {
   register intptr_t _gpr1 asm (GPR1) = type;
   register intptr_t _gpr2 asm (GPR2) = a0;
