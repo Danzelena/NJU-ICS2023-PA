@@ -7,6 +7,7 @@ int main() {
   // write(1, "Hello World!\n", 13);
   // volatile int j = 0;
   // write(1, "Hello World!\n", 13);
+  printf("hello world\n");
   printf("Hello World from Navy-apps for the %dth time!\n", i);
   // while (1) {
   //   j ++;
