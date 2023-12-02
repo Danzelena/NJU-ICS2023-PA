@@ -86,9 +86,13 @@ extern char end;
 intptr_t program_break = NULL;
 
 void *_sbrk(intptr_t increment) {
+
+  char *buf[100];
   if(program_break = NULL){
     program_break = &end;
   }
+  sprintf(buf,"pb=%x\n",program_break);
+  _write(1,buf,100);
   intptr_t last_pb = program_break;
   intptr_t new_pb = program_break + increment;
   int flag = _syscall_(SYS_brk,new_pb, 0, 0);
@@ -97,6 +101,9 @@ void *_sbrk(intptr_t increment) {
   }else{
     return (void *)-1;
   }
+  
+  sprintf(buf,"last_pb=%x\n",last_pb);
+  _write(1,buf,100);
   // return 0;
   // return (void *)-1;
   return last_pb;
