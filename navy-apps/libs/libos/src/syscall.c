@@ -97,7 +97,7 @@ void *_sbrk(intptr_t increment) {
     return (void *)-1;
   }
   // return 0;
-  return (void *)-1;
+  // return (void *)-1;
   return last_pb;
 }
 
