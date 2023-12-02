@@ -24,7 +24,8 @@ void do_syscall(Context *c) {
     case SYS_exit:
       // printf("exit!Ohhh\n");
       // status: GPR2
-      halt(a[1]);
+      halt(0);
+      // halt(a[1]);
       break;
 
     default: panic("Unhandled syscall ID = %d", a[0]);
