@@ -88,26 +88,26 @@ void* program_break = NULL;
 void *_sbrk(intptr_t increment) {
   return (void*)&end;
   // _write(1,"shbk begin\n",100);
-  char buf[100];
-  if(program_break = NULL){
-    program_break = &end;
-  }
-  // sprintf(buf,"pb=%x\n",program_break);
-  // _write(1,buf,100);
-  void* last_pb = program_break;
-  void* new_pb = program_break + increment;
-  int flag = _syscall_(SYS_brk,(intptr_t)new_pb, 0, 0);
-  if (flag == 0){
-    program_break = new_pb;
-  }else{
-    return (void *)-1;
-  }
+  // char buf[100];
+  // if(program_break = NULL){
+  //   program_break = &end;
+  // }
+  // // sprintf(buf,"pb=%x\n",program_break);
+  // // _write(1,buf,100);
+  // void* last_pb = program_break;
+  // void* new_pb = program_break + increment;
+  // int flag = _syscall_(SYS_brk,(intptr_t)new_pb, 0, 0);
+  // if (flag == 0){
+  //   program_break = new_pb;
+  // }else{
+  //   return (void *)-1;
+  // }
   
-  // sprintf(buf,"last_pb=%x\n",last_pb);
-  // _write(1,buf,100);
-  // return 0;
-  // return (void *)-1;
-  return last_pb;
+  // // sprintf(buf,"last_pb=%x\n",last_pb);
+  // // _write(1,buf,100);
+  // // return 0;
+  // // return (void *)-1;
+  // return last_pb;
 }
 
 int _read(int fd, void *buf, size_t count) {
