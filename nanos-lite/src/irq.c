@@ -7,7 +7,7 @@ static Context *do_event(Event e, Context *c)
   switch (e.event)
   {
   case EVENT_YIELD:
-    // printf("(yield trace)\n");
+    // printf("(yield trace)\n")
     /* Debug */
     // printf("DEBUG:Context message:\n");
     // printf("gpr:\n");
@@ -21,7 +21,7 @@ static Context *do_event(Event e, Context *c)
     
     break;
   case EVENT_SYSCALL:
-    // printf("(strace)Type:%d\n",c->GPR1);
+    printf("(strace)Type:%d\n",c->GPR1);
     do_syscall(c);
 
     // panic("Syscall ID = %d", e.event);

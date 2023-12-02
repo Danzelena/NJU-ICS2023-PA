@@ -30,6 +30,12 @@ void do_syscall(Context *c) {
       }
       c->GPRx = 0;
       break;
+
+
+    case SYS_brk:
+      // uintptr_t addr = a[1];
+      c->GPRx = 0;
+      break;
     case SYS_yield:
       yield();
       // int val = 0;

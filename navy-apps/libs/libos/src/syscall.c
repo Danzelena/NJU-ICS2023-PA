@@ -82,9 +82,23 @@ int _write(int fd, void *buf, size_t count) {
   return 0;
 }
 
+extern char end;
+intptr_t program_break = NULL;
 void *_sbrk(intptr_t increment) {
+  if(program_break = NULL){
+    program_break = &end;
+  }
+  intptr_t last_pb = program_break;
+  intptr_t new_pb = program_break + increment;
+  int flag = _syscall_(SYS_brk,new_pb, 0, 0);
+  if (flag == 0){
+    program_break = new_pb;
+  }else{
+    return (void *)-1;
+  }
   // return 0;
   return (void *)-1;
+  return last_pb;
 }
 
 int _read(int fd, void *buf, size_t count) {
