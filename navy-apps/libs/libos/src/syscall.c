@@ -86,6 +86,7 @@ extern char end;
 void* program_break = NULL;
 
 void *_sbrk(intptr_t increment) {
+  return (void*)&end;
   // _write(1,"shbk begin\n",100);
   char buf[100];
   if(program_break = NULL){
