@@ -17,6 +17,10 @@ static Context *do_event(Event e, Context *c)
     printf("mstatus;%x\n", c->mstatus);
     printf("mepc;%x\n", c->mepc);
     break;
+  case EVENT_SYSCALL:
+    printf("This is a syscall!\n");
+    panic("Syscall ID = %d", e.event);
+
   default:
     panic("Unhandled event ID = %d", e.event);
   }
