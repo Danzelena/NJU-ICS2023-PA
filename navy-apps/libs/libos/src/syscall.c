@@ -5,7 +5,6 @@
 #include <time.h>
 #include "syscall.h"
 
-#include<stdio.h>
 
 // helper macros
 #define _concat(x, y) x ## y
@@ -77,8 +76,8 @@ int _open(const char *path, int flags, mode_t mode) {
 
 int _write(int fd, void *buf, size_t count) {
   //TODO call `_write()`
-  printf("(_write)buf=%s,count=%d\n",buf,count);
-  _syscall_(SYS_write, fd, buf, count);
+  // printf("(_write)buf=%s,count=%d\n",buf,count);
+  _syscall_(SYS_write, fd, (__intptr_t)buf, count);
   // _exit(SYS_write);
   return 0;
 }
