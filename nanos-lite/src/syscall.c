@@ -11,7 +11,6 @@ void do_syscall(Context *c) {
   // a[3] = c->GPR4;
   // printf("a:(%d)\n",a[1]);
 
-  //TODO: do something depend on a[0]
   switch (a[0]) {
     case SYS_yield:
       yield();
@@ -24,6 +23,9 @@ void do_syscall(Context *c) {
     case SYS_exit:
       // printf("exit!Ohhh\n");
       // status: GPR2
+
+
+      // BUG:reg a0 is incorrect!!!(NEMU fault)
       halt(0);
       // halt(a[1]);
       break;
