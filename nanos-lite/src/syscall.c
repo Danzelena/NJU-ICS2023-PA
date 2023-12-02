@@ -6,7 +6,7 @@
 void do_syscall(Context *c) {
   uintptr_t a[4];
   a[0] = c->GPR1;
-  // a[1] = c->GPR2;
+  a[1] = c->GPR2;
   // a[2] = c->GPR3;
   // a[3] = c->GPR4;
   // printf("a:(%d,%d,%d)\n",a[1],a[2],a[3]);
@@ -18,7 +18,9 @@ void do_syscall(Context *c) {
       // int val = 0;
       // asm volatile("li (GPRx), %0");
       c->GPRx = 0;
-      
+    case SYS_exit:
+      // status: GPR2
+      halt(a[1]);
       break;
 
     default: panic("Unhandled syscall ID = %d", a[0]);
