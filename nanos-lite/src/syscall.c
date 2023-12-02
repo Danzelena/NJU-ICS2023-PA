@@ -26,7 +26,7 @@ void do_syscall(Context *c) {
 
 
       // BUG:reg a0 is incorrect!!!(NEMU fault)
-      halt(0);
+      halt(a[1]);
       // halt(a[1]);
       break;
 
