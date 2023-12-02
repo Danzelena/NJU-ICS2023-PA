@@ -1,5 +1,7 @@
 #include <common.h>
 
+
+void do_syscall();
 static Context *do_event(Event e, Context *c)
 {
   switch (e.event)
@@ -19,6 +21,7 @@ static Context *do_event(Event e, Context *c)
     break;
   case EVENT_SYSCALL:
     printf("This is a syscall!\n");
+    do_syscall(c);
     panic("Syscall ID = %d", e.event);
 
   default:
