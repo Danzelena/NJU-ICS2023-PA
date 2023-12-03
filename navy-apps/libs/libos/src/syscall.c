@@ -116,7 +116,7 @@ void *_sbrk(intptr_t increment) {
     program_break = program_break + increment;
   }else{
     assert(0);
-    return (void *)-1;
+    // return (void *)-1;
   }
   return last_pb;
   // sprintf(buf,"last_pb=%x\n",last_pb);
