@@ -111,10 +111,10 @@ void *_sbrk(intptr_t increment) {
   // sprintf(buf,"pb=%x\n",program_break);
   // _write(1,buf,100);
   void* last_pb = program_break;
-  void* new_pb = program_break + increment;
-  int flag = _syscall_(SYS_brk,(intptr_t)new_pb, 0, 0);
+  // void* new_pb = program_break + increment;
+  int flag = _syscall_(SYS_brk,(intptr_t)(program_break + increment), 0, 0);
   if (flag == 0){
-    program_break = new_pb;
+    program_break = program_break + increment;
   }else{
     return (void *)-1;
   }
