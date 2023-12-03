@@ -75,12 +75,12 @@ int _open(const char *path, int flags, mode_t mode) {
 }
 
 int _write(int fd, void *buf, size_t count) {
-  return _syscall_(SYS_write, fd, (intptr_t)buf, count);
+  // return _syscall_(SYS_write, fd, (intptr_t)buf, count);
   //TODO call `_write()`
   // printf("(_write)buf=%s,count=%d\n",buf,count);
-  // _syscall_(SYS_write, fd, (__intptr_t)buf, count);
+  _syscall_(SYS_write, fd, (__intptr_t)buf, count);
   // _exit(SYS_write);
-  // return 0;
+  return 0;/
 }
 
 extern char end;
