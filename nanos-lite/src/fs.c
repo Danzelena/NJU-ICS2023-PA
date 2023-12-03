@@ -118,7 +118,7 @@ size_t fs_read(int fd, void *buf, size_t len)
 // default whence: SEEK_SET
 int fs_lseek(int fd, size_t offset, int whence)
 {
-  if (whence != 0 || whence != SEEK_END)
+  if (whence != SEEK_SET && whence != SEEK_END)
   {
     panic("(fs_lseek)Sorry! whence is not SEEK_SET\n");
   }
@@ -133,7 +133,9 @@ int fs_lseek(int fd, size_t offset, int whence)
     return -1;
   }else if (whence == SEEK_END){
     file_table[fd].open_offset = offset + file_table[fd].size;
+    return offset;
   }
+  return offset;
 }
 
 size_t fs_write(int fd, void *buf, size_t len)
