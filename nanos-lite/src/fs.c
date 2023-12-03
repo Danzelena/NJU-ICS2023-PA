@@ -100,7 +100,7 @@ size_t fs_read(int fd, void *buf, size_t len)
   // check if out of boundary
 
   // check open_offset
-  if (file_table[fd].open_offset >= file_table[fd].disk_offset)
+  if (file_table[fd].open_offset >= file_table[fd].size)
   {
     panic("(fs_read)no bytes to read\n");
     return 0;
@@ -144,7 +144,7 @@ size_t fs_write(int fd, void *buf, size_t len)
   }
   else
   {
-    if (file_table[fd].open_offset >= file_table[fd].disk_offset)
+    if (file_table[fd].open_offset >= file_table[fd].size)
     {
       panic("(fs_write)no bytes to write\n");
       return 0;
