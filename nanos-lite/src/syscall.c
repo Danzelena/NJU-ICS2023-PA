@@ -1,5 +1,6 @@
 #include <common.h>
 #include "syscall.h"
+#include "../include/fs.h"
 
 // This is a user_handler func for AM, will handle different syscall
 void do_syscall(Context *c)
@@ -13,7 +14,17 @@ void do_syscall(Context *c)
 
   switch (a[0])
   {
+  case SYS_close:
+    c->GPRx = fs_close(a[1]);
+    
+    // return 0;
+    break;
+  case SYS_read:
+    c->GPRx = fs_read(a[1],(void*)a[2],a[3]);
+    break;
   case SYS_write:
+    c->GPRx = fs_write(a[1],(void*)a[2],a[3]);
+    break;
     // if (c->GPR2 == 1 || c->GPR2 == 2)
     // {
     //   for (int i = 0; i < c->GPR4; ++i)
@@ -30,7 +41,7 @@ void do_syscall(Context *c)
     // printf("buf = %s,len=%d\n",buf,len);
     // stdout, stderr
     if(fd == 1 || fd == 2){
-      for(int i = 0;i < len;i++){
+      for(int i = 0;i < len && buf[i] != '\0';i++){
         putch(buf[i]);
       }
     }

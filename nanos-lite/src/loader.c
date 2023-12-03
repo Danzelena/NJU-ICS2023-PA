@@ -1,5 +1,6 @@
 #include <proc.h>
 #include <elf.h>
+#include "../include/fs.h"
 
 #ifdef __LP64__
 #define Elf_Ehdr Elf64_Ehdr
@@ -25,23 +26,31 @@
 // #endif
 
 size_t ramdisk_read(void *buf, size_t offset, size_t len);
+
+
+
 uintptr_t elf_loader(uintptr_t file_off, bool *suc);
+uintptr_t elf_file_loader(int fd, bool *suc);
 static uintptr_t loader(PCB *pcb, const char *filename)
 {
-  // 从ramdisk中打开elf
-  uintptr_t file_off = 0;
+
   bool suc = false;
-  // *suc = false;
-  // elf处理函数
-  // elf_handle();
   uintptr_t proaddr = 0;
-  proaddr = elf_loader(file_off, &suc);
-  if(!(suc)){
+  // 使用 文件系统 之后的 loader
+  int file_fd = fs_open(filename, 0, 0);
+  proaddr = elf_file_loader(file_fd, &suc);
+
+  // 之前的 loader, 从ramdisk中打开elf
+  // uintptr_t file_off = 0;
+  // proaddr = elf_loader(file_off, &suc);
+
+  if (!(suc))
+  {
     panic("Sorry! Can't load ELF file\n");
     assert(0);
   }
   // TODO();
-  printf("proaddr=%x\n",proaddr);
+  // printf("proaddr=%x\n",proaddr);
   return proaddr;
 }
 
@@ -52,6 +61,64 @@ void naive_uload(PCB *pcb, const char *filename)
   ((void (*)())entry)();
 }
 
+uintptr_t elf_file_loader(int fd, bool *suc)
+{
+  Elf_Ehdr header;
+  size_t flag = fs_read(fd, &header, sizeof(Elf_Ehdr));
+  if (flag <= 0)
+  {
+    panic("Sorry! read elf header from ramdisk fail!\n");
+    *suc = false;
+  }
+  // check magic number
+  if (memcmp(header.e_ident, ELFMAG, SELFMAG) != 0)
+  {
+    panic("Sorry! magic number of 'elf'(maybe) file is invalid!\n");
+    assert(0);
+  }
+  Elf_Off program_off = header.e_phoff;
+  size_t program_cnt;
+  for (program_cnt = 0; program_cnt < header.e_phnum; program_cnt++)
+  {
+    Elf_Phdr *program = malloc(header.e_phentsize);
+    int flag = fs_lseek(fd, program_off + program_cnt * header.e_phentsize, 0);
+    if (flag < 0)
+    {
+      panic("Sorry! lseek in loader error!\n");
+    }
+    flag = fs_read(fd, program, header.e_phentsize);
+    if (flag <= 0)
+    {
+      panic("Sorry! fs_read in loader error!\n");
+    }
+    if (program->p_type == PT_LOAD)
+    {
+      // load this segementation
+
+      Elf_Off Offset = program->p_offset;
+      Elf_Addr VirtAddr = program->p_vaddr;
+
+      // printf("Debug:program%d:O=0x%x,V=0x%x\n", program_cnt, Offset, VirtAddr);
+
+      uint64_t FileSiz = program->p_filesz;
+      uint64_t MemSiz = program->p_memsz;
+      // printf("Debug:F=0x%x,M=0x%x\n", FileSiz, MemSiz);
+
+      // [VirtAddr,VirtAddr + MemSiz]<- Ramdisk[0 + Program Table Offset + Segment offset]
+      flag = fs_lseek(fd, Offset, 0);
+      if (flag < 0)
+      {
+        panic("Sorry! lseek in loader error!\n");
+      }
+      fs_read(fd, (char *)VirtAddr, MemSiz);
+      // ramdisk_read((char *)VirtAddr, file_off + Offset, MemSiz);
+      // memcpy((char*)VirtAddr,program,MemSiz);
+      memset((char *)VirtAddr + FileSiz, 0, MemSiz - FileSiz);
+    }
+  }
+  *suc = true;
+  return header.e_entry;
+}
 // elf_handle function
 uintptr_t elf_loader(uintptr_t file_off, bool *suc)
 {
@@ -80,7 +147,7 @@ uintptr_t elf_loader(uintptr_t file_off, bool *suc)
 
   Elf_Off program_off = header.e_phoff;
   // BUG:may have buf because malloc of klib is not implement!'
-  printf("Debug:program_off=0x%x\n",program_off);
+  printf("Debug:program_off=0x%x\n", program_off);
   size_t program_cnt;
   for (program_cnt = 0; program_cnt < header.e_phnum; program_cnt++)
   {
@@ -96,23 +163,17 @@ uintptr_t elf_loader(uintptr_t file_off, bool *suc)
       Elf_Off Offset = program->p_offset;
       Elf_Addr VirtAddr = program->p_vaddr;
 
-      printf("Debug:program%d:O=0x%x,V=0x%x\n",program_cnt,Offset,VirtAddr);
+      printf("Debug:program%d:O=0x%x,V=0x%x\n", program_cnt, Offset, VirtAddr);
 
-
-      
       uint64_t FileSiz = program->p_filesz;
       uint64_t MemSiz = program->p_memsz;
-      printf("Debug:F=0x%x,M=0x%x\n",FileSiz,MemSiz);
+      printf("Debug:F=0x%x,M=0x%x\n", FileSiz, MemSiz);
 
       // [VirtAddr,VirtAddr + MemSiz]<- Ramdisk[0 + Program Table Offset + Segment offset]
-      ramdisk_read((char*)VirtAddr,file_off + Offset,MemSiz);
+      ramdisk_read((char *)VirtAddr, file_off + Offset, MemSiz);
       // memcpy((char*)VirtAddr,program,MemSiz);
-      memset((char*)VirtAddr + FileSiz,0,MemSiz - FileSiz);
-
-
-      
+      memset((char *)VirtAddr + FileSiz, 0, MemSiz - FileSiz);
     }
-    
   }
   *suc = true;
   return header.e_entry;
