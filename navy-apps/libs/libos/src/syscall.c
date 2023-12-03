@@ -87,7 +87,7 @@ extern char end;
 void* program_break = NULL;
 
 void *_sbrk(intptr_t increment) {
-  // return (void *)-1;
+  return (void *)-1;
   // return (void*)&end;
   // _write(1,"shbk begin\n",100);
 
@@ -110,7 +110,7 @@ void *_sbrk(intptr_t increment) {
   // sprintf(buf,"last_pb=%x\n",last_pb);
   // _write(1,buf,100);
   // return (void *)-1;
-  
+
   return last_pb;
 }
 
