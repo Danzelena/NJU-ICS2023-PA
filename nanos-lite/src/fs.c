@@ -135,7 +135,8 @@ int fs_lseek(int fd, size_t offset, int whence)
     file_table[fd].open_offset = offset + file_table[fd].size;
     return offset;
   }
-  return offset;
+  panic("(fs_lseek)\n");
+  // return offset;
 }
 
 size_t fs_write(int fd, void *buf, size_t len)
