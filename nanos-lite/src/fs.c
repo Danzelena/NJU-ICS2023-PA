@@ -169,6 +169,7 @@ size_t fs_write(int fd, void *buf, size_t len)
       return 0;
     }
     size_t ret = ramdisk_write(buf, file_table[fd].disk_offset + file_table[fd].open_offset, len);
+    file_table[fd].open_offset += len;
     return ret;
   }
   return len;
