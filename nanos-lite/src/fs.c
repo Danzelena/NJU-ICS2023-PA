@@ -97,7 +97,7 @@ size_t ramdisk_write(const void *buf, size_t offset, size_t len);
 size_t fs_read(int fd, void *buf, size_t len)
 {
   // printf("fd=%d,len=%d\n",fd,len);
-  // printf("plus1:%d,plus2:%d\n",file_table[fd].disk_offset + file_table[fd].open_offset + len , file_table[fd + 1].disk_offset);
+  printf("plus1:%d,plus2:%d\n",file_table[fd].disk_offset + file_table[fd].open_offset + len , file_table[fd + 1].disk_offset);
   // check if out of boundary
 
   // check open_offset
