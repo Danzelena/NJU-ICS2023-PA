@@ -108,7 +108,7 @@ size_t fs_read(int fd, void *buf, size_t len)
   }
   if (file_table[fd].disk_offset + file_table[fd].open_offset + len > file_table[fd + 1].disk_offset)
   {
-    panic("(fs_read)Don't have enough size to read\n");
+    // panic("(fs_read)Don't have enough size to read\n");
     len = file_table[fd].size - file_table[fd].open_offset;
     // return 0;
   }
