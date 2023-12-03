@@ -25,13 +25,13 @@ void do_syscall(Context *c)
     // break;
     //  TODO:check `fd` value
     int fd = a[1];
-    char *buf = (char*)a[2];
+    // char *buf = (char*)a[2];
     int len = a[3];
     // printf("buf = %s,len=%d\n",buf,len);
     // stdout, stderr
     if(fd == 1 || fd == 2){
       for(int i = 0;i < len;i++){
-        putch(buf[i]);
+        putch(*(((char *)c->GPR3) + i));
       }
     }
     else{
