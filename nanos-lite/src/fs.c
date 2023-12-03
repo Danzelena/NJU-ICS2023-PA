@@ -56,7 +56,7 @@ int f_find(const char *pathname)
   bool found = false;
   for (int i = 0; i < ft_num; i++)
   {
-    // printf("file:%s\n",file_table[i].name);
+    printf("file:%s\n",file_table[i].name);
 
     if (strcmp(pathname, file_table[i].name) == 0)
     {
