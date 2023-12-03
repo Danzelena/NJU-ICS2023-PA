@@ -90,35 +90,35 @@ void *_sbrk(intptr_t increment) {
   // return (void *)-1;
   // return (void*)&end;
   // _write(1,"shbk begin\n",100);
-  // if (program_break == NULL){// 初始化
-  //   program_break = &end;
-  // }
-  // void *old_program_break = program_break;
-  
-  // int ret = _syscall_(SYS_brk, (intptr_t)(program_break + increment), 0, 0);
-  // if (ret == 0){
-  //   program_break = program_break + increment;
-  // }else {
-  //   assert(0);
-  // }
-  // return old_program_break;
-  // BUG!
-  // char buf[100];
-  if(program_break = NULL){
+  if (program_break == NULL){// 初始化
     program_break = &end;
   }
-  // sprintf(buf,"pb=%x\n",program_break);
-  // _write(1,buf,100);
-  void* last_pb = program_break;
-  // void* new_pb = program_break + increment;
-  int flag = _syscall_(SYS_brk,(intptr_t)(program_break + increment), 0, 0);
-  if (flag == 0){
+  void *old_program_break = program_break;
+  
+  int ret = _syscall_(SYS_brk, (intptr_t)(program_break + increment), 0, 0);
+  if (ret == 0){
     program_break = program_break + increment;
-  }else{
+  }else {
     assert(0);
-    // return (void *)-1;
   }
-  return last_pb;
+  return old_program_break;
+  // BUG!
+  // char buf[100];
+  // if(program_break = NULL){
+  //   program_break = &end;
+  // }
+  // // sprintf(buf,"pb=%x\n",program_break);
+  // // _write(1,buf,100);
+  // void* last_pb = program_break;
+  // // void* new_pb = program_break + increment;
+  // int flag = _syscall_(SYS_brk,(intptr_t)(program_break + increment), 0, 0);
+  // if (flag == 0){
+  //   program_break = program_break + increment;
+  // }else{
+  //   assert(0);
+  //   // return (void *)-1;
+  // }
+  // return last_pb;
   // sprintf(buf,"last_pb=%x\n",last_pb);
   // _write(1,buf,100);
   // return (void *)-1;
