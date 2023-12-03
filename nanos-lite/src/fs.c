@@ -127,7 +127,7 @@ int fs_lseek(int fd, size_t offset, int whence)
     if (offset <= file_table[fd].size)
     {
       file_table[fd].open_offset = offset;
-      return offset;
+      return file_table[fd].open_offset;
     }
     panic("(fs_lseek)Sorry! fs_lseek() offset > size\n");
     return -1;
