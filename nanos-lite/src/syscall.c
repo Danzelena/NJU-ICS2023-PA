@@ -14,32 +14,32 @@ void do_syscall(Context *c)
   switch (a[0])
   {
   case SYS_write:
-    if (c->GPR2 == 1 || c->GPR2 == 2)
-    {
-      for (int i = 0; i < c->GPR4; ++i)
-      {
-        putch(*(((char *)c->GPR3) + i));
-      }
-      c->GPRx = c->GPR4;
-    }
-    break;
-    //  TODO:check `fd` value
-    // int fd = a[1];
-    // char *buf = (char*)a[2];
-    // int len = a[3];
-    // printf("buf = %s,len=%d\n",buf,len);
-    // // stdout, stderr
-    // if(fd == 1 || fd == 2){
-    //   for(int i = 0;i < len;i++){
-    //     putch(buf[i]);
+    // if (c->GPR2 == 1 || c->GPR2 == 2)
+    // {
+    //   for (int i = 0; i < c->GPR4; ++i)
+    //   {
+    //     putch(*(((char *)c->GPR3) + i));
     //   }
+    //   c->GPRx = c->GPR4;
     // }
-    // else{
-    //   putch('S');putch('o');putch('r');putch('r');putch('y');putch('t');putch('o');putch('W');putch('r');putch('\n');
-    //   panic("Sorry,fd is not stdout or stderr\n");
-    // }
-    // c->GPRx = 0;
     // break;
+    //  TODO:check `fd` value
+    int fd = a[1];
+    char *buf = (char*)a[2];
+    int len = a[3];
+    printf("buf = %s,len=%d\n",buf,len);
+    // stdout, stderr
+    if(fd == 1 || fd == 2){
+      for(int i = 0;i < len;i++){
+        putch(buf[i]);
+      }
+    }
+    else{
+      putch('S');putch('o');putch('r');putch('r');putch('y');putch('t');putch('o');putch('W');putch('r');putch('\n');
+      panic("Sorry,fd is not stdout or stderr\n");
+    }
+    c->GPRx = 0;
+    break;
 
   case SYS_brk:
     // uintptr_t addr = a[1];
