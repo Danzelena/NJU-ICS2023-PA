@@ -64,6 +64,7 @@ void naive_uload(PCB *pcb, const char *filename)
 
 uintptr_t elf_file_loader(int fd, bool *suc)
 {
+  printf("1\n");
   Elf_Ehdr header;
   size_t flag = fs_read(fd, &header, sizeof(Elf_Ehdr));
   if (flag <= 0)
@@ -77,6 +78,7 @@ uintptr_t elf_file_loader(int fd, bool *suc)
     panic("Sorry! magic number of 'elf'(maybe) file is invalid!\n");
     assert(0);
   }
+  printf("2\n");
   Elf_Off program_off = header.e_phoff;
   size_t program_cnt;
   for (program_cnt = 0; program_cnt < header.e_phnum; program_cnt++)
@@ -117,6 +119,7 @@ uintptr_t elf_file_loader(int fd, bool *suc)
       memset((char *)VirtAddr + FileSiz, 0, MemSiz - FileSiz);
     }
   }
+  printf("3\n");
   *suc = true;
   return header.e_entry;
 }
