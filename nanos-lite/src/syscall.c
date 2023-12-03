@@ -38,7 +38,7 @@ void do_syscall(Context *c)
       putch('S');putch('o');putch('r');putch('r');putch('y');putch('t');putch('o');putch('W');putch('r');putch('\n');
       panic("Sorry,fd is not stdout or stderr\n");
     }
-    c->GPRx = 1;
+    c->GPRx = c->GPR4;
     break;
 
   case SYS_brk:
