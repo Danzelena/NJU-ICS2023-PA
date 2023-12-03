@@ -124,7 +124,7 @@ size_t fs_read(int fd, void *buf, size_t len)
 int fs_lseek(int fd, size_t offset, int whence)
 {
   printf("whence:%d\n",whence);
-  if (whence != SEEK_SET && whence != SEEK_END)
+  if (whence != SEEK_SET && whence != SEEK_END && whence != SEEK_CUR)
   {
     panic("(fs_lseek)Sorry! whence is not SEEK_SET\n");
   }
@@ -139,6 +139,9 @@ int fs_lseek(int fd, size_t offset, int whence)
     return -1;
   }else if (whence == SEEK_END){
     file_table[fd].open_offset = offset + file_table[fd].size;
+    return file_table[fd].open_offset;
+  }else if (whence == SEEK_CUR){
+    file_table[fd].open_offset += offset;
     return file_table[fd].open_offset;
   }
   panic("(fs_lseek)\n");
