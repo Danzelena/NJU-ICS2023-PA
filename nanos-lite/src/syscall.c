@@ -14,6 +14,12 @@ void do_syscall(Context *c)
 
   switch (a[0])
   {
+  case SYS_lseek:
+    c->GPRx = fs_lseek(a[1],a[2],a[3]);
+    break;
+  case SYS_open:
+    c->GPRx = fs_open((char*)a[1],a[2],a[3]);
+    break;
   case SYS_close:
     c->GPRx = fs_close(a[1]);
     
