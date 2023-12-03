@@ -56,6 +56,8 @@ int f_find(const char *pathname)
   bool found = false;
   for (int i = 0; i < ft_num; i++)
   {
+    printf("file:%s",file_table[i].name);
+
     if (strcmp(pathname, file_table[i].name) == 0)
     {
       if (!found)
@@ -79,7 +81,7 @@ int fs_open(const char *pathname, int flags, int mode)
   int ret = f_find(pathname);
   if (ret == -1)
   {
-    panic("Sorry! file not found!\n");
+    panic("(fs_open)Sorry! file not found!\n");
   }
   return ret;
 }
