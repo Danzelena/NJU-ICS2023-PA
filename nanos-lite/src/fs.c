@@ -96,26 +96,8 @@ size_t ramdisk_write(const void *buf, size_t offset, size_t len);
  */
 size_t fs_read(int fd, void *buf, size_t len)
 {
-//   Finfo *info = &file_table[fd];
-//   size_t real_len;
-  
-//   //assert(info->open_offset + len <= info->size);
-//   if (info->read){
-//     real_len = info->read(buf, info->open_offset, len);
-//     info->open_offset += real_len;
-//   }else {
-//     real_len = info->open_offset + len <= info->size ?
-//     len : info->size - info->open_offset;
-//     ramdisk_read(buf, info->disk_offset + info->open_offset, real_len);
-//     info->open_offset += real_len;
-//   }
-// printf("ret:%d\n",real_len);
-//   return real_len;
-
-
-
-  printf("fd=%d,len=%d\n",fd,len);
-  printf("plus1:%d,plus2:%d\n",file_table[fd].disk_offset + file_table[fd].open_offset + len , file_table[fd + 1].disk_offset);
+  // printf("fd=%d,len=%d\n",fd,len);
+  // printf("plus1:%d,plus2:%d\n",file_table[fd].disk_offset + file_table[fd].open_offset + len , file_table[fd + 1].disk_offset);
   // check if out of boundary
 
   // check open_offset
@@ -131,7 +113,8 @@ size_t fs_read(int fd, void *buf, size_t len)
     // return 0;
   }
   size_t ret = ramdisk_read(buf, file_table[fd].disk_offset + file_table[fd].open_offset, len);
-  printf("ret:%d\n",ret);
+  file_table[fd].open_offset += len;
+  // printf("ret:%d\n",ret);
   return ret;
 
   // If the file offset is at od past the end of file, return 0
