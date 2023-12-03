@@ -56,7 +56,7 @@ int f_find(const char *pathname)
   bool found = false;
   for (int i = 0; i < ft_num; i++)
   {
-    printf("file:%s\n",file_table[i].name);
+    printf("file:%s\n", file_table[i].name);
 
     if (strcmp(pathname, file_table[i].name) == 0)
     {
@@ -85,7 +85,6 @@ int fs_open(const char *pathname, int flags, int mode)
   }
   return ret;
 }
-
 
 size_t ramdisk_read(void *buf, size_t offset, size_t len);
 size_t ramdisk_write(const void *buf, size_t offset, size_t len);
@@ -119,16 +118,22 @@ size_t fs_read(int fd, void *buf, size_t len)
 // default whence: SEEK_SET
 int fs_lseek(int fd, size_t offset, int whence)
 {
-  if(whence > 0){
+  if (whence != 0 || whence != SEEK_END)
+  {
     panic("(fs_lseek)Sorry! whence is not SEEK_SET\n");
   }
-  if (offset <= file_table[fd].size)
+  if(whence == SEEK_SET)
   {
-    file_table[fd].open_offset = offset;
-    return offset;
+    if (offset <= file_table[fd].size)
+    {
+      file_table[fd].open_offset = offset;
+      return offset;
+    }
+    panic("(fs_lseek)Sorry! fs_lseek() offset > size\n");
+    return -1;
+  }else if (whence == SEEK_END){
+    file_table[fd].open_offset = offset + file_table[fd].size;
   }
-  panic("(fs_lseek)Sorry! fs_lseek() offset > size\n");
-  return -1;
 }
 
 size_t fs_write(int fd, void *buf, size_t len)
