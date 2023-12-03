@@ -133,7 +133,7 @@ int fs_lseek(int fd, size_t offset, int whence)
     return -1;
   }else if (whence == SEEK_END){
     file_table[fd].open_offset = offset + file_table[fd].size;
-    return offset;
+    return file_table[fd].open_offset;
   }
   panic("(fs_lseek)\n");
   // return offset;
