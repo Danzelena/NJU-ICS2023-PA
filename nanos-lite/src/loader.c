@@ -38,6 +38,7 @@ static uintptr_t loader(PCB *pcb, const char *filename)
   uintptr_t proaddr = 0;
   // 使用 文件系统 之后的 loader
   int file_fd = fs_open(filename, 0, 0);
+  printf("0\n");
   proaddr = elf_file_loader(file_fd, &suc);
 
   // 之前的 loader, 从ramdisk中打开elf
