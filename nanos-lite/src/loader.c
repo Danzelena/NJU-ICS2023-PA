@@ -33,7 +33,7 @@ uintptr_t elf_loader(uintptr_t file_off, bool *suc);
 uintptr_t elf_file_loader(int fd, bool *suc);
 static uintptr_t loader(PCB *pcb, const char *filename)
 {
-
+  printf("begin to load!\n");
   bool suc = false;
   uintptr_t proaddr = 0;
   // 使用 文件系统 之后的 loader
@@ -49,6 +49,7 @@ static uintptr_t loader(PCB *pcb, const char *filename)
     panic("Sorry! Can't load ELF file\n");
     assert(0);
   }
+  printf("finish load!\n");
   // TODO();
   // printf("proaddr=%x\n",proaddr);
   return proaddr;
