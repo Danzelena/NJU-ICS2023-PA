@@ -96,6 +96,7 @@ size_t ramdisk_write(const void *buf, size_t offset, size_t len);
  */
 size_t fs_read(int fd, void *buf, size_t len)
 {
+  printf("fd=%d,len=%d",fd,len);
   // check if out of boundary
 
   // check open_offset
