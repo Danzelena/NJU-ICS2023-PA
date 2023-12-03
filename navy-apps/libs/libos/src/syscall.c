@@ -86,8 +86,11 @@ extern char end;
 void* program_break = NULL;
 
 void *_sbrk(intptr_t increment) {
-  return (void*)&end;
+  return (void *)-1;
+  // return (void*)&end;
   // _write(1,"shbk begin\n",100);
+
+  // // BUG!
   // char buf[100];
   // if(program_break = NULL){
   //   program_break = &end;
@@ -103,10 +106,10 @@ void *_sbrk(intptr_t increment) {
   //   return (void *)-1;
   // }
   
-  // // sprintf(buf,"last_pb=%x\n",last_pb);
-  // // _write(1,buf,100);
-  // // return 0;
-  // // return (void *)-1;
+  // sprintf(buf,"last_pb=%x\n",last_pb);
+  // _write(1,buf,100);
+  // return 0;
+  // return (void *)-1;
   // return last_pb;
 }
 
