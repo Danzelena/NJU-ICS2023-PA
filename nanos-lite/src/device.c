@@ -64,10 +64,23 @@ size_t events_read(void *buf, size_t offset, size_t len)
   return ret;
 }
 
+// 不支持lseek,可以忽略offset
+// 将文件(/proc/dispinfo,即屏幕大小)的len 字节写到buf 中
+// dispinfo 由屏幕大小的获得, 读出的格式为:
+// WIDTH : 640
+// HEIGHT: 480
 size_t dispinfo_read(void *buf, size_t offset, size_t len)
 {
-  return 0;
+  int width = io_read(AM_GPU_CONFIG).width;
+  int height = io_read(AM_GPU_CONFIG).height;
+  int ret = snprintf(buf,len,"WIDTH : %d\nHEIGHT : %d\n",width,height);
+  if(ret >= len){
+    panic("the output was truncated\n");
+  }
+  return ret;
+  // return 0;
 }
+
 
 size_t fb_write(const void *buf, size_t offset, size_t len)
 {
