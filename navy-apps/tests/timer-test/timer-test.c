@@ -10,6 +10,7 @@ int main(){
     printf("Debug:target2\n");
     while(1){
         gettimeofday(tv,NULL);
+        printf("Debug:target3\n");
         while(tv->tv_usec < 500000*cnt){
             gettimeofday(tv,NULL);
         }
