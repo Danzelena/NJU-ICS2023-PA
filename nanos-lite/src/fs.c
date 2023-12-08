@@ -169,7 +169,7 @@ size_t fs_write(int fd, void *buf, size_t len)
   // handle stdout and stderrir( use`putch()`)
   if (file_table[fd].write != NULL)
   {
-    file_table[fd].write(buf, file_table->open_offset, len);
+    file_table[fd].write(buf, file_table[fd].open_offset, len);
   }
 
   else
