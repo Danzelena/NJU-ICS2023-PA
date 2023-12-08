@@ -77,14 +77,20 @@ int NDL_QueryAudio() {
 void extract_values(const char *content) {
   char *token;
   char *rest = strdup(content);  // 复制content，以便保留原始内容
-
+  int cnt = 0;
   while ((token = strtok_r(rest, ":", &rest))) {
       // 去除空白字符
       char *trimmed_value = strtok(token, " \t\n\r");
       if (trimmed_value != NULL) {
-        int value_as_int = atoi(trimmed_value);  
+        
         printf("Value: %s\n", trimmed_value);
       }
+      if(cnt == 1){
+        screen_w = atoi(trimmed_value);
+      }else if(cnt == 2){
+        screen_h = atoi(trimmed_value);
+      }
+      cnt++;
   }
 
   free(rest);  // 释放内存
@@ -149,6 +155,7 @@ int NDL_Init(uint32_t flags) {
   /* handle the buf use ragex */
 
   extract_values(buf);
+  printf("Width:%d,Height:%d",screen_w,screen_h);
   return 0;
 }
 
