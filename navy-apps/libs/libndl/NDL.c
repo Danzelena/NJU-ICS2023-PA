@@ -82,12 +82,12 @@ int NDL_Init(uint32_t flags) {
   /* read /proc/dispinfo */
   int dispinfo = _open("/proc/dispinfo",0,0);
   if(dispinfo < 0){
-    panic("fail to open\n");
+    // panic("fail to open\n");
   }
   char buf[128];
   int flag = _read(dispinfo,buf,sizeof(buf));
   if(flag <= 0){
-    panic("fail to read\n");
+    // panic("fail to read\n");
   }
 
   /* handle the buf use ragex */
