@@ -157,7 +157,7 @@ int NDL_Init(uint32_t flags) {
   /* handle the buf use ragex */
 
   extract_values(buf);
-  printf("Width:%d,Height:%d",screen_w,screen_h);
+  printf("Width:%d,Height:%d\n",screen_w,screen_h);
   return 0;
 }
 
