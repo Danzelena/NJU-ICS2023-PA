@@ -67,7 +67,7 @@ void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
   int graphics = open("/dev/fb", 0);
   int canvas_x = 0;
   int canvas_y = 0;
-  printf("Debug:x=%d,y=%d",x,y);
+  printf("Debug:x=%d,y=%d\n",x,y);
 
   for (int i = 0; i < h; ++i){
     lseek(graphics, ((canvas_y + y + i) * screen_w + (canvas_x + x)) * sizeof(uint32_t), SEEK_SET);
