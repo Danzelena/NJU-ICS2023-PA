@@ -3,12 +3,17 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <sys/time.h>
 
 static int evtdev = -1;
 static int fbdev = -1;
 static int screen_w = 0, screen_h = 0;
 
+// 以毫秒为单位返回系统时间
 uint32_t NDL_GetTicks() {
+  struct timeval tv;
+  gettimeofday(&tv,NULL);
+  return tv.tv_sec*1000000+tv.tv_usec;
   return 0;
 }
 
@@ -54,6 +59,7 @@ int NDL_QueryAudio() {
 }
 
 int NDL_Init(uint32_t flags) {
+  printf("NDL_Init!\n");
   if (getenv("NWM_APP")) {
     evtdev = 3;
   }
@@ -61,4 +67,5 @@ int NDL_Init(uint32_t flags) {
 }
 
 void NDL_Quit() {
+  printf("NDL_Quit!\n");
 }
