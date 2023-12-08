@@ -89,6 +89,8 @@ void extract_values(const char *content) {
         screen_w = atoi(trimmed_value);
       }else if(cnt == 2){
         screen_h = atoi(trimmed_value);
+      }else if(cnt == 3){
+        return;
       }
       cnt++;
   }
