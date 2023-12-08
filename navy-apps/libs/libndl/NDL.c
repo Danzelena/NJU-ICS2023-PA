@@ -36,7 +36,7 @@ int NDL_PollEvent(char *buf, int len) {
 // 打开一张(*w) X (*h)的画布
 // 如果*w和*h均为0, 则将系统全屏幕作为画布, 并将*w和*h分别设为系统屏幕的大小
 void NDL_OpenCanvas(int *w, int *h) {
-
+  
   if (getenv("NWM_APP")) {
     int fbctl = 4;
     fbdev = 5;
@@ -59,6 +59,12 @@ void NDL_OpenCanvas(int *w, int *h) {
 // 向画布`(x, y)`坐标处绘制`w*h`的矩形图像, 并将该绘制区域同步到屏幕上
 // 图像像素按行优先方式存储在`pixels`中, 每个像素用32位整数以`00RRGGBB`的方式描述颜色
 void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
+  int fd = open("/dev/fb", 0);
+  for (int i = 0;i < h;i ++){
+    lseek(fd,((y + i)*screen_h + x)*sizeof(uint32_t),SEEK_SET);
+    int s = write(fd,pixels + w * i,w*sizeof(uint32_t));
+  }
+  close(fd);
 }
 
 void NDL_OpenAudio(int freq, int channels, int samples) {
@@ -74,6 +80,8 @@ int NDL_PlayAudio(void *buf, int len) {
 int NDL_QueryAudio() {
   return 0;
 }
+
+// BUG:because of KISS rule(
 void extract_values(const char *content) {
   char *token;
   char *rest = strdup(content);  // 复制content，以便保留原始内容
@@ -81,10 +89,10 @@ void extract_values(const char *content) {
   while ((token = strtok_r(rest, ":", &rest))) {
       // 去除空白字符
       char *trimmed_value = strtok(token, " \t\n\r");
-      if (trimmed_value != NULL) {
+      // if (trimmed_value != NULL) {
         
-        printf("Value: %s\n", trimmed_value);
-      }
+      //   // printf("Value: %s\n", trimmed_value);
+      // }
       if(cnt == 1){
         screen_w = atoi(trimmed_value);
       }else if(cnt == 2){
@@ -157,7 +165,7 @@ int NDL_Init(uint32_t flags) {
   /* handle the buf use ragex */
 
   extract_values(buf);
-  printf("Width:%d,Height:%d\n",screen_w,screen_h);
+  // printf("Width:%d,Height:%d\n",screen_w,screen_h);
   return 0;
 }
 
