@@ -102,7 +102,7 @@ int NDL_Init(uint32_t flags) {
   if(flag <= 0){
     // panic("fail to read\n");
   }
-
+  printf("buf:\n%s",buf);
   /* handle the buf use ragex */
   extract_values(buf);
   return 0;
