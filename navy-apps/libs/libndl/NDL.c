@@ -4,6 +4,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <sys/time.h>
+#include <regex.h>
 
 static int evtdev = -1;
 static int fbdev = -1;
@@ -81,12 +82,54 @@ void extract_values(const char *content) {
       // 去除空白字符
       char *trimmed_value = strtok(token, " \t\n\r");
       if (trimmed_value != NULL) {
-          printf("Value: %s\n", trimmed_value);
+        int value_as_int = atoi(trimmed_value);  
+        printf("Value: %d\n", trimmed_value);
       }
   }
 
   free(rest);  // 释放内存
 }
+void extract_values2(const char *str){
+  regex_t regex;
+  regmatch_t matches[2];
+  
+  int ret = regcomp(&regex, "\\[\\w+\\] : \\[(\\d+)\\]", REG_EXTENDED);
+  if (ret != 0) {
+        char error_buffer[100];
+        regerror(ret, &regex, error_buffer, sizeof(error_buffer));
+        fprintf(stderr, "Regex compilation failed: %s\n", error_buffer);
+        exit(EXIT_FAILURE);
+    }
+
+  // 进行匹配
+  ret = regexec(&regex, str, 2, matches, 0);
+
+  // 处理匹配结果
+  if (ret == 0) {
+      // 提取匹配到的value
+      int start = matches[1].rm_so;
+      int end = matches[1].rm_eo;
+      char value_str[10];  // 假设value的最大长度为10
+
+      strncpy(value_str, content + start, end - start);
+      value_str[end - start] = '\0';
+
+      // 转换为整数
+      int value_as_int = atoi(value_str);
+      printf("Value as int: %d\n", value_as_int);
+  } else if (ret == REG_NOMATCH) {
+      fprintf(stderr, "No match found.\n");
+  } else {
+      char error_buffer[100];
+      regerror(ret, &regex, error_buffer, sizeof(error_buffer));
+      fprintf(stderr, "Regex matching failed: %s\n", error_buffer);
+  }
+
+  // 释放正则表达式资源
+  regfree(&regex);
+}
+
+
 int NDL_Init(uint32_t flags) {
   printf("NDL_Init!\n");
   if (getenv("NWM_APP")) {
@@ -104,7 +147,8 @@ int NDL_Init(uint32_t flags) {
   }
   printf("buf:\n%s",buf);
   /* handle the buf use ragex */
-  extract_values(buf);
+
+  extract_values2(buf);
   return 0;
 }
 
