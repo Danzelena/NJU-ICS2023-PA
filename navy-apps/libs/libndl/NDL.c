@@ -61,7 +61,7 @@ void NDL_OpenCanvas(int *w, int *h) {
 void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
   // int fd = open("/dev/fb", 0);
   // for (int i = 0;i < h;i ++){
-  //   lseek(fd,((y + i)*screen_h + x)*sizeof(uint32_t),SEEK_SET);
+  //   lseek(fd,((y + i)*screen_w + x)*sizeof(uint32_t),SEEK_SET);
   //   int s = write(fd,pixels + w * i,w*sizeof(uint32_t));
   // }
   int graphics = open("/dev/fb", 0);
