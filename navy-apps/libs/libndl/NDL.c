@@ -111,7 +111,7 @@ void extract_values2(const char *str){
       int end = matches[1].rm_eo;
       char value_str[10];  // 假设value的最大长度为10
 
-      strncpy(value_str, content + start, end - start);
+      strncpy(value_str, str + start, end - start);
       value_str[end - start] = '\0';
 
       // 转换为整数
