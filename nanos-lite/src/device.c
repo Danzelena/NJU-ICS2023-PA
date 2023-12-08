@@ -90,6 +90,7 @@ size_t fb_write(const void *buf, size_t offset, size_t len)
   // /* 计算坐标 */
   int y_ind = offset / width;
   int x_ind = offset % width;
+  printf("Debug:x_ind=%d,y_ind=%d",x_ind,y_ind);
   // void * buf_c = buf;
   // printf("Debug:x=%d,y=%d\n",x_ind,y_ind);
   // /* IOE绘图 */
