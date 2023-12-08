@@ -85,21 +85,23 @@ size_t dispinfo_read(void *buf, size_t offset, size_t len)
 size_t fb_write(const void *buf, size_t offset, size_t len)
 {
   // BUG:how to implement fb_write
-  // int width = io_read(AM_GPU_CONFIG).width;
+  int width = io_read(AM_GPU_CONFIG).width;
   // int height = io_read(AM_GPU_CONFIG).height;
   // /* 计算坐标 */
-  // int y_ind = offset / width;
-  // int x_ind = offset % width;
+  int y_ind = offset / width;
+  int x_ind = offset % width;
+  // void * buf_c = buf;
   // printf("Debug:x=%d,y=%d\n",x_ind,y_ind);
   // /* IOE绘图 */
   // io_write(AM_GPU_FBDREAW,x_ind,y_ind,)
 
   // /* 内容同步 */
   // return 0;
-  uintptr_t *ptr;
-  ptr = (uintptr_t *)(&buf);
-  printf("target1\n");
-  io_write(AM_GPU_MEMCPY, offset, (void *)*ptr, len);
+  // uintptr_t *ptr;
+  // ptr = (uintptr_t *[])(&buf);
+  // printf("target1\n");
+  io_write(AM_GPU_FBDRAW, x_ind, y_ind, buf, len, 1, true);
+  // io_write(AM_GPU_MEMCPY, offset, (void *)*ptr, len);
   io_write(AM_GPU_FBDRAW, 0, 0, NULL, 0, 0, true);
   
   return len;
