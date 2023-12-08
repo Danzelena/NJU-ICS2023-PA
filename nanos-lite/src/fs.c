@@ -3,15 +3,15 @@
 typedef size_t (*ReadFn)(void *buf, size_t offset, size_t len);
 typedef size_t (*WriteFn)(const void *buf, size_t offset, size_t len);
 
-// 文件
+// 文件(文件记录表中的文件)
 typedef struct
 {
   char *name;
   size_t size;
   size_t disk_offset;
   size_t open_offset;
-  ReadFn read;
-  WriteFn write;
+  ReadFn read;// 读函数指针,NULL for normal files
+  WriteFn write;// 写函数指针,NULL for normal files
 } Finfo;
 
 enum
@@ -38,8 +38,8 @@ size_t invalid_write(const void *buf, size_t offset, size_t len)
 /* 文件记录表 file_table 是 类型为Finfo的数组,*/
 static Finfo file_table[] __attribute__((used)) = {
     [FD_STDIN] = {"stdin", 0, 0, 0, invalid_read, invalid_write},
-    [FD_STDOUT] = {"stdout", 0, 0, 0, invalid_read, invalid_write},
-    [FD_STDERR] = {"stderr", 0, 0, 0, invalid_read, invalid_write},
+    [FD_STDOUT] = {"stdout", 0, 0, 0, invalid_read, serial_write},
+    [FD_STDERR] = {"stderr", 0, 0, 0, invalid_read, serial_write},
 #include "files.h"
 };
 
@@ -151,14 +151,10 @@ int fs_lseek(int fd, size_t offset, int whence)
 size_t fs_write(int fd, void *buf, size_t len)
 {
   // handle stdout and stderrir( use`putch()`)
-  if (fd == 1 || fd == 2)
-  {
-    // call putch()
-    for (int i = 0; i < len && ((char *)buf)[i] != '\0'; i++)
-    {
-      putch(((char *)buf)[i]);
-    }
+  if(file_table[fd].write!=NULL){
+    file_table[fd].write(buf,0,len);
   }
+
   else
   {
     if (file_table[fd].open_offset >= file_table[fd].size)

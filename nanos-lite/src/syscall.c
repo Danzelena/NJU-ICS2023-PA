@@ -1,6 +1,8 @@
 #include <common.h>
 #include "syscall.h"
 #include "../include/fs.h"
+#include <sys/time.h>
+
 
 // This is a user_handler func for AM, will handle different syscall
 void do_syscall(Context *c)
@@ -41,23 +43,32 @@ void do_syscall(Context *c)
     // }
     // break;
     //  TODO:check `fd` value
-    int fd = a[1];
-    char *buf = (char*)a[2];
-    int len = a[3];
-    // printf("buf = %s,len=%d\n",buf,len);
-    // stdout, stderr
-    if(fd == 1 || fd == 2){
-      for(int i = 0;i < len && buf[i] != '\0';i++){
-        putch(buf[i]);
-      }
-    }
-    else{
-      putch('S');putch('o');putch('r');putch('r');putch('y');putch('t');putch('o');putch('W');putch('r');putch('\n');
-      panic("Sorry,fd is not stdout or stderr\n");
-    }
-    c->GPRx = c->GPR4;
+    // int fd = a[1];
+    // char *buf = (char*)a[2];
+    // int len = a[3];
+    // // printf("buf = %s,len=%d\n",buf,len);
+    // // stdout, stderr
+    // if(fd == 1 || fd == 2){
+    //   for(int i = 0;i < len && buf[i] != '\0';i++){
+    //     putch(buf[i]);
+    //   }
+    // }
+    // else{
+    //   putch('S');putch('o');putch('r');putch('r');putch('y');putch('t');putch('o');putch('W');putch('r');putch('\n');
+    //   panic("Sorry,fd is not stdout or stderr\n");
+    // }
+    // c->GPRx = c->GPR4;
+    // break;
+  case SYS_gettimeofday:
+    //TODO:add system action
+    struct timeval *tv = (struct timeval *)a[1];
+    // struct timezone *tz = (struct timezone *)a[2];
+    AM_TIMER_UPTIME_T usr;
+    usr = io_read(AM_TIMER_UPTIME);
+    tv->tv_sec = (usr.us/1000000);
+    tv->tv_usec = (usr.us%1000000);
+    c->GPRx = 0;
     break;
-
   case SYS_brk:
     // uintptr_t addr = a[1];
     c->GPRx = 0;
