@@ -11,6 +11,7 @@ int main(){
     while(1){
         gettimeofday(&tv,NULL);
         printf("Debug:target3\n");
+        printf("tv_usec=%d",tv.tv_usec);
         while(tv.tv_usec < 500000*cnt){
             gettimeofday(&tv,NULL);
         }
