@@ -73,7 +73,20 @@ int NDL_PlayAudio(void *buf, int len) {
 int NDL_QueryAudio() {
   return 0;
 }
+void extract_values(const char *content) {
+  char *token;
+  char *rest = strdup(content);  // 复制content，以便保留原始内容
 
+  while ((token = strtok_r(rest, ":", &rest))) {
+      // 去除空白字符
+      char *trimmed_value = strtok(token, " \t\n\r");
+      if (trimmed_value != NULL) {
+          printf("Value: %s\n", trimmed_value);
+      }
+  }
+
+  free(rest);  // 释放内存
+}
 int NDL_Init(uint32_t flags) {
   printf("NDL_Init!\n");
   if (getenv("NWM_APP")) {
@@ -91,20 +104,7 @@ int NDL_Init(uint32_t flags) {
   }
 
   /* handle the buf use ragex */
-  char line[64];
-  while (fgets(line, sizeof(line), dispinfo) != NULL) {
-      char key[32];
-      char value[32];
-
-      // 使用sscanf从字符串中提取key和value
-      if (sscanf(line, "[%99[^]]] : [%99[^]]]", key, value) == 2) {
-        // 去除key和value两端的空白字符
-        char *trimmed_key = strtok(key, " \t\n\r");
-        char *trimmed_value = strtok(value, " \t\n\r");
-
-        printf("Key: %s, Value: %s\n", trimmed_key, trimmed_value);
-      }
-  }
+  extract_values(buf);
   return 0;
 }
 
