@@ -63,6 +63,9 @@ void do_syscall(Context *c)
     //TODO:add system action
     struct timeval *tv = (struct timeval *)a[1];
     // struct timezone *tz = (struct timezone *)a[2];
+    if(tv == NULL){
+      panic("tv is NULL\n");
+    }
     AM_TIMER_UPTIME_T usr;
     usr = io_read(AM_TIMER_UPTIME);
     tv->tv_sec = (usr.us/1000000);
