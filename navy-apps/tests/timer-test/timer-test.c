@@ -4,8 +4,10 @@ void hello_world(){
     printf("helloworld\n");
 }
 int main(){
+    printf("Debug:target1\n");
     struct timeval *tv;
     int cnt = 1;
+    printf("Debug:target2\n");
     while(1){
         gettimeofday(tv,NULL);
         while(tv->tv_usec < 500000*cnt){
