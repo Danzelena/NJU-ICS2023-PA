@@ -27,7 +27,7 @@ void init_proc() {
   Log("Initializing processes...");
 
   // load program here
-  char *filename = "/bin/event-test";
+  char *filename = "/bin/bmp-test";
   naive_uload(NULL,filename);
 }
 
