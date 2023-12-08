@@ -17,8 +17,19 @@ uint32_t NDL_GetTicks() {
   return 0;
 }
 
+// 读出一条事件信息, 将其写入`buf`中, 最长写入`len`字节
+// 若读出了有效的事件, 函数返回1, 否则返回0
 int NDL_PollEvent(char *buf, int len) {
-  return 0;
+  int fd = _open("/dev/events",0,0);
+  int flag = _read(fd,buf,len);
+  int ret = 0;
+  if (flag > 0){
+    ret = 1;
+  }else{
+    ret = 0;
+  }
+  _close(fd);
+  return ret;
 }
 
 void NDL_OpenCanvas(int *w, int *h) {
