@@ -89,6 +89,8 @@ size_t fb_write(const void *buf, size_t offset, size_t len)
   // int height = io_read(AM_GPU_CONFIG).height;
   // /* 计算坐标 */
   int y_ind = offset / width;
+  //BUG:Y FIX
+  y_ind /= 4;
   int x_ind = offset % width;
   
   printf("Debug:offset2=%d,x_ind=%d,y_ind=%d\n",offset,x_ind,y_ind);
