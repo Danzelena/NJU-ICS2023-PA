@@ -43,7 +43,7 @@ size_t events_read(void *buf, size_t offset, size_t len)
   if (has_kbd) {
     
     AM_INPUT_KEYBRD_T ev = io_read(AM_INPUT_KEYBRD);
-    printf("Got  (kbd): %s (%d) %s\n", keyname[ev.keycode], ev.keycode, ev.keydown ? "DOWN" : "UP");
+    // printf("Got  (kbd): %s (%d) %s\n", keyname[ev.keycode], ev.keycode, ev.keydown ? "DOWN" : "UP");
     // 若当前没有有效按键, 则返回0即可.
     if (ev.keycode == AM_KEY_NONE){
       return 0;
