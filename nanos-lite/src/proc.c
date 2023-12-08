@@ -27,7 +27,7 @@ void init_proc() {
   Log("Initializing processes...");
 
   // load program here
-  char *filename = "/bin/timer-test";
+  char *filename = "/bin/event-test";
   naive_uload(NULL,filename);
 }
 
