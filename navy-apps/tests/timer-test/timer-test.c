@@ -12,7 +12,7 @@ int main(){
         gettimeofday(&tv,NULL);
         printf("Debug:target3\n");
         printf("tv_usec=%d",tv.tv_usec);
-        while(tv.tv_usec < 500000*cnt){
+        while(tv.tv_usec < 500000){
             gettimeofday(&tv,NULL);
         }
         hello_world();
