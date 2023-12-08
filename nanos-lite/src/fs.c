@@ -10,8 +10,8 @@ typedef struct
   size_t size;
   size_t disk_offset;
   size_t open_offset;
-  ReadFn read;// 读函数指针,NULL for normal files
-  WriteFn write;// 写函数指针,NULL for normal files
+  ReadFn read;   // 读函数指针,NULL for normal files
+  WriteFn write; // 写函数指针,NULL for normal files
 } Finfo;
 
 enum
@@ -97,29 +97,34 @@ size_t ramdisk_write(const void *buf, size_t offset, size_t len);
  */
 size_t fs_read(int fd, void *buf, size_t len)
 {
-  if(file_table[fd].read!=NULL){
-    file_table[fd].read(buf,0,len);
+  if (file_table[fd].read != NULL)
+  {
+   return file_table[fd].read(buf, 0, len);
+
+  }
+  else
+  {
+    if (file_table[fd].open_offset >= file_table[fd].size)
+    {
+      panic("(fs_read)no bytes to read\n");
+      return 0;
+    }
+    if (file_table[fd].disk_offset + file_table[fd].open_offset + len > file_table[fd + 1].disk_offset)
+    {
+      // panic("(fs_read)Don't have enough size to read\n");
+      len = file_table[fd].size - file_table[fd].open_offset;
+      // return 0;
+    }
+    size_t ret = ramdisk_read(buf, file_table[fd].disk_offset + file_table[fd].open_offset, len);
+    file_table[fd].open_offset += len;
+    // printf("ret:%d\n",ret);
+    return ret;
   }
   // printf("fd=%d,len=%d\n",fd,len);
   // printf("plus1:%d,plus2:%d\n",file_table[fd].disk_offset + file_table[fd].open_offset + len , file_table[fd + 1].disk_offset);
   // check if out of boundary
 
   // check open_offset
-  if (file_table[fd].open_offset >= file_table[fd].size)
-  {
-    panic("(fs_read)no bytes to read\n");
-    return 0;
-  }
-  if (file_table[fd].disk_offset + file_table[fd].open_offset + len > file_table[fd + 1].disk_offset)
-  {
-    // panic("(fs_read)Don't have enough size to read\n");
-    len = file_table[fd].size - file_table[fd].open_offset;
-    // return 0;
-  }
-  size_t ret = ramdisk_read(buf, file_table[fd].disk_offset + file_table[fd].open_offset, len);
-  file_table[fd].open_offset += len;
-  // printf("ret:%d\n",ret);
-  return ret;
 
   // If the file offset is at od past the end of file, return 0
 }
@@ -132,7 +137,7 @@ int fs_lseek(int fd, size_t offset, int whence)
   {
     panic("(fs_lseek)Sorry! whence is not SEEK_SET\n");
   }
-  if(whence == SEEK_SET)
+  if (whence == SEEK_SET)
   {
     if (offset <= file_table[fd].size)
     {
@@ -141,10 +146,14 @@ int fs_lseek(int fd, size_t offset, int whence)
     }
     panic("(fs_lseek)Sorry! fs_lseek() offset > size\n");
     return -1;
-  }else if (whence == SEEK_END){
+  }
+  else if (whence == SEEK_END)
+  {
     file_table[fd].open_offset = offset + file_table[fd].size;
     return file_table[fd].open_offset;
-  }else if (whence == SEEK_CUR){
+  }
+  else if (whence == SEEK_CUR)
+  {
     file_table[fd].open_offset += offset;
     return file_table[fd].open_offset;
   }
@@ -155,8 +164,9 @@ int fs_lseek(int fd, size_t offset, int whence)
 size_t fs_write(int fd, void *buf, size_t len)
 {
   // handle stdout and stderrir( use`putch()`)
-  if(file_table[fd].write!=NULL){
-    file_table[fd].write(buf,0,len);
+  if (file_table[fd].write != NULL)
+  {
+    file_table[fd].write(buf, 0, len);
   }
 
   else
