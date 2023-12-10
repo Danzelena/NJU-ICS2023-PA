@@ -1,5 +1,6 @@
 # Navy Application Framework
 
+
 ## 编译方法
 
 在应用程序目录(如`tests/hello/`)下通过

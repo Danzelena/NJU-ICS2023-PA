@@ -73,13 +73,14 @@
 #endif
 
 #include <stdint.h>
+#include <stdio.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-
+// fixedpt of a is A = a*2^8
 #if FIXEDPT_BITS == 32
-typedef int32_t fixedpt;
+typedef int32_t fixedpt;// fixedpt 的本质是int32_t 类型
 typedef	int64_t	fixedptd;
 typedef	uint32_t fixedptu;
 typedef	uint64_t fixedptud;
@@ -125,37 +126,73 @@ typedef	__uint128_t fixedptud;
  * Putting them only in macros will effectively make them optional. */
 #define fixedpt_tofloat(T) ((float) ((T)*((float)(1)/(float)(1L << FIXEDPT_FBITS))))
 
+#define RED_YEL "\033[31;43m"
+#define WRITE "\033[0m"
 /* Multiplies a fixedpt number with an integer, returns the result. */
 static inline fixedpt fixedpt_muli(fixedpt A, int B) {
-	return 0;
+	return A * B;
+	// printf(RED_YEL"(fixedpt_muli)NO implement!\n"WRITE);
+	// exit(-1);
+	// return 0;
 }
 
 /* Divides a fixedpt number with an integer, returns the result. */
 static inline fixedpt fixedpt_divi(fixedpt A, int B) {
-	return 0;
+	return A / B;
+	// printf(RED_YEL"(fixedpt_divi)NO implement!\n"WRITE);
+	// exit(-1);
+	// return 0;
 }
 
 /* Multiplies two fixedpt numbers, returns the result. */
 static inline fixedpt fixedpt_mul(fixedpt A, fixedpt B) {
-	return 0;
+	int32_t temp = A * B;
+	return temp / 256;
+	// printf(RED_YEL"(fixedpt_mul)NO implement!\n"WRITE);
+	// exit(-1);
+	// return 0;
 }
 
 
 /* Divides two fixedpt numbers, returns the result. */
 static inline fixedpt fixedpt_div(fixedpt A, fixedpt B) {
-	return 0;
+	int32_t temp = A / B;
+	return temp * 256;
+
+	// printf(RED_YEL"(fixedpt_div)NO implement!\n"WRITE);
+	// exit(-1);
+	// return 0;
 }
 
 static inline fixedpt fixedpt_abs(fixedpt A) {
-	return 0;
+	if (A > fixedpt_rconst(0)){
+		return A;
+	}else{
+		return fixedpt_sub(fixedpt_rconst(0),A);
+	}
+	// printf(RED_YEL"(fixedpt_abs)NO implement!\n"WRITE);
+	// exit(-1);
+	// return 0;
 }
 
 static inline fixedpt fixedpt_floor(fixedpt A) {
-	return 0;
+	if(A << FIXEDPT_WBITS == 0x0){
+		return A;
+	}
+	return (A >> FIXEDPT_FBITS)<< FIXEDPT_FBITS;
+	// printf(RED_YEL"(fixedpt_muli)NO implement!\n"WRITE);
+	// exit(-1);
+	// return 0;
 }
 
 static inline fixedpt fixedpt_ceil(fixedpt A) {
-	return 0;
+	if(A << FIXEDPT_WBITS == 0x0){
+		return A;
+	}
+	return fixedpt_add(fixedpt_floor(A),fixedpt_rconst(1.0));
+	// printf(RED_YEL"(fixedpt_ceil)NO implement!\n"WRITE);
+	// exit(-1);
+	// return 0;
 }
 
 /*
