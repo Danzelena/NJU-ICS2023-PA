@@ -176,7 +176,7 @@ size_t fs_write(int fd, void *buf, size_t len)
   {
     int ret = file_table[fd].write(buf, file_table[fd].open_offset, len);
     if(ret != len){
-      panic("ret != len\n");
+      panic("ret:%d != len:%d\n",ret,len);
     }
     file_table[fd].open_offset += ret;
     return ret;
