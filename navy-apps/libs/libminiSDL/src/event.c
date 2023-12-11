@@ -42,8 +42,10 @@ int SDL_WaitEvent(SDL_Event *event) {
         printf("SDLK_UP\n");
       }else if(strcmp(key,"RIGHT") == 0){
         event->key.keysym.sym = SDLK_RIGHT;
+        printf("SDLK_RIGHT\n");
       }else if(strcmp(key,"LEFT") == 0){
         event->key.keysym.sym = SDLK_LEFT;
+        printf("SDLK_LEFT\n");
       }
       else{
         // BUG: don't know how to set status
@@ -59,6 +61,7 @@ int SDL_WaitEvent(SDL_Event *event) {
   }else{
     event->key.keysym.sym = SDLK_NONE;
   }
+  printf("type=%d,sym=%d\n",event->type,event->key.keysym.sym);
   // printf(RED_YEL"(3)NO implement!\n"WRITE);
 	// exit(-1);
   return 1;
