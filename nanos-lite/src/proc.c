@@ -27,7 +27,7 @@ void init_proc() {
   Log("Initializing processes...");
 
   // load program here
-  char *filename = "/bin/bmp-test";
+  char *filename = "/bin/nslider";
   naive_uload(NULL,filename);
 }
 
