@@ -104,8 +104,8 @@ size_t fs_read(int fd, void *buf, size_t len)
   if (file_table[fd].read != NULL)
   {
    int ret = file_table[fd].read(buf, 0, len);
-   if(ret != len){
-    panic("ret != len\n");
+   if(ret > len){
+    panic("ret > len\n");
    }
    file_table[fd].open_offset += ret;
    return ret;
