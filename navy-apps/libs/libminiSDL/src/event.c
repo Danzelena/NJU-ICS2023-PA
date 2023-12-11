@@ -25,6 +25,31 @@ int SDL_PollEvent(SDL_Event *ev)
   return 0;
 }
 
+bool isSignLine(char *str)
+{
+  bool newLineFound = false;
+  while (*str)
+  {
+    if (*str == '\n' || *str == '\r')
+    {
+      if (newLineFound)
+      {
+        return false;
+      }
+      newLineFound = true;
+      str++;
+      if (*str != '\0' && *str != '\n' && *str != '\r')
+      {
+        return false;
+      }
+    }
+    else
+    {
+      str++;
+    }
+  }
+  return true;
+}
 int SDL_WaitEvent(SDL_Event *event)
 {
   char buf[64];
@@ -32,8 +57,12 @@ int SDL_WaitEvent(SDL_Event *event)
   {
     if (NDL_PollEvent(buf, sizeof(buf)))
     {
-      printf("buf=%s\n",buf);
-      // BUG:only handle signle line case
+      // assert only handle signle line case
+      if (!isSignLine(buf))
+      {
+        printf(RED_YEL "(SDL_WaitEvent)buf is not signle line!\n" WRITE);
+        exit(-1);
+      }
       char dir;
       char key[16];
       sscanf(buf, "k%c %s", &dir, key);

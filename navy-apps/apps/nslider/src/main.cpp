@@ -54,7 +54,6 @@ int main() {
   int rep = 0, g = 0;
 
   render();
-  render();
 
   while (1) {
     SDL_Event e;
@@ -74,7 +73,6 @@ int main() {
         case SDLK_J:
         case SDLK_DOWN: next(rep); rep = 0; g = 0; break;
         case SDLK_K:
-        // BUG: can't UP
         case SDLK_UP: prev(rep); rep = 0; g = 0; break;
         case SDLK_G:
           g ++;
