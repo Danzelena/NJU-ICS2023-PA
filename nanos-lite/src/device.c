@@ -84,12 +84,12 @@ size_t dispinfo_read(void *buf, size_t offset, size_t len)
 // 用于把buf中的len字节写到屏幕上offset处. 你需要先从offset计算出屏幕上的坐标, 然后调用IOE来进行绘图. 另外我们约定每次绘图后总是马上将frame buffer中的内容同步到屏幕上.
 size_t fb_write(const void *buf, size_t offset, size_t len)
 {
-  printf("len1=%d\n",len);
+  // printf("len1=%d\n",len);
   int width = io_read(AM_GPU_CONFIG).width;
   // int height = io_read(AM_GPU_CONFIG).height;
 
   /* 计算坐标 */
-  printf("offset=%d,width=%d\n",offset,width);
+  // printf("offset=%d,width=%d\n",offset,width);
   int offset_point = offset / sizeof(uint32_t);
   int y_ind = offset_point / width;
   int x_ind = offset_point % width;
@@ -108,7 +108,7 @@ size_t fb_write(const void *buf, size_t offset, size_t len)
   io_write(AM_GPU_FBDRAW, x_ind, y_ind, buf, len/sizeof(__uint32_t), 1, true);
   // io_write(AM_GPU_MEMCPY, offset, (void *)*ptr, len);
   io_write(AM_GPU_FBDRAW, 0, 0, NULL, 0, 0, true);
-    printf("len2=%d\n",len);
+    // printf("len2=%d\n",len);
 
   return len;
 }
