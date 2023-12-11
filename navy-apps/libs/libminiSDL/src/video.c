@@ -11,7 +11,7 @@
 #define WRITE "\033[0m"
 
 uint32_t gen_pixel(SDL_Surface *surface, int i, int j);
-// Warning:copy(
+// Warning:
 void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_Rect *dstrect)
 {
   
@@ -71,7 +71,7 @@ void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_
 } 
 
 
-// Warning:copy(
+// Warning:
 void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color)
 { 
   uint32_t *pixels = (uint32_t *)dst->pixels;
