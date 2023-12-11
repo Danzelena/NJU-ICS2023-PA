@@ -32,7 +32,7 @@ int SDL_WaitEvent(SDL_Event *event)
   {
     if (NDL_PollEvent(buf, sizeof(buf)))
     {
-      printf("buf=\n%s",buf);
+      printf("buf=\n%s\n",buf);
       // BUG:only handle signle line case
       char dir;
       char key[16];
