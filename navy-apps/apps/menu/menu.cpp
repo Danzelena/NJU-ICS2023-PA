@@ -83,7 +83,7 @@ int main(int argc, char *argv[], char *envp[]) {
     do {
       SDL_WaitEvent(&e);
     } while (e.type != SDL_KEYDOWN);
-    printf("sym=%d\n",e.key.keysym.sym)
+    // printf("sym=%d\n",e.key.keysym.sym)
     int i = -1;
     switch (e.key.keysym.sym) {
       case SDLK_0: i = 0; break;
@@ -96,8 +96,8 @@ int main(int argc, char *argv[], char *envp[]) {
       case SDLK_7: i = 7; break;
       case SDLK_8: i = 8; break;
       case SDLK_9: i = 9; break;
-      case SDLK_LEFT: prev(); printf("left\n");break;
-      case SDLK_RIGHT: next();printf("right\n"); break;
+      case SDLK_LEFT: prev(); break;
+      case SDLK_RIGHT: next();break;
     }
 
     if (i != -1 && i <= i_max) {
