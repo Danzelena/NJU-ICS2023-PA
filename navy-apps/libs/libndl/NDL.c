@@ -167,6 +167,7 @@ int NDL_Init(uint32_t flags) {
   if(dispinfo < 0){
     // panic("fail to open\n");
   }
+  printf("target1\n");
   char buf[128];
   int flag = read(dispinfo,buf,sizeof(buf));
   if(flag <= 0){
