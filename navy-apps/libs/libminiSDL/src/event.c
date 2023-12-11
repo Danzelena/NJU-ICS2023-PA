@@ -61,7 +61,7 @@ int SDL_WaitEvent(SDL_Event *event) {
   }else{
     event->key.keysym.sym = SDLK_NONE;
   }
-  printf("type=%d,sym=%d\n",event->type,event->key.keysym.sym);
+  // printf("type=%d,sym=%d\n",event->type,event->key.keysym.sym);
   // printf(RED_YEL"(3)NO implement!\n"WRITE);
 	// exit(-1);
   return 1;
