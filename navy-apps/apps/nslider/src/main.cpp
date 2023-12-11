@@ -25,9 +25,9 @@ void render() {
   }
   char fname[256];
   sprintf(fname, path, cur);
-  printf("Debug:%s\n",fname);
+  // printf("Debug:%s\n",fname);
   slide = SDL_LoadBMP(fname);
-  printf("Load success\n");
+  // printf("Load success\n");
   assert(slide);
   SDL_UpdateRect(slide, 0, 0, 0, 0);
 }
@@ -73,6 +73,7 @@ int main() {
         case SDLK_J:
         case SDLK_DOWN: next(rep); rep = 0; g = 0; break;
         case SDLK_K:
+        // BUG: can't UP
         case SDLK_UP: prev(rep); rep = 0; g = 0; break;
         case SDLK_G:
           g ++;
