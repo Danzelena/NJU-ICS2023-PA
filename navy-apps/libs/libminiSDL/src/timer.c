@@ -17,10 +17,13 @@ int SDL_RemoveTimer(SDL_TimerID id) {
   return 1;
 }
 
+
+// Get the number of milliseconds since the SDL library initialization.
 uint32_t SDL_GetTicks() {
-  printf(RED_YEL"(13)NO implement!\n"WRITE);
-	exit(-1);
-  return 0;
+  return NDL_GetTicks();
+  // printf(RED_YEL"(13)NO implement!\n"WRITE);
+	// exit(-1);
+  // return 0;
 }
 
 void SDL_Delay(uint32_t ms) {
