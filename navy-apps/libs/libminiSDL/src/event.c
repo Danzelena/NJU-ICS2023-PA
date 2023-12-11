@@ -24,7 +24,8 @@ int SDL_PollEvent(SDL_Event *ev) {
 
 int SDL_WaitEvent(SDL_Event *event) {
   char buf[64];
-  if(NDL_PollEvent(buf,sizeof(buf))){
+  while(1){
+    if(NDL_PollEvent(buf,sizeof(buf))){
     //BUG:only handle signle line case
     char dir;
     char key[16];
@@ -57,11 +58,13 @@ int SDL_WaitEvent(SDL_Event *event) {
     }else{
       printf("There can't be another char after 'k'\n");
     }
-
+    break;
   }else{
-    event->type = -1;
-    event->key.keysym.sym = SDLK_NONE;
+    // event->type = -1;
+    // event->key.keysym.sym = SDLK_NONE;
   }
+  }
+  
   // printf("type=%d,sym=%d\n",event->type,event->key.keysym.sym);
   // printf(RED_YEL"(3)NO implement!\n"WRITE);
 	// exit(-1);
