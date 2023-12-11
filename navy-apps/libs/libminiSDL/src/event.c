@@ -25,7 +25,7 @@ int SDL_PollEvent(SDL_Event *ev) {
 int SDL_WaitEvent(SDL_Event *event) {
   char buf[64];
   if(NDL_PollEvent(buf,sizeof(buf))){
-    //BUG:handle signle line case
+    //BUG:only handle signle line case
     char dir;
     char key[16];
     sscanf(buf,"k%c %s",&dir,key);
