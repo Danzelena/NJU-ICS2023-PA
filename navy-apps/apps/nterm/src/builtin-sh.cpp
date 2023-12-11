@@ -16,6 +16,8 @@ static void sh_printf(const char *format, ...) {
 
 static void sh_banner() {
   sh_printf("Built-in Shell in NTerm (NJU Terminal)\n\n");
+    printf("After sh_printf\n");
+
 }
 
 static void sh_prompt() {
@@ -26,9 +28,12 @@ static void sh_handle_cmd(const char *cmd) {
 }
 
 void builtin_sh_run() {
+  // printf("shell1\n");
   sh_banner();
+  // printf("shell2\n");
   sh_prompt();
-
+  // printf("shell3\n");
+  
   while (1) {
     SDL_Event ev;
     if (SDL_PollEvent(&ev)) {

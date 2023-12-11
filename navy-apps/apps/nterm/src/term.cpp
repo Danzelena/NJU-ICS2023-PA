@@ -250,6 +250,8 @@ void Terminal::write(const char *str, size_t count) {
           }
           break;
         case '\t':
+          cursor.x += 2;
+          break;
           // TODO: implement it.
           break;
         case '\r':

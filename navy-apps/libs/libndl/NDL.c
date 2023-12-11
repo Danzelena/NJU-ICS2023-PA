@@ -14,8 +14,8 @@ static int screen_w = 0, screen_h = 0;
 uint32_t NDL_GetTicks() {
   struct timeval tv;
   gettimeofday(&tv,NULL);
-  return tv.tv_sec*1000000+tv.tv_usec;
-  return 0;
+  return tv.tv_sec*1000+tv.tv_usec/1000;
+  // return 0;
 }
 
 // 读出一条事件信息, 将其写入`buf`中, 最长写入`len`字节

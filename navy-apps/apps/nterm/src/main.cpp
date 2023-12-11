@@ -20,7 +20,7 @@ int main(int argc, char *argv[]) {
   screen = SDL_SetVideoMode(win_w, win_h, 32, SDL_HWSURFACE);
 
   term = new Terminal(W, H);
-
+  // printf("argc=%d\n",argc);
   if (argc < 2) { builtin_sh_run(); }
   else { extern_app_run(argv[1]); }
 
@@ -48,11 +48,14 @@ void refresh_terminal() {
   static uint32_t last = 0;
   static int flip = 0;
   uint32_t now = SDL_GetTicks();
+  // printf("now=%d\n",now);
   if (now - last > 500 || needsync) {
     int x = term->cursor.x, y = term->cursor.y;
     uint32_t color = (flip ? term->foreground(x, y) : term->background(x, y));
     draw_ch(x * font->w, y * font->h, ' ', 0, color);
     SDL_UpdateRect(screen, 0, 0, 0, 0);
+    printf("Update\n");
+
     if (now - last > 500) {
       flip = !flip;
       last = now;

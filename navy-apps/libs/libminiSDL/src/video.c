@@ -11,6 +11,7 @@
 #define WRITE "\033[0m"
 
 uint32_t gen_pixel(SDL_Surface *surface, int i, int j);
+
 // Warning:
 void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_Rect *dstrect)
 {
@@ -107,6 +108,7 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h)
     w = s->w;
     h = s->h;
   }
+  printf("w=%d,h=%d\n",w,h);
   // BUG :this
   // w = 400;
   // h = 300;

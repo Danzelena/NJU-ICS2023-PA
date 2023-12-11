@@ -16,15 +16,6 @@ int SDL_PushEvent(SDL_Event *ev)
   exit(-1);
   return 0;
 }
-
-int SDL_PollEvent(SDL_Event *ev)
-{
-
-  printf(RED_YEL "(2)NO implement!\n" WRITE);
-  exit(-1);
-  return 0;
-}
-
 bool isSignLine(char *str)
 {
   bool newLineFound = false;
@@ -50,6 +41,58 @@ bool isSignLine(char *str)
   }
   return true;
 }
+int SDL_PollEvent(SDL_Event *ev)
+{
+  char buf[64];
+  if (!NDL_PollEvent(buf, sizeof(buf)))
+  {
+    return 0;
+  }
+  // while (NDL_PollEvent(buf, sizeof(buf))){};
+  // printf("key down\n");
+  // while (!NDL_PollEvent(buf, sizeof(buf)));
+  // printf("pass %s\n",buf);
+  // assert signle line
+  if (!isSignLine(buf))
+  {
+    printf(RED_YEL "(SDL_WaitEvent)buf is not signle line!\n" WRITE);
+    exit(-1);
+  }
+  char dir;
+  char key[16];
+  sscanf(buf, "k%c %s", &dir, key);
+
+  if (dir == 'd')
+  {
+    ev->type = SDL_KEYDOWN;
+  }
+  else if (dir == 'u')
+  {
+    ev->type = SDL_KEYUP;
+  }
+  else
+  {
+    printf(RED_YEL "(SDL_WaitEvent)no another case!\n" WRITE);
+    exit(-1);
+  }
+
+  for (int i = 0; i < sizeof(keyname) / sizeof(char); i++)
+  {
+    // printf("key=%s,keyname[i]=%s\n",key,keyname[i]);
+    if (strcmp(key, keyname[i]) == 0)
+    {
+      ev->key.keysym.sym = i;
+      return 1;
+    }
+  }
+  return 0;
+  // return 1;
+  // printf(RED_YEL "(2)NO implement!\n" WRITE);
+  // exit(-1);
+  // return 0;
+}
+
+// Waits indefinitely for the next available event, returning 1, or 0 if there was an error while waiting for events.
 int SDL_WaitEvent(SDL_Event *event)
 {
   char buf[64];
@@ -104,22 +147,14 @@ int SDL_WaitEvent(SDL_Event *event)
       }
       else
       {
-        printf("There can't be another char after 'k'\n");
+        printf(RED_YEL "There can't be another char after 'k'\n" WRITE);
+        exit(-1);
       }
-      printf("type=%d,sym=%d\n", event->type, event->key.keysym.sym);
+      // printf("type=%d,sym=%d\n", event->type, event->key.keysym.sym);
       break;
-    }
-    else
-    {
-      // event->type = -1;
-      // event->key.keysym.sym = SDLK_NONE;
     }
   }
 
-  // printf("type=%d,sym=%d\n",event->type,event->key.keysym.sym);
-  // printf(RED_YEL"(3)NO implement!\n"WRITE);
-  // exit(-1);
-  printf("return\n");
   return 1;
 }
 
