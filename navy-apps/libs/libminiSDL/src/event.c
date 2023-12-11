@@ -70,6 +70,7 @@ int SDL_WaitEvent(SDL_Event *event) {
   // printf("type=%d,sym=%d\n",event->type,event->key.keysym.sym);
   // printf(RED_YEL"(3)NO implement!\n"WRITE);
 	// exit(-1);
+  printf("return\n");
   return 1;
 }
 
