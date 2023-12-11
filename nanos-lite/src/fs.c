@@ -224,5 +224,7 @@ size_t fs_write(int fd, void *buf, size_t len)
 
 size_t fs_close(int fd)
 {
+  file_table[fd].open_offset = 0;
+
   return 0;
 }

@@ -25,17 +25,35 @@ void* BMP_Load(const char *filename, int *width, int *height) {
     printf("reason 1\n");
     return NULL;
   } 
-  printf("fp=%d\n",fp);
+  // printf("fp=%d\n",fp);
   struct BitmapHeader hdr;
   assert(sizeof(hdr) == 54);
   assert(1 == fread(&hdr, sizeof(struct BitmapHeader), 1, fp));
+
+
+  // printf("%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d\n")
+  // uint16_t type;
+  // uint32_t filesize;
+  // uint32_t resv_1;
+  // uint32_t offset;
+  // uint32_t ih_size;
+  // uint32_t width;
+  // uint32_t height;
+  // uint16_t planes;
+  // uint16_t bitcount; // 1, 4, 8, or 24
+  // uint32_t compression;
+  // uint32_t sizeimg;
+  // uint32_t xres, yres;
+  // uint32_t clrused, clrimportant;
+
+
   // BUG: this reason
   if(hdr.bitcount == 65535)hdr.bitcount = 24;
   // printf("bitcount=%d\n",hdr.bitcount);
   if (hdr.bitcount != 24){
     printf("bitcount=%d\n",hdr.bitcount);
     printf("reason2\n");
-    return NULL;
+    // return NULL;
   }
   printf("compression=%d\n",hdr.compression);
   // BUG: this reason
