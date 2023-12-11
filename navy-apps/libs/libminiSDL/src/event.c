@@ -59,6 +59,7 @@ int SDL_WaitEvent(SDL_Event *event) {
     }
 
   }else{
+    event->type = -1;
     event->key.keysym.sym = SDLK_NONE;
   }
   // printf("type=%d,sym=%d\n",event->type,event->key.keysym.sym);
