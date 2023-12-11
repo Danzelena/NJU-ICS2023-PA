@@ -70,7 +70,7 @@ int main() {
         case SDLK_J:
         case SDLK_DOWN: next(rep); rep = 0; g = 0; break;
         case SDLK_K:
-        case SDLK_UP: prev(rep); rep = 0; g = 0; break;
+        case SDLK_UP: prev(rep); rep = 0; g = 0; printf("target5\n");break;
         case SDLK_G:
           g ++;
           if (g > 1) {
@@ -79,6 +79,7 @@ int main() {
           }
           break;
       }
+      printf("target6\n");
     }
   }
 
