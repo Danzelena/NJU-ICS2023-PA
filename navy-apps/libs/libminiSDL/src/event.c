@@ -58,7 +58,9 @@ int SDL_WaitEvent(SDL_Event *event) {
     }else{
       printf("There can't be another char after 'k'\n");
     }
+    printf("type=%d,sym=%d\n",event->type,event->key.keysym.sym);
     break;
+
   }else{
     // event->type = -1;
     // event->key.keysym.sym = SDLK_NONE;
