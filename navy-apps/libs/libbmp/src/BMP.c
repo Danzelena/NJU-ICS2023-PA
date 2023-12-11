@@ -38,8 +38,9 @@ void* BMP_Load(const char *filename, int *width, int *height) {
     return NULL;
   }
   printf("compression=%d\n",hdr.compression);
+  // BUG: this reason
   if (hdr.compression != 0){
-    printf("reason 3\n");
+    // printf("reason 3\n");
     hdr.compression = 0;
     // return NULL;
   } 
