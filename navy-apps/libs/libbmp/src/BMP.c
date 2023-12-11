@@ -31,15 +31,17 @@ void* BMP_Load(const char *filename, int *width, int *height) {
   assert(1 == fread(&hdr, sizeof(struct BitmapHeader), 1, fp));
   // BUG: this reason
   if(hdr.bitcount == 65535)hdr.bitcount = 24;
-  printf("bitcount=%d\n",hdr.bitcount);
+  // printf("bitcount=%d\n",hdr.bitcount);
   if (hdr.bitcount != 24){
     printf("bitcount=%d\n",hdr.bitcount);
     printf("reason2\n");
     return NULL;
   }
+  printf("compression=%d\n",hdr.compression);
   if (hdr.compression != 0){
     printf("reason 3\n");
-    return NULL;
+    hdr.compression = 0;
+    // return NULL;
   } 
   int w = hdr.width;
   int h = hdr.height;
