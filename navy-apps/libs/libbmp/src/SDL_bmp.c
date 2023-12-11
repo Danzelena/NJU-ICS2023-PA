@@ -7,6 +7,9 @@ SDL_Surface* SDL_LoadBMP(const char *filename) {
   int w, h;
   
   void *pixels = BMP_Load(filename, &w, &h);
+  if(pixels == NULL){
+    printf("3.1is Null\n");
+  }
   printf("filename:%s\n",filename);
   if(pixels == NULL){
     printf("3is Null\n");
