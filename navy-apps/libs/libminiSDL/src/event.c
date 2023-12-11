@@ -29,8 +29,10 @@ int SDL_WaitEvent(SDL_Event *event) {
     char dir;
     char key[16];
     sscanf(buf,"k%c %s",&dir,key);
+    
     if (dir == 'd'){
       event->type = SDL_KEYDOWN;
+      printf("down!\n");
       printf("KEY=%s\n",key);
 
       if(strcmp(key,"DOWN") == 0){
