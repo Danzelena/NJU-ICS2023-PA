@@ -69,7 +69,7 @@ static void clear_display(void) {
 
 int main(int argc, char *argv[], char *envp[]) {
   SDL_Init(0);
-  screen = SDL_SetVideoMode(0, 0, 32, SDL_HWSURFACE);
+  screen = SDL_SetVideoMode(400, 300, 32, SDL_HWSURFACE);
 
   font = new BDF_Font(font_fname);
   logo_sf = SDL_LoadBMP("/share/pictures/projectn.bmp");
@@ -141,8 +141,11 @@ static void draw_text_row(char *s, int r) {
 
 static void display_menu(int n) {
   clear_display();
+  // printf("Debug:w=%d,h=%d",screen->w,screen->h);
+
   SDL_Rect rect = { .x = screen->w - logo_sf->w, .y = 0 };
   SDL_BlitSurface(logo_sf, NULL, screen, &rect);
+  // printf("Debug:w=%d,h=%d",screen->w,screen->h);
   printf("Available applications:\n");
   char buf[80];
   int i;

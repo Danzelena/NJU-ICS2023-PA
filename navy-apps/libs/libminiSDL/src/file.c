@@ -4,13 +4,13 @@
 #define WRITE "\033[0m"
 
 SDL_RWops* SDL_RWFromFile(const char *filename, const char *mode) {
-  printf(RED_YEL"()NO implement!\n"WRITE);
+  printf(RED_YEL"(15)NO implement!\n"WRITE);
 	exit(-1);
   return NULL;
 }
 
 SDL_RWops* SDL_RWFromMem(void *mem, int size) {
-  printf(RED_YEL"()NO implement!\n"WRITE);
+  printf(RED_YEL"(16)NO implement!\n"WRITE);
 	exit(-1);
   return NULL;
 }

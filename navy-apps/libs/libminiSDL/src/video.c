@@ -3,42 +3,134 @@
 #include <assert.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
 
 #define RED_YEL "\033[31;43m"
 #define WRITE "\033[0m"
 
+uint32_t gen_pixel(SDL_Surface *surface, int i, int j);
+// Warning:copy(
 void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_Rect *dstrect)
 {
+  
   assert(dst && src);
   assert(dst->format->BitsPerPixel == src->format->BitsPerPixel);
-}
 
+  if (src->format->BitsPerPixel == 32){
+    uint32_t* src_pixels = (uint32_t*)src->pixels;
+    uint32_t* dst_pixels = (uint32_t*)dst->pixels;
+
+    int rect_w, rect_h, src_x, src_y, dst_x, dst_y;
+    if (srcrect){
+      rect_w = srcrect->w; rect_h = srcrect->h;
+      src_x = srcrect->x; src_y = srcrect->y; 
+    }else {
+      rect_w = src->w; rect_h = src->h;
+      src_x = 0; src_y = 0;
+    }
+    if (dstrect){
+      dst_x = dstrect->x, dst_y = dstrect->y;
+    }else {
+      dst_x = 0; dst_y = 0;
+    }
+    
+    for (int i = 0; i < rect_h; ++i){
+      for (int j = 0; j < rect_w; ++j){
+        dst_pixels[(dst_y + i) * dst->w + dst_x + j] = src_pixels[(src_y + i) * src->w + src_x + j];
+      }
+    }
+  }else if (src->format->BitsPerPixel == 8){
+    uint8_t* src_pixels = (uint8_t*)src->pixels;
+    uint8_t* dst_pixels = (uint8_t*)dst->pixels;
+
+    int rect_w, rect_h, src_x, src_y, dst_x, dst_y;
+    if (srcrect){
+      rect_w = srcrect->w; rect_h = srcrect->h;
+      src_x = srcrect->x; src_y = srcrect->y; 
+    }else {
+      rect_w = src->w; rect_h = src->h;
+      src_x = 0; src_y = 0;
+    }
+    if (dstrect){
+      dst_x = dstrect->x, dst_y = dstrect->y;
+    }else {
+      dst_x = 0; dst_y = 0;
+    }
+    
+    for (int i = 0; i < rect_h; ++i){
+      for (int j = 0; j < rect_w; ++j){
+        dst_pixels[(dst_y + i) * dst->w + dst_x + j] = src_pixels[(src_y + i) * src->w + src_x + j];
+      }
+    }
+  }else {
+    assert(0);
+  }
+  
+} 
+
+
+// Warning:copy(
 void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color)
-{
+{ 
+  uint32_t *pixels = (uint32_t *)dst->pixels;
+  int dst_w = dst->w;
+  int rect_h, rect_w, rect_x, rect_y;
+
+  if (dstrect == NULL){
+    rect_w = dst->w;
+    rect_h = dst->h;
+    rect_x = 0;
+    rect_y = 0;
+  }else {
+    rect_w = dstrect->w;
+    rect_h = dstrect->h;
+    rect_x = dstrect->x;
+    rect_y = dstrect->y;
+  }
+
+  for (int i = 0; i < rect_h; ++i){
+    for (int j = 0; j < rect_w; ++j){
+      pixels[(rect_y + i) * dst_w + rect_x + j] = color;
+    }
+  }
 }
 
 void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h)
 {
-  uint32_t *pixels = malloc(w * h * sizeof(uint32_t));
+  printf("SDL_UpdateRect\n");
 
   if (x == 0 && y == 0 && w == 0 && h == 0)
   {
     /* update the entire screen */
-    w, h = s->w, s->h;
+    w = s->w;
+    h = s->h;
   }
+  // BUG:this
+  // w = 400;
+  // h = 300;
+  uint32_t *pixels = malloc(w * h * sizeof(uint32_t));
 
+  printf("x=%d,y=%d,w=%d,h=%d,s->w=%d,s->h=%d\n", x, y, w, h,s->w,s->h);
+  printf("Target1\n");
   for (int j = y; j < y + h; j++)
   {
     for (int i = x; i < x + w; i++)
     {
       uint32_t pix = gen_pixel(s, i, j);
       pixels[j * w + i] = pix;
+      // printf("pixels=%x\n",pix);
     }
   }
-  NDL_DrawRect(pixels, x, y, w, h);
 
+  printf("Target2\n");
+  NDL_DrawRect(pixels, x, y, w, h);
   free(pixels);
+
+  printf("SDL_UpdateRect finish\n");
 }
+
+// output: AGRB
 uint32_t gen_pixel(SDL_Surface *surface, int i, int j)
 {
   SDL_PixelFormat *fmt = surface->format;
@@ -68,9 +160,9 @@ uint32_t gen_pixel(SDL_Surface *surface, int i, int j)
     // printf("Pixel Color-> Red: %d, Green: %d, Blue: %d. Index: %d\n",color->r, color->g, color->b, index);
     // printf("Debug:Rshift=%d\nGshift=%d\nBshift=%d\nAshift=%d\n",fmt->Rshift,fmt->Gshift,fmt->Bshift,fmt->Ashift);
 
-    uint32_t p = (color->r << 24) | (color->g << 16) | (color->b << 8);
+    uint32_t p = (color->r << 16) | (color->g << 8) | (color->b << 0);
     if (fmt->Amask)
-      p |= (color->a << fmt->Ashift);
+      p |= (color->a << 24);
     return p;
   }
   else
@@ -106,10 +198,13 @@ uint32_t gen_pixel(SDL_Surface *surface, int i, int j)
     temp = temp >> fmt->Ashift; /* Shift it down to 8-bit */
     temp = temp << fmt->Aloss;  /* Expand to a full 8-bit number */
     alpha = (uint8_t)temp;
-
-    uint32_t p = (red << 24) | (green << 16) | (blue << 8);
+    // uint32_t p = red | green | blue;
+    // printf("r=%x,g=%x,b=%x\n",red,green,blue);
+    uint32_t p = (red << 16) | (green << 8) | (blue << 0);
+    
     if (fmt->Amask)
-      p |= (alpha << fmt->Ashift);
+      p |= (alpha << 24);
+    // printf("p=%x\n",p);
     return p;
     // printf("Pixel Color -> R: %d,  G: %d,  B: %d,  A: %d\n", red, green, blue, alpha);
   }

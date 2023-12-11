@@ -21,15 +21,15 @@ uint32_t NDL_GetTicks() {
 // 读出一条事件信息, 将其写入`buf`中, 最长写入`len`字节
 // 若读出了有效的事件, 函数返回1, 否则返回0
 int NDL_PollEvent(char *buf, int len) {
-  int fd = _open("/dev/events",0,0);
-  int flag = _read(fd,buf,len);
+  int fd = open("/dev/events",0,0);
+  int flag = read(fd,buf,len);
   int ret = 0;
   if (flag > 0){
     ret = 1;
   }else{
     ret = 0;
   }
-  _close(fd);
+  close(fd);
   return ret;
 }
 
@@ -94,6 +94,7 @@ int NDL_QueryAudio() {
 // BUG:because of KISS rule(
 void extract_values(const char *content) {
   char *token;
+  // char *rest = malloc(256);
   char *rest = strdup(content);  // 复制content，以便保留原始内容
   int cnt = 0;
   while ((token = strtok_r(rest, ":", &rest))) {
@@ -112,8 +113,8 @@ void extract_values(const char *content) {
       }
       cnt++;
   }
-
-  free(rest);  // 释放内存
+  printf("Debug:cnt=%d\n,",cnt);
+  // free(rest);  // 释放内存
 }
 // void extract_values2(const char *str){
 //   regex_t regex;
@@ -162,12 +163,12 @@ int NDL_Init(uint32_t flags) {
     evtdev = 3;
   }
   /* read /proc/dispinfo */
-  int dispinfo = _open("/proc/dispinfo",0,0);
+  int dispinfo = open("/proc/dispinfo",0,0);
   if(dispinfo < 0){
     // panic("fail to open\n");
   }
   char buf[128];
-  int flag = _read(dispinfo,buf,sizeof(buf));
+  int flag = read(dispinfo,buf,sizeof(buf));
   if(flag <= 0){
     // panic("fail to read\n");
   }
@@ -176,6 +177,7 @@ int NDL_Init(uint32_t flags) {
 
   extract_values(buf);
   // printf("Width:%d,Height:%d\n",screen_w,screen_h);
+  printf("NDL_init return\n");
   return 0;
 }
 
