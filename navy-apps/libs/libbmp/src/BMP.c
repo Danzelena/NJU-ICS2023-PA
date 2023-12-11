@@ -29,8 +29,10 @@ void* BMP_Load(const char *filename, int *width, int *height) {
   struct BitmapHeader hdr;
   assert(sizeof(hdr) == 54);
   assert(1 == fread(&hdr, sizeof(struct BitmapHeader), 1, fp));
-
+  // BUG: this reason
+  printf("bitcount=%d\n",hdr.bitcount);
   if (hdr.bitcount != 24){
+    printf("bitcount=%d\n",hdr.bitcount);
     printf("reason2\n");
     return NULL;
   }
