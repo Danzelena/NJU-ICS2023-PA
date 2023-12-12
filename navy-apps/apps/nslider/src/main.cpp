@@ -82,7 +82,6 @@ int main() {
           }
           break;
       }
-      printf("target6\n");
     }
   }
 

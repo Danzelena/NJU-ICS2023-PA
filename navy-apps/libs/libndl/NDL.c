@@ -114,7 +114,7 @@ void extract_values(const char *content) {
       }
       cnt++;
   }
-  printf("Debug:cnt=%d\n,",cnt);
+  // printf("Debug:cnt=%d\n,",cnt);
   // free(rest);  // 释放内存
 }
 // void extract_values2(const char *str){
@@ -159,7 +159,7 @@ void extract_values(const char *content) {
 
 
 int NDL_Init(uint32_t flags) {
-  printf("NDL_Init!\n");
+  // printf("NDL_Init!\n");
   if (getenv("NWM_APP")) {
     evtdev = 3;
   }
@@ -173,7 +173,6 @@ int NDL_Init(uint32_t flags) {
   if(flag <= 0){
     // panic("fail to read\n");
   }
-  printf("buf:\n%s",buf);
   /* handle the buf use ragex */
 
   extract_values(buf);
