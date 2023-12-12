@@ -25,15 +25,15 @@ void render() {
   }
   char fname[256];
   sprintf(fname, path, cur);
-  printf("Debug:%s\n",fname);
+  // printf("Debug:%s\n",fname);
   slide = SDL_LoadBMP(fname);
-  printf("Load success\n");
+  // printf("Load success\n");
   assert(slide);
   SDL_UpdateRect(slide, 0, 0, 0, 0);
 }
 
 void prev(int rep) {
-  printf("ret=%d\n",rep);
+  // printf("ret=%d\n",rep);
   if (rep == 0) rep = 1;
   cur -= rep;
   if (cur < 0) cur = 0;
