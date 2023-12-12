@@ -3,6 +3,7 @@
 #include "../include/fs.h"
 #include <sys/time.h>
 
+void naive_uload();
 
 // This is a user_handler func for AM, will handle different syscall
 void do_syscall(Context *c)
@@ -29,6 +30,10 @@ void do_syscall(Context *c)
     break;
   case SYS_read:
     c->GPRx = fs_read(a[1],(void*)a[2],a[3]);
+    break;
+  case SYS_execve:
+    naive_uload(NULL,(char *)a[1]);
+    c->GPRx = -1;
     break;
   case SYS_write:
     c->GPRx = fs_write(a[1],(void*)a[2],a[3]);
@@ -85,10 +90,13 @@ void do_syscall(Context *c)
     // panic("a0:%d",c->GPRx);
     break;
   case SYS_exit:
+    // printf("exit!\n");
+    naive_uload(NULL,"/bin/nterm");
+
     // printf("exit!Ohhh\n");
     // status: GPR2
 
-    halt(a[1]);
+    // halt(a[1]);
     break;
 
   default:

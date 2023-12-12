@@ -8,8 +8,9 @@ int SDL_Init(uint32_t flags) {
   return NDL_Init(flags);
 }
 
+// Warning:after SDL_Quit(), will go back to os face
 void SDL_Quit() {
-  // BUG: Segementation fault
+  // noexistBUG: Segementation fault
   NDL_Quit();
   // printf(RED_YEL"(6)NO implement!\n"WRITE);
 	// exit(-1);

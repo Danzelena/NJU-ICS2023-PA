@@ -59,6 +59,7 @@ int main() {
     SDL_Event e;
     SDL_WaitEvent(&e);
     if (e.type == SDL_KEYDOWN) {
+      // printf("(nslider)key=%d\n",e.key.keysym.sym);
       switch(e.key.keysym.sym) {
         case SDLK_0: rep = rep * 10 + 0; break;
         case SDLK_1: rep = rep * 10 + 1; break;
@@ -80,6 +81,9 @@ int main() {
             prev(100000);
             rep = 0; g = 0;
           }
+          break;
+        case SDLK_ESCAPE:
+          SDL_Quit();
           break;
       }
     }

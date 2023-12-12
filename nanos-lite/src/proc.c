@@ -27,7 +27,7 @@ void init_proc() {
   Log("Initializing processes...");
 
   // load program here
-  char *filename = "/bin/pal";
+  char *filename = "/bin/nterm";
   naive_uload(NULL,filename);
 }
 

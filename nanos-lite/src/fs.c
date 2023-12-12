@@ -61,18 +61,19 @@ void init_fs()
   }
 }
 
-//
 int f_find(const char *pathname)
 {
   int ft_num = sizeof(file_table) / sizeof(Finfo);
   int ret = -1;
   bool found = false;
+  
   for (int i = 0; i < ft_num; i++)
   {
     // printf("file:%s\n", file_table[i].name);
 
     if (strcmp(pathname, file_table[i].name) == 0)
     {
+      // printf("(f_find)path=%s,tab=%s\n",pathname, file_table[i].name);
       if (!found)
       {
         ret = i;
@@ -94,7 +95,8 @@ int fs_open(const char *pathname, int flags, int mode)
   int ret = f_find(pathname);
   if (ret == -1)
   {
-    panic("(fs_open)Sorry! file not found!\n");
+    printf("(fs_open)Sorry! file %s not found!\n",pathname);
+    // panic("(fs_open)Sorry! file not found!\n");
   }
   return ret;
 }

@@ -23,8 +23,25 @@ static void sh_banner() {
 static void sh_prompt() {
   sh_printf("sh> ");
 }
-
+static char fp[128];// file variable is very important
+// delete '\n' in the end
+static char *str_handle_cmd(const char *cmd){
+  // BUG:fp size fixed!
+  
+  strcpy(fp,cmd);
+  fp[strlen(fp)-1] = '\0';
+  // printf("fp=%s\n",fp);
+  return fp;
+}
+// 命令解析函数,把键入的命令作为参数调用 execve()
 static void sh_handle_cmd(const char *cmd) {
+  char *filepath = str_handle_cmd(cmd);
+  int flag = execvp(filepath,NULL);
+  // printf("666\n");
+  // int flag = execve(filepath,NULL,NULL);
+  if(flag == -1){
+    sh_printf("Path to %s not found!\n",filepath);
+  }
 }
 
 void builtin_sh_run() {
@@ -33,13 +50,15 @@ void builtin_sh_run() {
   // printf("shell2\n");
   sh_prompt();
   // printf("shell3\n");
-  
+  setenv("PATH", "/bin", 0);
   while (1) {
     SDL_Event ev;
     if (SDL_PollEvent(&ev)) {
       if (ev.type == SDL_KEYUP || ev.type == SDL_KEYDOWN) {
         const char *res = term->keypress(handle_key(&ev));
         if (res) {
+          //input: helloworld
+          //then res is 'hello world'
           sh_handle_cmd(res);
           sh_prompt();
         }

@@ -33,11 +33,15 @@ uintptr_t elf_loader(uintptr_t file_off, bool *suc);
 uintptr_t elf_file_loader(int fd, bool *suc);
 static uintptr_t loader(PCB *pcb, const char *filename)
 {
-  printf("begin to load!\n");
+  printf("begin to load %s!\n",filename);
   bool suc = false;
   uintptr_t proaddr = 0;
   // 使用 文件系统 之后的 loader
   int file_fd = fs_open(filename, 0, 0);
+  if(file_fd  < 0 || filename == NULL){
+    printf("fail to load file\n");
+    return -1;
+  }
   printf("0\n");
   proaddr = elf_file_loader(file_fd, &suc);
 
@@ -51,6 +55,7 @@ static uintptr_t loader(PCB *pcb, const char *filename)
     assert(0);
   }
   printf("finish load!\n");
+  fs_close(file_fd);
   // TODO();
   // printf("proaddr=%x\n",proaddr);
   return proaddr;
@@ -59,6 +64,9 @@ static uintptr_t loader(PCB *pcb, const char *filename)
 void naive_uload(PCB *pcb, const char *filename)
 {
   uintptr_t entry = loader(pcb, filename);
+  if(entry == -1){
+    return ;
+  }
   Log("Jump to entry = %p", entry);
   ((void (*)())entry)();
 }

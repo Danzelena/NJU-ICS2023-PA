@@ -57,7 +57,7 @@ int SDL_PollEvent(SDL_Event *ev)
   // assert signle line
   if (!isSignLine(buf))
   {
-    printf(RED_YEL "(SDL_WaitEvent)buf is not signle line!\n" WRITE);
+    printf(RED_YEL "(SDL_PollEvent)buf is not signle line!\n" WRITE);
     exit(-1);
   }
   char dir;
@@ -77,7 +77,7 @@ int SDL_PollEvent(SDL_Event *ev)
   }
   else
   {
-    printf(RED_YEL "(SDL_WaitEvent)no another case!\n" WRITE);
+    printf(RED_YEL "(SDL_PollEvent)no another case!\n" WRITE);
     exit(-1);
   }
 
@@ -127,6 +127,8 @@ int SDL_WaitEvent(SDL_Event *event)
           if (strcmp(key, keyname[i]) == 0)
           {
             key_state[i] = 1;
+                  printf("(WaitEvent)key=%s\n",key);
+
             event->key.keysym.sym = i;
             break;
           }

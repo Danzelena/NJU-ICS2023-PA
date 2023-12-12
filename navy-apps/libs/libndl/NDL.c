@@ -183,4 +183,5 @@ int NDL_Init(uint32_t flags) {
 
 void NDL_Quit() {
   printf("NDL_Quit!\n");
+  exit(0);// for test
 }
