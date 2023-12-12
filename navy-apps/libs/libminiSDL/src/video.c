@@ -108,32 +108,42 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h)
     w = s->w;
     h = s->h;
   }
-  printf("w=%d,h=%d\n",w,h);
-  // BUG :this
-  // w = 400;
-  // h = 300;
-  uint32_t *pixels = malloc(w * h * sizeof(uint32_t));
 
+  uint32_t *pixels = malloc(w * h * sizeof(uint32_t));
+  assert(pixels);
+  printf("1:pixels=%x\n",pixels);
   printf("x=%d,y=%d,w=%d,h=%d,s->w=%d,s->h=%d\n", x, y, w, h,s->w,s->h);
-  printf("Target1\n");
+  // printf("Target1\n");
   for (int j = y; j < y + h; j++)
   {
     for (int i = x; i < x + w; i++)
     {
       uint32_t pix = gen_pixel(s, i, j);
-      pixels[j * w + i] = pix;
+      pixels[(j-y) * w + (i-x)] = pix;// pixels=w*h
       // printf("pixels=%x\n",pix);
     }
   }
+  printf("2:pixels=%x\n",pixels);
+  printf("Target2 in vidio.c\n");
+  printf("3:pixels=%x\n",pixels);
 
-  printf("Target2\n");
   NDL_DrawRect(pixels, x, y, w, h);
-  free(pixels);
+  // fixedBUG:double free or corruption(!prev)
+  // Aborted(core dumped)
+  if(pixels == NULL){
+    printf("pixel is NULL\n");
+  }
+    printf("4:pixels=%x\n",pixels);
 
+  free(pixels);
+  printf("Target3 in video.c\n");
   printf("SDL_UpdateRect finish\n");
 }
 
-// output: AGRB
+// return pixel(AGRB) of surface on (i,j)
+// ------------>i(x)
+// |
+// j(y)
 uint32_t gen_pixel(SDL_Surface *surface, int i, int j)
 {
   SDL_PixelFormat *fmt = surface->format;

@@ -74,6 +74,7 @@ void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
     // printf("offset1=%d\n",((canvas_y + y + i) * screen_w + (canvas_x + x)) * sizeof(uint32_t));
     ssize_t s = write(graphics, pixels + w * i, w * sizeof(uint32_t));
   }
+  // BUG:not cloase fild
   // close(fd);
 }
 

@@ -9,9 +9,10 @@ int SDL_Init(uint32_t flags) {
 }
 
 void SDL_Quit() {
-  printf(RED_YEL"(6)NO implement!\n"WRITE);
-	exit(-1);
+  // BUG: Segementation fault
   NDL_Quit();
+  // printf(RED_YEL"(6)NO implement!\n"WRITE);
+	// exit(-1);
 }
 
 char *SDL_GetError() {
@@ -33,6 +34,7 @@ int SDL_ShowCursor(int toggle) {
 }
 
 void SDL_WM_SetCaption(const char *title, const char *icon) {
+
   printf(RED_YEL"(10)NO implement!\n"WRITE);
-	exit(-1);
+	// exit(-1);
 }

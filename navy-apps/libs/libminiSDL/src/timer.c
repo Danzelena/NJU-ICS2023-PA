@@ -27,6 +27,8 @@ uint32_t SDL_GetTicks() {
 }
 
 void SDL_Delay(uint32_t ms) {
-  printf(RED_YEL"(14)NO implement!\n"WRITE);
-	exit(-1);
+  uint32_t start = NDL_GetTicks();
+  while (NDL_GetTicks() - start <= ms){}
+  // printf(RED_YEL"(14)NO implement!\n"WRITE);
+	// exit(-1);
 }
