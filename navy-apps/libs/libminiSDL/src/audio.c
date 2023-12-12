@@ -27,8 +27,8 @@ void SDL_MixAudio(uint8_t *dst, uint8_t *src, uint32_t len, int volume) {
 }
 
 SDL_AudioSpec *SDL_LoadWAV(const char *file, SDL_AudioSpec *spec, uint8_t **audio_buf, uint32_t *audio_len) {
-    printf(RED_YEL "(LoadWAV)NO implement!\n" WRITE);
-  exit(-1);
+  printf(RED_YEL "(SDL_LoadWAV)NO implement!\n" WRITE);
+  // exit(-1);
   return NULL;
 }
 

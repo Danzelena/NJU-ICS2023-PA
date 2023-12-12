@@ -52,6 +52,13 @@ void init_fs()
   // TODO: initialize the size of /dev/fb
   AM_GPU_CONFIG_T config = io_read(AM_GPU_CONFIG);
   file_table[FD_FB].size = config.width * config.height * sizeof(uint32_t);
+
+  for (int i = 6; i < sizeof(file_table) / sizeof(Finfo); ++i){
+    // 我不确定会不会自动刷为0，不如再做一次
+    file_table[i].open_offset = 0;
+    file_table[i].write = NULL;
+    file_table[i].read = NULL;
+  }
 }
 
 //
@@ -117,6 +124,7 @@ size_t fs_read(int fd, void *buf, size_t len)
   // }
 
   // return real_len;
+  
   if (file_table[fd].read != NULL)
   {
    int ret = file_table[fd].read(buf, 0, len);
@@ -127,12 +135,15 @@ size_t fs_read(int fd, void *buf, size_t len)
    return ret;
   }
   else
-  {
-    if (file_table[fd].open_offset >= file_table[fd].size)
+  { 
+    // printf("png_off=%d\n",file_table[66].open_offset);
+    if (file_table[fd].open_offset > file_table[fd].size)
     {
-      panic("(fs_read)no bytes to read\n");
+      panic("(fs_read)fd=%d,op_off=%d,size=%d,len=%d, no bytes to read\n",fd,file_table[fd].open_offset ,file_table[fd].size,len);
       return 0;
-    }
+    }else if(file_table[fd].open_offset == file_table[fd].size){
+      return 0;
+    }// FORWARD:code is repeated
     if (file_table[fd].disk_offset + file_table[fd].open_offset + len > file_table[fd + 1].disk_offset)
     {
       // panic("(fs_read)Don't have enough size to read\n");

@@ -47,20 +47,21 @@ void* BMP_Load(const char *filename, int *width, int *height) {
   // uint32_t clrused, clrimportant;
 
 
-  // BUG: this reason
-  if(hdr.bitcount == 65535)hdr.bitcount = 24;
+  // fixedBUG: this reason
+  // if(hdr.bitcount == 65535)hdr.bitcount = 24;
   // printf("bitcount=%d\n",hdr.bitcount);
   if (hdr.bitcount != 24){
-    printf("bitcount=%d\n",hdr.bitcount);
-    printf("reason2\n");
-    // return NULL;
+    // printf("bitcount=%d\n",hdr.bitcount);
+    // printf("reason2\n");
+    printf("bitcount != 24\n");
+    exit(-1);
+    return NULL;
   }
-  printf("compression=%d\n",hdr.compression);
-  // BUG: this reason
+  // printf("compression=%d\n",hdr.compression);
   if (hdr.compression != 0){
-    // printf("reason 3\n");
-    hdr.compression = 0;
-    // return NULL;
+    printf("compression != 0\n");
+    exit(-1);
+    return NULL;
   } 
   int w = hdr.width;
   int h = hdr.height;
