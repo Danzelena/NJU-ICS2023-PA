@@ -66,6 +66,8 @@ Context *kcontext(Area kstack, void (*entry)(void *), void *arg)
 
   context->mstatus = 0x1800;
   context->mepc = (uintptr_t)entry;
+  // riscv 是使用寄存器传递参数
+  context->GPRa0 = (uintptr_t)arg;
   // TODO: mcause, gpr[NR_REGS], pdir
   return context;
   // return NULL;
