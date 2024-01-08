@@ -59,6 +59,9 @@ __am_asm_trap:
 
   mv a0, sp
   jal __am_irq_handle
+  # __am_irq_handle 的返回值就是新进程的上下文指针
+  # 先将栈顶指针 sp 切换到新进程的上下文结构,然后再恢复上下文
+  mv sp, a0
 
   LOAD t1, OFFSET_STATUS(sp)
   LOAD t2, OFFSET_EPC(sp)

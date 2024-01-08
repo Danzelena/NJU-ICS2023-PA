@@ -37,8 +37,9 @@ Context *__am_irq_handle(Context *c)
       ev.event = EVENT_ERROR;
       break;
     }
-
+    printf("(Debug)before schedule()\n");
     c = user_handler(ev, c);
+    printf("(Debug)after schedule()\n");
     assert(c != NULL);
   }
 
@@ -62,9 +63,22 @@ bool cte_init(Context *(*handler)(Event, Context *))
   return true;
 }
 
+// create kernel thread
+// 'k' for kernal 
+// kstack -> range of stack
+// entry  -> entry to kernel thread
+// arg    -> parameter of kernel thread
+// 此外, kcontext()要求内核线程不能从entry返回, 否则其行为是未定义的. 
+// 你需要在kstack的底部创建一个以entry为入口的上下文结构(目前你可以先忽略arg参数), 然后返回这一结构的指针.
 Context *kcontext(Area kstack, void (*entry)(void *), void *arg)
 {
-  return NULL;
+  Context *context = kstack.end - sizeof(Context) - 4;
+
+  context->mstatus = 0x1800;
+  context->mepc = (uintptr_t)entry;
+  // TODO: mcause, gpr[NR_REGS], pdir
+  return context;
+  // return NULL;
 }
 
 void yield()
