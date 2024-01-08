@@ -160,7 +160,7 @@ uintptr_t elf_loader(uintptr_t file_off, bool *suc)
 
   Elf_Off program_off = header.e_phoff;
   // BUG:may have bug because malloc of klib is not implement!'
-  printf("Debug:program_off=0x%x\n", program_off);
+  // printf("Debug:program_off=0x%x\n", program_off);
   size_t program_cnt;
   for (program_cnt = 0; program_cnt < header.e_phnum; program_cnt++)
   {

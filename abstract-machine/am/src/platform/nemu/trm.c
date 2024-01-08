@@ -6,7 +6,6 @@
 extern char _heap_start;
 int main(const char *args);
 // 指示堆区的起始和末尾
-// printf("Debug: heap_start %x\n", (unsigned long)&_heap_start);
 Area heap = RANGE(&_heap_start, PMEM_END);
 #ifndef MAINARGS
 #define MAINARGS ""

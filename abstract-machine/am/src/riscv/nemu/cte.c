@@ -6,16 +6,6 @@ static Context *(*user_handler)(Event, Context *) = NULL;
 
 Context *__am_irq_handle(Context *c)
 {
-  /* Debug */
-  // printf("DEBUG:Context message:\n");
-  // printf("gpr:\n");
-  // for(size_t i = 0;i < 32;i++){
-  //   printf("%x\n",(unsigned long)c->gpr[i]);
-  // }
-  // printf("mcause;%x\n",c->mcause);
-  // printf("mstatus;%x\n",c->mstatus);
-  // printf("mepc;%x\n",c->mepc);
-
 
   // 把执行流切换的原因打包成事件,然后user_handle()
   if (user_handler)
@@ -37,9 +27,9 @@ Context *__am_irq_handle(Context *c)
       ev.event = EVENT_ERROR;
       break;
     }
-    printf("(Debug)before schedule()\n");
+    // printf("(Debug)before schedule()\n");
     c = user_handler(ev, c);
-    printf("(Debug)after schedule()\n");
+    // printf("(Debug)after schedule()\n");
     assert(c != NULL);
   }
 
