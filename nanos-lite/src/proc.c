@@ -39,6 +39,7 @@ void context_uload(PCB *pcb, const char *filename){
   printf("(Debug)allocate context\n");
   context->GPRx = kstack_end;
   pcb->cp = context;
+  printf("(Debug)pcb->cp->mepc=%x\n", pcb->cp->mepc);
 }
 void init_proc() {
   // 创建两个以hello_fun()为入口的上下文
