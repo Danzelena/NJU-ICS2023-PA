@@ -59,6 +59,9 @@ void init_proc() {
 Context* schedule(Context *prev) {
   // printf("(Debug)begin scuedule\n");
   current->cp = prev;
+  if(current==&pcb[0])printf("1\n");else printf("0\n");
+  if(current==&pcb[1])printf("1\n");else printf("0\n");
+
   current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
   printf("(Debug)mepc1=%x, mepc2=%x\n", pcb[0].cp->mepc, pcb[1].cp->mepc);
 
