@@ -62,7 +62,7 @@ bool cte_init(Context *(*handler)(Event, Context *))
 // 你需要在kstack的底部创建一个以entry为入口的上下文结构(目前你可以先忽略arg参数), 然后返回这一结构的指针.
 Context *kcontext(Area kstack, void (*entry)(void *), void *arg)
 {
-  Context *context = kstack.end - sizeof(Context);
+  Context *context = kstack.end - sizeof(Context)-4;
 
   context->mstatus = 0x1800;
   context->mepc = (uintptr_t)entry;

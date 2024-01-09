@@ -33,11 +33,9 @@ void context_kload(PCB *pcb, void (*entry)(void *), void *arg){
 }
 void context_uload(PCB *pcb, const char *filename){
   uintptr_t entry = entry_get(pcb, filename);
-  printf("(Debug)get entry=%x\n", entry);
   uintptr_t kstack_end = (uintptr_t)pcb + 1;
-  printf("(Debug)before ucontext\n");
+  printf("(Debug)(context_kload)begin=%x, end=%x\n", pcb->stack, pcb + 1);
   Context *context = ucontext(NULL, (Area) {pcb->stack, (void*)kstack_end}, (void*)entry);
-  printf("(Debug)allocate context\n");
   context->GPRx = kstack_end;
   pcb->cp = context;
   // printf("(Debug)pcb->cp->mepc=%x\n", pcb->cp->mepc);
