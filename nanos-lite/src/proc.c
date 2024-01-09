@@ -22,6 +22,7 @@ void hello_fun(void *arg) {
 }
 
 void naive_uload(PCB *pcb, const char *filename);
+uintptr_t entry_get(PCB *pcb, const char *filename);
 
 // 调用 kcontext 来创建上下文
 // 把返回的指针记录到 PCB 的 cp 中
@@ -29,11 +30,21 @@ void context_kload(PCB *pcb, void (*entry)(void *), void *arg){
   printf("(Debug)(context_kload)begin=%x, end=%x\n", pcb->stack, pcb + 1);
   pcb->cp = kcontext((Area) {pcb->stack, pcb + 1}, entry, arg);
 }
-
+void context_uload(PCB *pcb, const char *filename){
+  uintptr_t entry = entry_get(pcb, filename);
+  printf("(Debug)get entry\n");
+  uintptr_t kstack_end = (uintptr_t)pcb + 1;
+  printf("(Debug)before ucontext\n");
+  Context *context = ucontext(NULL, (Area) {pcb->stack, (void*)kstack_end}, (void*)entry);
+  printf("(Debug)allocate context\n");
+  context->GPRx = kstack_end;
+  pcb->cp = context;
+}
 void init_proc() {
   // 创建两个以hello_fun()为入口的上下文
   context_kload(&pcb[0], hello_fun, (void *)1L);
-  context_kload(&pcb[1], hello_fun, (void *)2L);
+  context_uload(&pcb[1], "/bin/pal");
+  // context_kload(&pcb[1], hello_fun, (void *)2L);
   switch_boot_pcb();
 
   Log("Initializing processes...");

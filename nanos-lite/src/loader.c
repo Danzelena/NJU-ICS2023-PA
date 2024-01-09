@@ -60,7 +60,11 @@ static uintptr_t loader(PCB *pcb, const char *filename)
   // printf("proaddr=%x\n",proaddr);
   return proaddr;
 }
-
+uintptr_t entry_get(PCB *pcb, const char *filename){
+  uintptr_t entry = loader(pcb, filename);
+  assert(entry != -1);
+  return entry;
+}
 void naive_uload(PCB *pcb, const char *filename)
 {
   uintptr_t entry = loader(pcb, filename);

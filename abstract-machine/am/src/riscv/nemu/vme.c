@@ -69,6 +69,16 @@ void __am_switch(Context *c) {
 void map(AddrSpace *as, void *va, void *pa, int prot) {
 }
 
+// similar to kcontext() but for user prog
+// as -> 限制用户进程可以访问的内存
+// kstack -> 内核栈, 用于分配上下文结构
+// entry -> 用户进程的入口
 Context *ucontext(AddrSpace *as, Area kstack, void *entry) {
-  return NULL;
+  // printf("(Debug)begin to ucontext\n");
+  Context *context = kstack.end - sizeof(Context) - 4;
+  // printf("(Debug)context=%x\n", context);
+  context->mstatus = 0x1800;
+  context->mepc = (uintptr_t)entry;
+  return context;
+  // return NULL;
 }

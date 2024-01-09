@@ -6,6 +6,9 @@ static Context *do_event(Event e, Context *c)
 {
   switch (e.event)
   {
+  // 在 native 上进行上下文切换
+  case EVENT_IRQ_TIMER:
+    break;
   case EVENT_YIELD:
     // 在 Nanos-lite 收到 EVENT_YIELD 之后, 使用 schedule() 来返回新的上下文
     printf("(Debug)(EVENT_YIELD)\n");
