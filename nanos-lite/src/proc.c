@@ -44,8 +44,8 @@ void context_uload(PCB *pcb, const char *filename){
 void init_proc() {
   // 创建两个以hello_fun()为入口的上下文
   context_kload(&pcb[0], hello_fun, (void *)1L);
-  context_uload(&pcb[1], "/bin/pal");
-  // context_kload(&pcb[1], hello_fun, (void *)2L);
+  // context_uload(&pcb[1], "/bin/pal");
+  context_kload(&pcb[1], hello_fun, (void *)2L);
   switch_boot_pcb();
 
   Log("Initializing processes...");
@@ -59,8 +59,8 @@ void init_proc() {
 Context* schedule(Context *prev) {
   // printf("(Debug)begin scuedule\n");
   current->cp = prev;
-  if(current==&pcb[0]){printf("1\n");}else {printf("0\n");}
-  if(current==&pcb[1]){printf("1\n");}else {printf("0\n");}
+  // if(current==&pcb[0]){printf("1\n");}else {printf("0\n");}
+  // if(current==&pcb[1]){printf("1\n");}else {printf("0\n");}
 
   current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
   printf("(Debug)mepc1=%x, mepc2=%x\n", pcb[0].cp->mepc, pcb[1].cp->mepc);
