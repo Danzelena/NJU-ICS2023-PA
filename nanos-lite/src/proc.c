@@ -65,7 +65,7 @@ Context* schedule(Context *prev) {
   // if(current==&pcb[1]){printf("1\n");}else {printf("0\n");}
 
   current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
-  // printf("(Debug)mepc1=%x, mepc2=%x\n", pcb[0].cp->mepc, pcb[1].cp->mepc);
+  printf("(Debug)mepc1=%x, mepc2=%x\n", pcb[0].cp->mepc, pcb[1].cp->mepc);
 
   return current->cp;
 }
