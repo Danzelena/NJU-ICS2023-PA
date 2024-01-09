@@ -29,7 +29,7 @@ uintptr_t entry_get(PCB *pcb, const char *filename);
 void context_kload(PCB *pcb, void (*entry)(void *), void *arg){
   printf("(Debug)(context_kload)begin=%x, end=%x\n", pcb->stack, pcb + 1);
   pcb->cp = kcontext((Area) {pcb->stack, pcb + 1}, entry, arg);
-  // printf("(Debug)epc1=%x\n", pcb->cp->mepc);
+  printf("(Debug)epc1=%x\n", pcb->cp->mepc);
 }
 void context_uload(PCB *pcb, const char *filename){
   uintptr_t entry = entry_get(pcb, filename);
