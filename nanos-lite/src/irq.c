@@ -1,5 +1,5 @@
 #include <common.h>
-
+#include <proc.h>
 
 void do_syscall();
 static Context *do_event(Event e, Context *c)
@@ -7,6 +7,8 @@ static Context *do_event(Event e, Context *c)
   switch (e.event)
   {
   case EVENT_YIELD:
+    // 在 Nanos-lite 收到 EVENT_YIELD 之后, 使用 schedule() 来返回新的上下文
+    printf("(Debug)(EVENT_YIELD)\n");
     // printf("(yield trace)\n")
     /* Debug */
     // printf("DEBUG:Context message:\n");
@@ -18,7 +20,7 @@ static Context *do_event(Event e, Context *c)
     // printf("mcause;%x\n", c->mcause);
     // printf("mstatus;%x\n", c->mstatus);
     // printf("mepc;%x\n", c->mepc);
-    
+    return schedule(c);
     break;
   case EVENT_SYSCALL:
 
