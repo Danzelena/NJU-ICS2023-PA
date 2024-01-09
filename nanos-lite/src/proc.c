@@ -60,7 +60,7 @@ Context* schedule(Context *prev) {
   // printf("(Debug)begin scuedule\n");
   current->cp = prev;
   current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
-  // printf("(Debug)end scuedule\n");
+  printf("(Debug)schedule mepc=%x\n", current->cp->mepc);
 
   return current->cp;
 }
