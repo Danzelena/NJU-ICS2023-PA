@@ -22,8 +22,9 @@ static Context *do_event(Event e, Context *c)
     // }
     // printf("mcause;%x\n", c->mcause);
     // printf("mstatus;%x\n", c->mstatus);
-    // printf("mepc;%x\n", c->mepc);
-    return schedule(c);
+    
+    Context *ret = schedule(c);
+    printf("(Debug)mepc;%x\n", ret->mepc);
     break;
   case EVENT_SYSCALL:
 
