@@ -29,20 +29,23 @@ uintptr_t entry_get(PCB *pcb, const char *filename);
 void context_kload(PCB *pcb, void (*entry)(void *), void *arg){
   printf("(Debug)(context_kload)begin=%x, end=%x\n", pcb->stack, pcb + 1);
   pcb->cp = kcontext((Area) {pcb->stack, pcb + 1}, entry, arg);
-  printf("(Debug)epc1=%x\n", pcb->cp->mepc);
+  // printf("(Debug)epc1=%x\n", pcb->cp->mepc);
 }
 void context_uload(PCB *pcb, const char *filename){
   uintptr_t entry = entry_get(pcb, filename);
   uintptr_t kstack_end = (uintptr_t)(pcb + 1);
   printf("(Debug)(context_uload)begin=%x, end=%x\n", pcb->stack, kstack_end);
-  Context *context = ucontext(NULL, (Area) {pcb->stack, (void*)kstack_end}, (void*)entry);
+  AddrSpace addrs;
+  Context *context = ucontext(&addrs, (Area) {pcb->stack, (void*)kstack_end}, (void*)entry);
   context->GPRx = kstack_end;
   pcb->cp = context;
   // printf("(Debug)pcb->cp->mepc=%x\n", pcb->cp->mepc);
 }
 void init_proc() {
   // 创建两个以hello_fun()为入口的上下文
-  context_kload(&pcb[0], hello_fun, (void *)1L);
+  // context_kload(&pcb[0], hello_fun, (void *)1L);
+  context_uload(&pcb[0], "/bin/hello");
+
   context_uload(&pcb[1], "/bin/pal");
   // context_kload(&pcb[1], hello_fun, (void *)2L);
   switch_boot_pcb();
@@ -62,7 +65,7 @@ Context* schedule(Context *prev) {
   // if(current==&pcb[1]){printf("1\n");}else {printf("0\n");}
 
   current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
-  printf("(Debug)mepc1=%x, mepc2=%x\n", pcb[0].cp->mepc, pcb[1].cp->mepc);
+  // printf("(Debug)mepc1=%x, mepc2=%x\n", pcb[0].cp->mepc, pcb[1].cp->mepc);
 
   return current->cp;
 }
