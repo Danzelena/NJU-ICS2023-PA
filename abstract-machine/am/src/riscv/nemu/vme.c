@@ -75,10 +75,10 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
 // entry -> 用户进程的入口
 Context *ucontext(AddrSpace *as, Area kstack, void *entry) {
   // printf("(Debug)begin to ucontext\n");
-  Context *context = kstack.end - sizeof(Context) - 4;
+  Context *context = kstack.end - sizeof(Context) - 2;
   // printf("(Debug)context=%x\n", context);
   context->mstatus = 0x1800;
-  context->mepc = (uintptr_t)entry+0x66;
+  context->mepc = (uintptr_t)entry;
   // printf("(Debug)context->mepc=%x\n", context->mepc);
   return context;
   // return NULL;
