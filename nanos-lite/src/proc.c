@@ -32,7 +32,7 @@ void context_kload(PCB *pcb, void (*entry)(void *), void *arg){
 }
 void context_uload(PCB *pcb, const char *filename){
   uintptr_t entry = entry_get(pcb, filename);
-  printf("(Debug)get entry\n");
+  printf("(Debug)get entry=%x\n", entry);
   uintptr_t kstack_end = (uintptr_t)pcb + 1;
   printf("(Debug)before ucontext\n");
   Context *context = ucontext(NULL, (Area) {pcb->stack, (void*)kstack_end}, (void*)entry);
@@ -56,10 +56,10 @@ void init_proc() {
 }
 
 Context* schedule(Context *prev) {
-  printf("(Debug)begin scuedule\n");
+  // printf("(Debug)begin scuedule\n");
   current->cp = prev;
   current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
-  printf("(Debug)end scuedule\n");
+  // printf("(Debug)end scuedule\n");
 
   return current->cp;
 }
