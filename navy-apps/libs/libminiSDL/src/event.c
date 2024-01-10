@@ -192,7 +192,6 @@ int SDL_PeepEvents(SDL_Event *ev, int numevents, int action, uint32_t mask)
   return 0;
 }
 
-// Warning:copy(
 // Gets a snapshot of the current keyboard state.
 // The current state is return as a pointer to an array, the size of this array is stored in numkeys.
 // The array is indexed by the SDLK_* symbols. A value of 1 means the key is pressed and a value of 0 means its not.

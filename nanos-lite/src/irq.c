@@ -24,6 +24,7 @@ static Context *do_event(Event e, Context *c)
     // printf("mstatus;%x\n", c->mstatus);
     
     Context *ret = schedule(c);
+    printf("(Debug)(EVENT_YIELD)finish\n");
     // printf("(Debug)mepc=%x\n", ret->mepc);
     return ret;
     break;

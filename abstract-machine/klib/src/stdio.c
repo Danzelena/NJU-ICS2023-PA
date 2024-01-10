@@ -403,7 +403,6 @@ int vsnprintf(char *out, size_t n, const char *fmt, va_list args)
 // 	panic("Not implemented");
 // }
 
-/*TODO:fix this biggggggg BUG!!!*/
 // int vsprintf(char *out, const char *fmt, va_list ap);
 // int vsnprintf(char *out, size_t n, const char *fmt, va_list ap);
 
