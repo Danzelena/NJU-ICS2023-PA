@@ -50,6 +50,7 @@ void call_main(uintptr_t *args) {
   for(size_t i = 0;i < argc;i ++){
     printf("(Debug)argv[%d]=%s\n", i, argv[i]);
   }
+  printf("(Debug)(call_main)finished\n");
   exit(main(argc, argv, envp));
   // exit(main(0, empty, empty));
   assert(0);
