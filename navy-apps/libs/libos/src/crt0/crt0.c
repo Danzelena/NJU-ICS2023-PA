@@ -46,6 +46,7 @@ void call_main(uintptr_t *args) {
   // char *empty[] =  {NULL };
   // environ = empty;
   environ = envp;
+  printf("(Debug)before main: argc=%d\n", argc);
   exit(main(argc, argv, envp));
   // exit(main(0, empty, empty));
   assert(0);
