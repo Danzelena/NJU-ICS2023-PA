@@ -21,6 +21,7 @@ void hello_fun(void *arg) {
     Log("Hello World from Nanos-lite with arg '%p' for the %dth time!", (uintptr_t)arg, j);
     j ++;
     for (int volatile i = 0; i < 100000; i++) ;// make it slower
+    // assert(0);
     yield();
   }
 }
@@ -77,8 +78,11 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   // Warning: 强行约定了 arg 区域的大小
 
   // uintptr_t arg_begin = pcb->cp->GPRx;
-  uintptr_t arg_end = kstack_begin;
-  uintptr_t arg_begin = arg_end - MAX_args_len;
+  uintptr_t arg_stack[MAX_args_len];
+  uintptr_t arg_begin = (uintptr_t)arg_stack;
+  uintptr_t arg_end = arg_begin + MAX_args_len;
+  // uintptr_t arg_end = kstack_begin;
+  // uintptr_t arg_begin = arg_end - MAX_args_len;
 
   printf("(Debug)arg_begin=%x, arg_end=%x\n", arg_begin, arg_end);
   assert((void*)arg_begin!= NULL&&(void*)arg_end!= NULL&&arg_begin<arg_end);
@@ -144,8 +148,9 @@ void init_proc() {
   // BUG: 根据目前计算 argc, envc的方法,必须这么定义 argv, envp
   char *const argv[] = {"--skip", "hello", "world", "NJU", NULL};
   char *const envp[] = {"ICS", "PA", "pa", NULL};
-  // context_uload(&pcb[1], "/bin/pal");
+  
   context_uload(&pcb[1], "/bin/pal", argv, envp);
+  // context_uload(&pcb[1], "/bin/pal");
   // context_kload(&pcb[1], hello_fun, (void *)2L);
   switch_boot_pcb();
 
@@ -161,10 +166,10 @@ Context* schedule(Context *prev) {
   // printf("(Debug)begin scuedule\n");
   current->cp = prev;
   
-
   current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
+  // printf("(Debug)mepc1=%x, mepc2=%x \n", pcb[0].cp->uc.uc_mcontext.gregs[REG_RIP], pcb[1].cp->uc.uc_mcontext.gregs[REG_RIP]);
   // printf("(Debug)mepc1=%x, mepc2=%x \n", pcb[0].cp->mepc, pcb[1].cp->mepc);
-  // if(current==&pcb[0]){printf("(Debug)(Schedule)go to 0\n");}
-  // if(current==&pcb[1]){printf("(Debug)(Schedule)go to 1\n");}
+  if(current==&pcb[0]){printf("(Debug)(Schedule)go to 0\n");}
+  if(current==&pcb[1]){printf("(Debug)(Schedule)go to 1\n");}
   return current->cp;
 }

@@ -29,11 +29,11 @@ static void irq_handle(Context *c) {
   assert(c != NULL);
 
   __am_switch(c);
-
   // magic call to restore context
   void (*p)(Context *c) = (void *)(uintptr_t)0x100008;
   p(c);
   __am_panic_on_return();
+  
 }
 
 static void setup_stack(uintptr_t event, ucontext_t *uc) {
@@ -177,6 +177,7 @@ Context* kcontext(Area kstack, void (*entry)(void *), void *arg) {
 
   c->GPR1 = (uintptr_t)arg;
   c->GPR2 = (uintptr_t)entry;
+  printf("(Debug)(native_kcontext)entry=%x\n", (uintptr_t)entry);
   return c;
 }
 
