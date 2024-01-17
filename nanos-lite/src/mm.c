@@ -1,9 +1,15 @@
 #include <memory.h>
-
+#include <common.h>
 static void *pf = NULL;
 
+// TODO:实现 new_page
+// 分配一段 nr_page * 4KB 的内存区域,并返回首地址
 void* new_page(size_t nr_page) {
-  return NULL;
+  void *ret = pf;
+  pf += nr_page * PGSIZE;
+
+  return ret;
+  // return NULL;
 }
 
 #ifdef HAS_VME

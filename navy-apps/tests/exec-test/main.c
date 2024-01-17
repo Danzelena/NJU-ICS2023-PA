@@ -9,6 +9,8 @@ int main(int argc, char *argv[]) {
 
   char buf[16];
   sprintf(buf, "%d", n + 1);
+  // Hint:
+  // execl(path, arg...)
   execl(argv[0], argv[0], buf, NULL);
   return 0;
 }

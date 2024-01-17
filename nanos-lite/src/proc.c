@@ -5,6 +5,7 @@
 #define MAX_envc 10
 // Bytes
 #define MAX_args_len 0x400
+#define NR_PAGE 8
 
 static PCB pcb[MAX_NR_PROC] __attribute__((used)) = {};
 static PCB pcb_boot = {};
@@ -62,28 +63,39 @@ static size_t len_resize(size_t size){
   }
 }
 void context_uload(PCB *pcb, const char *filename, char *const argv[], char *const envp[]){
+  printf("(Debug)(context_uload)\n");
+  printf("filename=%s\n", filename);
+  
 
+  
   
   uintptr_t entry = entry_get(pcb, filename);
   assert((void*)entry!= NULL);
+
+  // 在PCB的内核栈中创建用户进程B的上下文
   uintptr_t kstack_begin = (uintptr_t)pcb->stack;
   uintptr_t kstack_end = (uintptr_t)(pcb + 1);
   assert((void*)kstack_begin!= NULL && (void*)kstack_end!= NULL&&kstack_end>kstack_begin);
-  printf("(Debug)(context_uload)begin=%x, end=%x\n", pcb->stack, kstack_end);
+  // printf("(Debug)(context_uload)begin=%x, end=%x\n", pcb->stack, kstack_end);
   AddrSpace addrs;
-  // TODO: context_uload
   // Hint: c->uc.uc_mcontext.gregs[REG_RIP]存放 entry
   // 分配上下文
-  Context *context = ucontext(&addrs, (Area) {pcb->stack, (void*)kstack_end}, (void*)entry);
-
+  Context *context = ucontext(&addrs, (Area) {(void *)kstack_begin, (void*)kstack_end}, (void*)entry);
   pcb->cp = context;
 
-  // Warning: 强行约定了 arg 区域的大小
-
+  
+  // Warning: 强行约定了 arg 区域的大小, 以及让用户栈的结尾成为heap.end
   // uintptr_t arg_begin = pcb->cp->GPRx;
-  uintptr_t arg_stack[MAX_args_len];
-  uintptr_t arg_begin = (uintptr_t)arg_stack;
+  // uintptr_t arg_stack[MAX_args_len];
+  // uintptr_t arg_begin = (uintptr_t)arg_stack;
+  // uintptr_t arg_end = arg_begin + MAX_args_len;
+
+
+  // 使用new_page()开辟新的用户栈
+  uintptr_t arg_begin = (uintptr_t)new_page(NR_PAGE) + NR_PAGE * PGSIZE - MAX_args_len;
   uintptr_t arg_end = arg_begin + MAX_args_len;
+  // uintptr_t arg_end = (uintptr_t)heap.end;
+  // uintptr_t arg_begin = arg_end - MAX_args_len;
   // uintptr_t arg_end = kstack_begin;
   // uintptr_t arg_begin = arg_end - MAX_args_len;
 
@@ -152,14 +164,15 @@ void init_proc() {
   // context_uload(&pcb[0], "/bin/hello");
 
   // BUG: 根据目前计算 argc, envc的方法,必须这么定义 argv, envp
-  char *const argv[] = {"--skip", "hello", "world", "NJU", NULL};
-  // (native)argv:{'o', 'd', 'world', 'NJU'}
-  // (nemu  )argv:{}
+  // char *const argv[] = {"--skip", "hello", "world", "NJU", NULL};
+
   // char *const envp[] = {"ICS", "PA", "pa", NULL};
   // BUG: "nil" for NULL
-  char *const envp[] = {"nil"};
+  char *const argv[] = {"/bin/exec-test", NULL};
+  char *const envp[] = {"nil", NULL};
   
-  context_uload(&pcb[1], "/bin/pal", argv, envp);
+  // context_uload(&pcb[1], "/bin/pal", argv, envp);
+  context_uload(&pcb[1], "/bin/exec-test", argv, envp);
   // context_uload(&pcb[1], "/bin/pal");
   // context_kload(&pcb[1], hello_fun, (void *)2L);
   switch_boot_pcb();

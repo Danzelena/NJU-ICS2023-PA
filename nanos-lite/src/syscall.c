@@ -2,8 +2,10 @@
 #include "syscall.h"
 #include "../include/fs.h"
 #include <sys/time.h>
-
+#include <proc.h>
 void naive_uload();
+void switch_boot_pcb();
+void context_uload();
 
 // This is a user_handler func for AM, will handle different syscall
 void do_syscall(Context *c)
@@ -32,6 +34,15 @@ void do_syscall(Context *c)
     c->GPRx = fs_read(a[1],(void*)a[2],a[3]);
     break;
   case SYS_execve:
+    printf("(Debug)(SYS_execve)\n");
+    const char *path = (char *)a[1];
+    char **const argv = (char **)a[2];
+    char **const envp = (char **)a[3];
+    
+    context_uload(current, path, argv, envp);
+    switch_boot_pcb();
+    yield();
+    panic("Should not reach here\n");
     naive_uload(NULL,(char *)a[1]);
     c->GPRx = -1;
     break;
@@ -91,7 +102,8 @@ void do_syscall(Context *c)
     break;
   case SYS_exit:
     // printf("exit!\n");
-    naive_uload(NULL,"/bin/nterm");
+    // Warning:在exit后默认退回nterm
+    // naive_uload(NULL,"/bin/nterm");
 
     // printf("exit!Ohhh\n");
     // status: GPR2
