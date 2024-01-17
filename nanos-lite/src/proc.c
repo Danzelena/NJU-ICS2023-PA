@@ -70,6 +70,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   printf("(Debug)(context_uload)begin=%x, end=%x\n", pcb->stack, kstack_end);
   AddrSpace addrs;
   // TODO: context_uload
+  // Hint: c->uc.uc_mcontext.gregs[REG_RIP]存放 entry
   // 分配上下文
   Context *context = ucontext(&addrs, (Area) {pcb->stack, (void*)kstack_end}, (void*)entry);
 
@@ -142,11 +143,14 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
 }
 void init_proc() {
   // 创建两个以hello_fun()为入口的上下文
+
   context_kload(&pcb[0], hello_fun, (void *)1L);
   // context_uload(&pcb[0], "/bin/hello");
 
   // BUG: 根据目前计算 argc, envc的方法,必须这么定义 argv, envp
   char *const argv[] = {"--skip", "hello", "world", "NJU", NULL};
+  // (native)argv:{'o', 'd', 'world', 'NJU'}
+  // (nemu  )argv:{}
   char *const envp[] = {"ICS", "PA", "pa", NULL};
   
   context_uload(&pcb[1], "/bin/pal", argv, envp);
@@ -171,5 +175,7 @@ Context* schedule(Context *prev) {
   // printf("(Debug)mepc1=%x, mepc2=%x \n", pcb[0].cp->mepc, pcb[1].cp->mepc);
   if(current==&pcb[0]){printf("(Debug)(Schedule)go to 0\n");}
   if(current==&pcb[1]){printf("(Debug)(Schedule)go to 1\n");}
+  // printf("(Debug)entry=0x%x\n", current->cp->uc.uc_mcontext.gregs[REG_RIP]);
+
   return current->cp;
 }

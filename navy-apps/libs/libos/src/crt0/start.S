@@ -9,8 +9,8 @@ _start:
   // See amd64 ABI manual for more details
   andq $0xfffffffffffffff0, %rsp
   movq %rax, %rdi
-  // movq %rax, %rsp
-  // TODO:可能需要GPRx push stack
+  movq %rax, %rsp
+  // 确实需要GPRx push stack
   call call_main
 
 #elif defined(__ISA_X86_64__)
