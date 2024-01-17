@@ -156,6 +156,7 @@ void init_proc() {
   // (native)argv:{'o', 'd', 'world', 'NJU'}
   // (nemu  )argv:{}
   // char *const envp[] = {"ICS", "PA", "pa", NULL};
+  // BUG: "nil" for NULL
   char *const envp[] = {"nil"};
   
   context_uload(&pcb[1], "/bin/pal", argv, envp);
