@@ -62,6 +62,8 @@ static size_t len_resize(size_t size){
   }
 }
 void context_uload(PCB *pcb, const char *filename, char *const argv[], char *const envp[]){
+
+  
   uintptr_t entry = entry_get(pcb, filename);
   assert((void*)entry!= NULL);
   uintptr_t kstack_begin = (uintptr_t)pcb->stack;
@@ -88,8 +90,10 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   printf("(Debug)arg_begin=%x, arg_end=%x\n", arg_begin, arg_end);
   assert((void*)arg_begin!= NULL&&(void*)arg_end!= NULL&&arg_begin<arg_end);
 
+
   const int argc = argc_get(argv);
   const int envc = envc_get(envp);
+  printf("(Debug)envc = %d\n", envc);
   assert(argc >= 0&&envc >= 0);
 
   char *envp_ustack[envc];
@@ -107,7 +111,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   }
 
   for (int i = 0; i < argc; i++){
-    str_ptr -= (len_resize(strlen(argv[i] + 1)));// case '\0'
+    str_ptr -= (len_resize(strlen(argv[i]) + 1));// case '\0'
     argv_ustack[i] = str_ptr;
     strcpy(str_ptr, argv[i]);
   }
@@ -151,7 +155,8 @@ void init_proc() {
   char *const argv[] = {"--skip", "hello", "world", "NJU", NULL};
   // (native)argv:{'o', 'd', 'world', 'NJU'}
   // (nemu  )argv:{}
-  char *const envp[] = {"ICS", "PA", "pa", NULL};
+  // char *const envp[] = {"ICS", "PA", "pa", NULL};
+  char *const envp[] = {"nil"};
   
   context_uload(&pcb[1], "/bin/pal", argv, envp);
   // context_uload(&pcb[1], "/bin/pal");

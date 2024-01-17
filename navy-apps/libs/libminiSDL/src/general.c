@@ -4,7 +4,7 @@
 #define WRITE "\033[0m"
 
 int SDL_Init(uint32_t flags) {
-  // printf("SDL init\n");
+  printf("SDL init\n");
   return NDL_Init(flags);
 }
 

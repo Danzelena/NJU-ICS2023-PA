@@ -159,7 +159,7 @@ void extract_values(const char *content) {
 
 
 int NDL_Init(uint32_t flags) {
-  // printf("NDL_Init!\n");
+  printf("NDL_Init!\n");
   if (getenv("NWM_APP")) {
     evtdev = 3;
   }

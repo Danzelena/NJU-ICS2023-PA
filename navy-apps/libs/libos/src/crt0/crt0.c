@@ -43,14 +43,24 @@ void call_main(uintptr_t *args) {
   assert(MAX_envc > envc);
   // char *evnp[] = {NULL};
 
-  // char *empty[] =  {NULL };
+  char *empty[] =  {NULL };
   // environ = empty;
   environ = envp;
   printf("(Debug)before main: argc=%d\n", argc);
   for(size_t i = 0;i < argc;i ++){
     printf("(Debug)argv[%d]=%s\n", i, argv[i]);
   }
+  for(size_t i = 0;i < envc;i++){
+    printf("(Debug)envp[%d]=%s\n", i, envp[i]);
+  }
   printf("(Debug)(call_main)finished\n");
+  
+  // printf("(Debug)envp[0]=%s\n",envp[0]);
+  if(strcmp(envp[0], "nil")== 0){
+    environ = empty;
+    exit(main(argc, argv, empty));
+
+  }
   exit(main(argc, argv, envp));
   // exit(main(0, empty, empty));
   assert(0);
