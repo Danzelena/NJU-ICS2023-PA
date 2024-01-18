@@ -120,13 +120,18 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
     strcpy(str_ptr, envp[i]);
 
     printf("(Debug)envp[%d]=%s, re_len=%d\n", i, envp[i], resize_len);
-    printf("(Debug)(Check)envp[%d]=%s", i, str_ptr);
+    printf("(Debug)(Check)envp[%d]=%s\n", i, str_ptr);
   }
 
   for (int i = 0; i < argc; i++){
+    size_t resize_len = len_resize(strlen(argv[i]) + 1);
     str_ptr -= (len_resize(strlen(argv[i]) + 1));// case '\0'
     argv_ustack[i] = str_ptr;
     strcpy(str_ptr, argv[i]);
+
+
+    printf("(Debug)argv[%d]=%s, re_len=%d\n", i, argv[i], resize_len);
+    printf("(Debug)(Check)argv[%d]=%s\n", i, str_ptr);
   }
 
 
