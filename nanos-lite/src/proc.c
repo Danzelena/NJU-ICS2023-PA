@@ -183,7 +183,7 @@ void init_proc() {
   // BUG: "nil" for NULL
   char *const argv[] = {"/bin/exec-test", NULL};
   // char *const envp[] = {"nil", NULL};
-  char *const envp[] = {"USER=danz",NULL};
+  char *const envp[] = {"USER=danz","a=b",NULL};
   
   // context_uload(&pcb[1], "/bin/pal", argv, envp);
   context_uload(&pcb[1], "/bin/menu", argv, envp);
