@@ -6,6 +6,7 @@
 // Bytes
 #define MAX_args_len 0x400
 #define NR_PAGE 8
+#define HELLO_RATE 1
 
 static PCB pcb[MAX_NR_PROC] __attribute__((used)) = {};
 static PCB pcb_boot = {};
@@ -21,7 +22,7 @@ void hello_fun(void *arg) {
   while (1) {
     Log("Hello World from Nanos-lite with arg '%p' for the %dth time!", (uintptr_t)arg, j);
     j ++;
-    for (int volatile i = 0; i < 100000; i++) ;// make it slower
+    for (int volatile i = 0; i < HELLO_RATE; i++) ;// make it slower
     // assert(0);
     yield();
   }
