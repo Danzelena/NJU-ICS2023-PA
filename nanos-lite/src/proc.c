@@ -127,6 +127,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
     size_t resize_len = len_resize(strlen(argv[i]) + 1);
     str_ptr -= (len_resize(strlen(argv[i]) + 1));// case '\0'
     argv_ustack[i] = str_ptr;
+    assert(resize_len >= strlen(argv[i]) + 1);
     strcpy(str_ptr, argv[i]);
 
 
