@@ -160,6 +160,8 @@ void extract_values(const char *content) {
 
 int NDL_Init(uint32_t flags) {
   printf("(Debug)(NDL_Init)begin!\n");
+  assert(getenv("NWM_APP")!= NULL);
+  printf("(Debug)(NDL_init)pass assert\n");
   if (getenv("NWM_APP")) {
     evtdev = 3;
   }
