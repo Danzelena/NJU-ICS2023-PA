@@ -39,6 +39,9 @@ void call_main(uintptr_t *args) {
     ptr ++;
     i ++;
   }
+
+  // char **envp = (char **)(args + 1);
+
   size_t envc = i;
   assert(MAX_envc > envc);
   // char *evnp[] = {NULL};

@@ -105,10 +105,10 @@ void do_syscall(Context *c)
     // Warning:在exit后默认退回nterm
     // naive_uload(NULL,"/bin/nterm");
 
-    // printf("exit!Ohhh\n");
+    printf("(SYS_exit)0x%x, 0x%x\n", a[1], a[2]);
     // status: GPR2
 
-    // halt(a[1]);
+    halt(a[1]);
     break;
 
   default:

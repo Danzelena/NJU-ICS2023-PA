@@ -76,3 +76,14 @@ extern Terminal *term;
 void refresh_terminal();
 
 #endif
+#ifdef assert
+# undef assert
+#endif
+
+#define assert(cond) \
+  do { \
+    if (!(cond)) { \
+      printf("Assertion failed: %s\n", #cond); \
+      exit(-1);\
+    } \
+  } while (0)
