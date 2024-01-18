@@ -38,7 +38,8 @@ void do_syscall(Context *c)
     const char *path = (char *)a[1];
     char **const argv = (char **)a[2];
     char **const envp = (char **)a[3];
-    
+  //     printf("(Debug)argv=%s\n", argv);
+  // printf("(Debug)envp=%s\n", envp);
     context_uload(current, path, argv, envp);
     switch_boot_pcb();
     yield();

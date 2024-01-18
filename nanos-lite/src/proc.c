@@ -39,25 +39,31 @@ void context_kload(PCB *pcb, void (*entry)(void *), void *arg){
   // printf("(Debug)epc1=%x\n", pcb->cp->mepc);
 }
 
-inline int argc_get(char *const argv[]){
+int argc_get(char *const argv[]){
+  if(argv == NULL)return 0;
   assert(argv != NULL);
   int count = 0;
   while(argv[count]!= NULL){
-    // printf("%s\n", argv[count]);
+    // printf("(Debug)(argc_get)%s\n", argv[count]);
     count ++;
   }
   return count;
 }
 inline int envc_get(char *const envp[]){
-  assert(envp != NULL);
+  assert(envp);
   // if(envp == NULL){
   //   return 0;
   // }
+  // printf("(Debug)Target\n");
+  // assert(envp[0]);
+  printf("(Debug)(envc_get)%s\n", envp[0]);
   int count = 0;
-  while(envp[count]!= NULL){
-    // printf("%s\n", envp[count]);
+  while(envp[count]){
+    // printf("(Debug)(envc_get)%x\n", envp[count]);
+    // printf("count=%d\n", count);
     count ++;
   }
+  
   return count;
 }
 static size_t len_resize(size_t size){
@@ -71,22 +77,11 @@ static size_t len_resize(size_t size){
 void context_uload(PCB *pcb, const char *filename, char *const argv[], char *const envp[]){
   printf("(Debug)(context_uload)\n");
   printf("filename=%s\n", filename);
-    
-  uintptr_t entry = entry_get(pcb, filename);
-  assert((void*)entry!= NULL);
 
-  // 在PCB的内核栈中创建用户进程B的上下文
-  uintptr_t kstack_begin = (uintptr_t)pcb->stack;
-  uintptr_t kstack_end = (uintptr_t)(pcb + 1);
-  assert((void*)kstack_begin!= NULL && (void*)kstack_end!= NULL&&kstack_end>kstack_begin);
-  // printf("(Debug)(context_uload)begin=%x, end=%x\n", pcb->stack, kstack_end);
-  AddrSpace addrs;
-  // Hint: c->uc.uc_mcontext.gregs[REG_RIP]存放 entry
-  // 分配上下文
-  Context *context = ucontext(&addrs, (Area) {(void *)kstack_begin, (void*)kstack_end}, (void*)entry);
-  pcb->cp = context;
+  // Warning: 获取 argc, envc需要靠前
+  const int argc = argc_get(argv);
+  const int envc = envc_get(envp);
 
-  
   // Warning: 强行约定了 arg 区域的大小, 以及让用户栈的结尾成为heap.end
   // uintptr_t arg_begin = pcb->cp->GPRx;
   // uintptr_t arg_stack[MAX_args_len];
@@ -105,10 +100,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   printf("(Debug)arg_begin=%x, arg_end=%x\n", arg_begin, arg_end);
   assert((void*)arg_begin!= NULL&&(void*)arg_end!= NULL&&arg_begin<arg_end);
 
-
-  const int argc = argc_get(argv);
-  const int envc = envc_get(envp);
-  printf("(Debug)argc=%d, envc = %d\n", envc);
+  printf("(Debug)argc = %d, envc = %d\n", argc, envc);
   assert(argc >= 0&&envc >= 0);
 
   char *envp_ustack[envc];
@@ -125,8 +117,8 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
     
     strcpy(str_ptr, envp[i]);
 
-    printf("(Debug)envp[%d]=%s, re_len=%d\n", i, envp[i], resize_len);
-    printf("(Debug)(Check)envp[%d]=%s\n", i, str_ptr);
+    // printf("(Debug)envp[%d]=%s, re_len=%d\n", i, envp[i], resize_len);
+    // printf("(Debug)(Check)envp[%d]=%s\n", i, str_ptr);
   }
 
   for (int i = 0; i < argc; i++){
@@ -137,8 +129,8 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
     strcpy(str_ptr, argv[i]);
 
 
-    printf("(Debug)argv[%d]=%s, re_len=%d\n", i, argv[i], resize_len);
-    printf("(Debug)(Check)argv[%d]=%s\n", i, str_ptr);
+    // printf("(Debug)argv[%d]=%s, re_len=%d\n", i, argv[i], resize_len);
+    // printf("(Debug)(Check)argv[%d]=%s\n", i, str_ptr);
   }
 
 
@@ -166,8 +158,22 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   ptr_ptr ++;
 
   assert(ptr_ptr < (uintptr_t *)str_ptr);
-  printf("(Debug)(context_uload)finish with ptr_ptr=%x, str_ptr=%x\n", ptr_ptr, str_ptr);
+  // printf("(Debug)(context_uload)finish with ptr_ptr=%x, str_ptr=%x\n", ptr_ptr, str_ptr);
 
+  uintptr_t entry = entry_get(pcb, filename);
+  assert((void*)entry!= NULL);
+
+  // Warning: 这条操作会把参数的内存空间扬了，要放在最后
+  // 在PCB的内核栈中创建用户进程B的上下文
+  uintptr_t kstack_begin = (uintptr_t)pcb->stack;
+  uintptr_t kstack_end = (uintptr_t)(pcb + 1);
+  assert((void*)kstack_begin!= NULL && (void*)kstack_end!= NULL&&kstack_end>kstack_begin);
+  // printf("(Debug)(context_uload)begin=%x, end=%x\n", pcb->stack, kstack_end);
+  AddrSpace addrs;
+  // Hint: c->uc.uc_mcontext.gregs[REG_RIP]存放 entry
+  // 分配上下文
+  Context *context = ucontext(&addrs, (Area) {(void *)kstack_begin, (void*)kstack_end}, (void*)entry);
+  pcb->cp = context;
   pcb->cp->GPRx = arg_begin;
 }
 void init_proc() {
@@ -184,7 +190,7 @@ void init_proc() {
   char *const argv[] = {"/bin/exec-test", NULL};
   // char *const envp[] = {"nil", NULL};
 
-  char *const envp[] = {"USER=danz","a=b",NULL};
+  char *const envp[] = {"nil", NULL};
   
   // context_uload(&pcb[1], "/bin/pal", argv, envp);
   context_uload(&pcb[1], "/bin/menu", argv, envp);

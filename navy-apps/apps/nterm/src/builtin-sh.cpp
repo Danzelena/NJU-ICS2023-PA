@@ -77,18 +77,19 @@ static char *input_handle_arg(char *input, char *fp, char *end){
   return arg;
 }
 
+char *_argv[MAX_ARGC];
 static char **arg_handle_argv(char *arg){
   printf("(Debug)arg__argv\n");
-  assert(arg != NULL);
+  // assert(arg != NULL);
   if(arg == NULL){
     return (char **)NULL;
   }
   char *arg_end = arg + strlen(arg);
 
-  char *argv[MAX_ARGC];
+  // char *argv[MAX_ARGC];
   char *arg_r = arg;
 
-  argv[0] = strtok(arg_r, " ");
+  _argv[0] = strtok(arg_r, " ");
 
   int i;
   for (i = 1; ;i++){
@@ -96,27 +97,17 @@ static char **arg_handle_argv(char *arg){
     if(token == NULL){
       break;
     }else{
-      argv[i] = token;
+      _argv[i] = token;
     }
   }
+  _argv[i] = NULL;
 
-  // char *arg_ptr = NULL;
-  // size_t i;
-  // for(i = 0;str_ptr <= arg_end;i ++){
-  //   if(i == 0){
-  //     arg_ptr = strtok(str_ptr, " ");
-      
-  //   }
-  //   // arg_ptr = strtok(str_ptr, " ");
-  //   // str_ptr += strlen(arg_ptr);// addi str_ptr
-  //   argv[i] = arg_ptr;
-  // }
   assert(i <= MAX_ARGC);
   /* check for Debug */
   for(int j = 0;j <= i;j ++){
-    printf("(Check)argv[%d]=%s\n", j, argv[j]);
+    printf("(Check)argv[%d]=%s\n", j, _argv[j]);
   }
-  return argv;
+  return _argv;
 }
 // 命令解析函数,把键入的命令作为参数调用 execve()
 static void sh_handle_cmd(const char *cmd) {
@@ -125,9 +116,12 @@ static void sh_handle_cmd(const char *cmd) {
   char *filepath = input_handle_fp(input);
   char *arg = input_handle_arg(input, filepath, input_end);
   char **argv = arg_handle_argv(arg);
-
+  // for(int j = 0;j <= 2;j ++){
+  //   printf("(Check)argv[%d]=%s\n", j, argv[j]);
+  // }
+  // char *argv[] = {"/bin/pal", "--skip", NULL};
   // char *filepath = str_handle_cmd(cmd);
-  assert(0);
+  // assert(0);
   // int flag = execvp(filepath,NULL);
   int flag = execvp(filepath, argv);
 
@@ -136,6 +130,29 @@ static void sh_handle_cmd(const char *cmd) {
     sh_printf("Path to %s not found!\n",filepath);
   }
 }
+
+// static void sh_handle_cmd(const char *cmd) {
+//   char command[128];
+//   strcpy(command, cmd);
+//   command[strlen(command) - 1] = '\0';//把'\n'搞掉
+
+//   const char split[2] = " ";
+//   char *token;
+//   char *argv[16];
+//   int argc = 0;
+
+//   /* 获取第一个子字符串 */
+//   token = strtok(command, split);
+  
+//   /* 继续获取其他的子字符串 */
+//   while( token != NULL ) {
+//     argv[argc++] = token;
+//     token = strtok(NULL, split);
+//   }
+//   argv[argc] = NULL;
+
+//   execvp(argv[0], argv);
+// }
 
 void builtin_sh_run() {
   // printf("shell1\n");
