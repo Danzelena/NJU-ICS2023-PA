@@ -56,7 +56,7 @@ inline int envc_get(char *const envp[]){
 }
 static size_t len_resize(size_t size){
   if(size & 0b11){
-    return (size & 0b11) + 0x4;
+    return (size & (~0b11)) + 0x4;
   }
   else{
     return size;
