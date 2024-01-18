@@ -180,9 +180,10 @@ void init_proc() {
   // char *const argv[] = {"--skip", "hello", "world", "NJU", NULL};
 
   // char *const envp[] = {"ICS", "PA", "pa", NULL};
-  // BUG: "nil" for NULL
+  // BUG: "nil" for NULL, always make Segemetion fault when getenv()
   char *const argv[] = {"/bin/exec-test", NULL};
   // char *const envp[] = {"nil", NULL};
+
   char *const envp[] = {"USER=danz","a=b",NULL};
   
   // context_uload(&pcb[1], "/bin/pal", argv, envp);

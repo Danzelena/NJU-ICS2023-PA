@@ -160,13 +160,11 @@ void extract_values(const char *content) {
 
 int NDL_Init(uint32_t flags) {
   printf("(Debug)(NDL_Init)begin!\n");
-  if(getenv("NWM_APP") == NULL){
-    printf("(Debug)(NDL_init)nil\n"); 
-  }
+
   
-  if (getenv("NWM_APP")) {
-    evtdev = 3;
-  }
+  // if (getenv("NWM_APP")) {
+  //   evtdev = 3;
+  // }
   printf("(Debug)(NDL_init)after getenv\n");
 
   /* read /proc/dispinfo */
