@@ -56,10 +56,9 @@ void call_main(uintptr_t *args) {
   printf("(Debug)(call_main)finished\n");
   
   // printf("(Debug)envp[0]=%s\n",envp[0]);
-  if(strcmp(envp[0], "nil")== 0){
+  if(strcmp(envp[0], "nil") == 0){
     environ = empty;
     exit(main(argc, argv, empty));
-
   }
   exit(main(argc, argv, envp));
   // exit(main(0, empty, empty));

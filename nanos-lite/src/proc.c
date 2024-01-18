@@ -65,10 +65,7 @@ static size_t len_resize(size_t size){
 void context_uload(PCB *pcb, const char *filename, char *const argv[], char *const envp[]){
   printf("(Debug)(context_uload)\n");
   printf("filename=%s\n", filename);
-  
-
-  
-  
+    
   uintptr_t entry = entry_get(pcb, filename);
   assert((void*)entry!= NULL);
 
@@ -105,7 +102,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
 
   const int argc = argc_get(argv);
   const int envc = envc_get(envp);
-  printf("(Debug)envc = %d\n", envc);
+  printf("(Debug)argc=%d, envc = %d\n", envc);
   assert(argc >= 0&&envc >= 0);
 
   char *envp_ustack[envc];
@@ -113,11 +110,10 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
 
   char *str_ptr = (char *)(arg_end - 4);
 
-  // copy string area
-  // printf("(Debug)argc=%d\n", argc);
-  // printf("(Debug)envc=%d\n", envc);
   for(int i = 0; i < envc; i++){
-    str_ptr -= (len_resize(strlen(envp[i]) + 1));// consider '\0'
+    size_t resize_len = len_resize(strlen(envp[i]) + 1);
+    printf("(Debug)envp[%d]=%s, re_len=%d\n", i, envp[i], resize_len);
+    str_ptr -= resize_len;// consider '\0'
     envp_ustack[i] = str_ptr;
     strcpy(str_ptr, envp[i]);
   }
