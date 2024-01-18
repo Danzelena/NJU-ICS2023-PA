@@ -50,6 +50,7 @@ int argc_get(char *const argv[]){
   return count;
 }
 inline int envc_get(char *const envp[]){
+  if(envp == NULL)return 0;
   assert(envp);
   // if(envp == NULL){
   //   return 0;
