@@ -40,6 +40,7 @@ void context_kload(PCB *pcb, void (*entry)(void *), void *arg){
 }
 
 inline int argc_get(char *const argv[]){
+  assert(argv != NULL);
   int count = 0;
   while(argv[count]!= NULL){
     // printf("%s\n", argv[count]);
@@ -48,6 +49,10 @@ inline int argc_get(char *const argv[]){
   return count;
 }
 inline int envc_get(char *const envp[]){
+  assert(envp != NULL);
+  // if(envp == NULL){
+  //   return 0;
+  // }
   int count = 0;
   while(envp[count]!= NULL){
     // printf("%s\n", envp[count]);
@@ -177,7 +182,8 @@ void init_proc() {
   // char *const envp[] = {"ICS", "PA", "pa", NULL};
   // BUG: "nil" for NULL
   char *const argv[] = {"/bin/exec-test", NULL};
-  char *const envp[] = {"nil", NULL};
+  // char *const envp[] = {"nil", NULL};
+  char *const envp[] = {"USER=danz",NULL};
   
   // context_uload(&pcb[1], "/bin/pal", argv, envp);
   context_uload(&pcb[1], "/bin/menu", argv, envp);
