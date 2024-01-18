@@ -13,7 +13,7 @@ static Context *do_event(Event e, Context *c)
     break;
   case EVENT_YIELD:
     // 在 Nanos-lite 收到 EVENT_YIELD 之后, 使用 schedule() 来返回新的上下文
-    printf("(Debug)(EVENT_YIELD)\n");
+    // printf("(Debug)(EVENT_YIELD)\n");
     // printf("(yield trace)\n")
     /* Debug */
     // printf("DEBUG:Context message:\n");
@@ -26,7 +26,7 @@ static Context *do_event(Event e, Context *c)
     // printf("mstatus;%x\n", c->mstatus);
     
     Context *ret = schedule(c);
-    printf("(Debug)(EVENT_YIELD)finish\n");
+    // printf("(Debug)(EVENT_YIELD)finish\n");
     // printf("(Debug)mepc=%x\n", ret->mepc);
     return ret;
     break;

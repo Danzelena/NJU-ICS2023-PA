@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <SDL.h>
 
+#define MAX_FP 128
 char handle_key(SDL_Event *ev);
 
 static void sh_printf(const char *format, ...) {
@@ -23,14 +24,17 @@ static void sh_banner() {
 static void sh_prompt() {
   sh_printf("sh> ");
 }
-static char fp[128];// file variable is very important
+static char fp[MAX_FP];// file variable is very important
+
+// TODO: parse the parameter
 // delete '\n' in the end
 static char *str_handle_cmd(const char *cmd){
-  // BUG:fp size fixed!
-  
+  // FORWARD:fp size fixed!
+  assert(strlen(cmd) <= MAX_FP);
   strcpy(fp,cmd);
   fp[strlen(fp)-1] = '\0';
-  // printf("fp=%s\n",fp);
+  printf("fp=%s\n",fp);
+  assert(0);
   return fp;
 }
 // 命令解析函数,把键入的命令作为参数调用 execve()

@@ -172,7 +172,7 @@ void init_proc() {
   char *const envp[] = {"nil", NULL};
   
   // context_uload(&pcb[1], "/bin/pal", argv, envp);
-  context_uload(&pcb[1], "/bin/exec-test", argv, envp);
+  context_uload(&pcb[1], "/bin/menu", argv, envp);
   // context_uload(&pcb[1], "/bin/pal");
   // context_kload(&pcb[1], hello_fun, (void *)2L);
   switch_boot_pcb();
@@ -192,8 +192,8 @@ Context* schedule(Context *prev) {
   current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
   // printf("(Debug)mepc1=%x, mepc2=%x \n", pcb[0].cp->uc.uc_mcontext.gregs[REG_RIP], pcb[1].cp->uc.uc_mcontext.gregs[REG_RIP]);
   // printf("(Debug)mepc1=%x, mepc2=%x \n", pcb[0].cp->mepc, pcb[1].cp->mepc);
-  if(current==&pcb[0]){printf("(Debug)(Schedule)go to 0\n");}
-  if(current==&pcb[1]){printf("(Debug)(Schedule)go to 1\n");}
+  // if(current==&pcb[0]){printf("(Debug)(Schedule)go to 0\n");}
+  // if(current==&pcb[1]){printf("(Debug)(Schedule)go to 1\n");}
   // printf("(Debug)entry=0x%x\n", current->cp->uc.uc_mcontext.gregs[REG_RIP]);
 
   return current->cp;
