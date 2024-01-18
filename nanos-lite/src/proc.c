@@ -82,25 +82,16 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   const int argc = argc_get(argv);
   const int envc = envc_get(envp);
 
+  printf("(Debug)argc = %d, envc = %d\n", argc, envc);
+
   // Warning: 强行约定了 arg 区域的大小, 以及让用户栈的结尾成为heap.end
-  // uintptr_t arg_begin = pcb->cp->GPRx;
-  // uintptr_t arg_stack[MAX_args_len];
-  // uintptr_t arg_begin = (uintptr_t)arg_stack;
-  // uintptr_t arg_end = arg_begin + MAX_args_len;
-
-
   // 使用new_page()开辟新的用户栈
   uintptr_t arg_begin = (uintptr_t)new_page(NR_PAGE) + NR_PAGE * PGSIZE - MAX_args_len;
   uintptr_t arg_end = arg_begin + MAX_args_len;
-  // uintptr_t arg_end = (uintptr_t)heap.end;
-  // uintptr_t arg_begin = arg_end - MAX_args_len;
-  // uintptr_t arg_end = kstack_begin;
-  // uintptr_t arg_begin = arg_end - MAX_args_len;
 
   printf("(Debug)arg_begin=%x, arg_end=%x\n", arg_begin, arg_end);
   assert((void*)arg_begin!= NULL&&(void*)arg_end!= NULL&&arg_begin<arg_end);
 
-  printf("(Debug)argc = %d, envc = %d\n", argc, envc);
   assert(argc >= 0&&envc >= 0);
 
   char *envp_ustack[envc];
