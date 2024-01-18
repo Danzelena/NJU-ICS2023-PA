@@ -57,7 +57,7 @@ inline int envc_get(char *const envp[]){
   // }
   // printf("(Debug)Target\n");
   // assert(envp[0]);
-  printf("(Debug)(envc_get)%s\n", envp[0]);
+  // printf("(Debug)(envc_get)%s\n", envp[0]);
   int count = 0;
   while(envp[count]){
     // printf("(Debug)(envc_get)%x\n", envp[count]);
