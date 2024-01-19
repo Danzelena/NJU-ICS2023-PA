@@ -7,7 +7,7 @@ static void *pf = NULL;
 void* new_page(size_t nr_page) {
   void *ret = pf;
   pf += nr_page * PGSIZE;
-
+  printf("(Debug)pf=0x%x\n", pf);
   return ret;
   // return NULL;
 }
