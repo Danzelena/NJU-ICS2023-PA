@@ -206,7 +206,6 @@ int vsnprintf(char *out, size_t n, const char *fmt, va_list args)
 
 #endif
 
-// //TODO:target1
 // int int2str(char *buf, int num){
 // 	if (num == -2147483648){
 // 		strcat(buf, "-2147483648");
@@ -631,7 +630,6 @@ int vsnprintf(char *out, size_t n, const char *fmt, va_list args)
 
 // int vsnprintf(char *out, size_t n, const char *fmt, va_list ap)
 // {
-//   //TODO: quickly implementit!!!
 //   panic("Not implemented");
 // }
 

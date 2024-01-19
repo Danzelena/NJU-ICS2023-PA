@@ -56,7 +56,6 @@ static uintptr_t loader(PCB *pcb, const char *filename)
   }
   printf("finish load!\n");
   fs_close(file_fd);
-  // TODO();
   // printf("proaddr=%x\n",proaddr);
   return proaddr;
 }

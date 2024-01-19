@@ -59,7 +59,6 @@ void do_syscall(Context *c)
     //   c->GPRx = c->GPR4;
     // }
     // break;
-    //  TODO:check `fd` value
     // int fd = a[1];
     // char *buf = (char*)a[2];
     // int len = a[3];

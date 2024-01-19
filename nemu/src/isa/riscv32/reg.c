@@ -23,7 +23,7 @@ const char *regs[] = {
     "s8", "s9", "s10", "s11", "t3", "t4", "t5", "t6"};
 
 const char *sr[] = {
-    "mtvec", "mepc", "mstatus", "mcause"};
+    "mtvec", "mepc", "mstatus", "mcause", "satr"};
 void isa_reg_display()
 {
   int i;
@@ -40,7 +40,6 @@ void isa_reg_display()
   printf("mepc\t:%x\n", cpu.sr[mepc]);
   printf("mstatus\t:%x\n", cpu.sr[mstatus]);
   printf("mcause\t:%x\n", cpu.sr[mcause]);
-  // FORWARD:print sr regs;
 }
 
 // return name=s register's value, and if success

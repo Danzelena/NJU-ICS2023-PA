@@ -184,9 +184,9 @@ void init_proc() {
 
   char *const envp[] = {"nil", NULL};
   
-  // context_uload(&pcb[1], "/bin/pal", argv, envp);
-  context_uload(&pcb[1], "/bin/menu", argv, envp);
-  // context_uload(&pcb[1], "/bin/pal");
+  context_uload(&pcb[1], "/bin/pal", argv, envp);
+  // context_uload(&pcb[1], "/bin/menu", argv, envp);
+
   // context_kload(&pcb[1], hello_fun, (void *)2L);
   switch_boot_pcb();
 

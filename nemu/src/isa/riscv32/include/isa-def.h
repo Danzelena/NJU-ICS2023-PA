@@ -32,6 +32,8 @@ typedef struct {
   } inst;
 } MUXDEF(CONFIG_RV64, riscv64_ISADecodeInfo, riscv32_ISADecodeInfo);
 
-#define isa_mmu_check(vaddr, len, type) (MMU_DIRECT)
+// #define isa_mmu_check(vaddr, len, type) (MMU_DIRECT)
+// 检查[vaddr, vaddr + len)类型为 type的访问是否经过地址转换
+#define isa_mmu_check(vaddr, len, type) (cpu.sr[satp] & 0x80000000 ? MMU_TRANSLATE : MMU_DIRECT)
 
 #endif

@@ -34,6 +34,7 @@ bool vme_init(void* (*pgalloc_f)(int), void (*pgfree_f)(void*)) {
   return true;
 }
 
+// native!!
 void protect(AddrSpace *as) {
   assert(as != NULL);
   VMHead *h = pgalloc(__am_pgsize); // used as head of the list

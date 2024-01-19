@@ -2,7 +2,7 @@
 #include <common.h>
 static void *pf = NULL;
 
-// TODO:实现 new_page
+// 实现 new_page(物理页)
 // 分配一段 nr_page * 4KB 的内存区域,并返回首地址
 void* new_page(size_t nr_page) {
   void *ret = pf;
@@ -12,12 +12,17 @@ void* new_page(size_t nr_page) {
   // return NULL;
 }
 
+// TODO: 分配n个字节的空间
 #ifdef HAS_VME
 static void* pg_alloc(int n) {
-  return NULL;
+  assert(n % PGSIZE == 0);
+  void *ret = new_page((int)(n / PGSIZE));
+  memset(ret, 0, n);
+  return ret;
 }
 #endif
 
+// TODO:
 void free_page(void *p) {
   panic("not implement yet");
 }
@@ -28,6 +33,7 @@ int mm_brk(uintptr_t brk) {
 }
 
 void init_mm() {
+  /* 将堆区起始地址作为空闲物理页的首地址 */
   pf = (void *)ROUNDUP(heap.start, PGSIZE);
   Log("free physical pages starting from %p", pf);
 
