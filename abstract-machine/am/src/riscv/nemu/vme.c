@@ -82,7 +82,6 @@ void __am_switch(Context *c) {
 // TODO:riscv32-nemu map()
 // 用于将va所在的虚拟页, 以prot的权限映射到pa所在的物理页
 void map(AddrSpace *as, void *va, void *pa, int prot) {
-  printf("(MAP1)\n va=%x\n pa=%x\n", va, pa);
   /* check offset */
   uintptr_t va_offset = (uintptr_t)va & 0xfff;
   uintptr_t pa_offset = (uintptr_t)pa & 0xfff;
