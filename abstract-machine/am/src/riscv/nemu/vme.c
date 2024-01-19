@@ -94,7 +94,7 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   /* 一级页表 */
   PTE *pt1_e = (uintptr_t*)(as->ptr + (vpn1 <<2));
 
-  printf("(MAP)pt1_e=%x\n", pt1_e);
+  // printf("(MAP)pt1_e=%x\n", pt1_e);
   assert(0);
   // assert((uintptr_t)pt1_e == get_satp() + vpn1 * 4);
 
