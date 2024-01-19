@@ -23,6 +23,7 @@
 #define VPN1_MASK 0xffc00000
 #define VPN0_MASK 0x3ff000
 #define VPN0(x) (((vaddr_t)x & VPN0_MASK)>> 12)
+#define VPN1(x) (((vaddr_t)x & VPN1_MASK)>> 22)
 #define PTE_V 0x01
 #define PTE_A 0x40
 #define PTE_D 0x80
@@ -39,8 +40,10 @@ extern riscv32_CPU_state cpu;
 // TODO:对内存区间为[vaddr, vaddr + len), 类型为type的内存访问进行地址转换
 paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
   paddr_t satp_ppn = cpu.sr[satp] & SATP_PPN;
-  paddr_t pt1_e_addr = satp_ppn *4096 + (VPN1_MASK & vaddr) * 4;
+  // 81f71800 but 81f71000
+  paddr_t pt1_e_addr = satp_ppn *4096 + (VPN1(vaddr)) * 4;
   PTE pt1_e = paddr_read(pt1_e_addr, 4);
+  
   Assert(pt1_e & PTE_V, "pt1_e is not valid, pt1_e: %#lx, vaddr: %#x", (unsigned long)pt1_e_addr, vaddr);
 
   paddr_t pt2_e_addr = PTE_PPN(pt1_e) * 4096 + VPN0(vaddr) * 4;
