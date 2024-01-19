@@ -16,17 +16,42 @@
 #include <isa.h>
 #include <memory/paddr.h>
 
+paddr_t vaddr2paddr(vaddr_t vaddr, int len, int type){
+  paddr_t paddr;
+  switch (type)
+  {
+  case MMU_TRANSLATE:
+    paddr = isa_mmu_translate(vaddr, len, MEM_TYPE_IFETCH);
+    break;
+  case MMU_DIRECT:
+    paddr = vaddr;
+    break;
+  case MMU_FAIL:
+    Assert(0, "MMU_FAIL\n"); 
+    break;
+  default:
+    Assert(0, "MMU_FAIL\n"); 
+    break;
+  }
+  return paddr;
+}
 word_t vaddr_ifetch(vaddr_t addr, int len) {
   printf("(vaddr_ifetch)\n");
-  return paddr_read(addr, len);
+  int type = isa_mmu_check(addr, len, MEM_TYPE_IFETCH);
+  paddr_t paddr = vaddr2paddr(addr, len, type);
+  return paddr_read(paddr, len);
 }
 
 word_t vaddr_read(vaddr_t addr, int len) {
   printf("(vaddr_read)\n");
-  return paddr_read(addr, len);
+  int type = isa_mmu_check(addr, len, MEM_TYPE_READ);
+  paddr_t paddr = vaddr2paddr(addr, len, type);
+  return paddr_read(paddr, len);
 }
 
 void vaddr_write(vaddr_t addr, int len, word_t data) {
   printf("(vaddr_write)\n");
-  paddr_write(addr, len, data);
+  int type = isa_mmu_check(addr, len, MEM_TYPE_WRITE);
+  paddr_t paddr = vaddr2paddr(addr, len, type);
+  paddr_write(paddr, len, data);
 }

@@ -19,6 +19,7 @@
 #include <common.h>
 
 #define SR_NUM 0x500
+#define satp_r (0x180)
 typedef struct {
   word_t gpr[MUXDEF(CONFIG_RVE, 16, 32)];
   vaddr_t pc;
@@ -34,6 +35,6 @@ typedef struct {
 
 // #define isa_mmu_check(vaddr, len, type) (MMU_DIRECT)
 // 检查[vaddr, vaddr + len)类型为 type的访问是否经过地址转换
-#define isa_mmu_check(vaddr, len, type) (cpu.sr[satp] & 0x80000000 ? MMU_TRANSLATE : MMU_DIRECT)
+#define isa_mmu_check(vaddr, len, type) (cpu.sr[satp_r] & 0x80000000 ? MMU_TRANSLATE : MMU_DIRECT)
 
 #endif
