@@ -94,14 +94,14 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   /* 一级页表 */
   PTE *pt1_e = (uintptr_t*)(as->ptr + (vpn1 <<2));
 
-  printf("(MAP)*pt1_e=%x\n", *pt1_e);
+  // printf("(MAP)*pt1_e=%x\n", *pt1_e);
   // assert((uintptr_t)pt1_e == get_satp() + vpn1 * 4);
 
   /* 查看二级页表是否分配 */
   assert(pt1_e);
   if(!(*pt1_e & PTE_V)){
     void *allocated_pt2 = pgalloc_usr(PGSIZE);
-    printf("(MAP)allocated_pt2=%x\n", allocated_pt2);
+    // printf("(MAP)allocated_pt2=%x\n", allocated_pt2);
     /* 写入 pt1_e */
     *pt1_e &= ~PTE_PPN_MASK;
     *pt1_e |= ((uintptr_t)allocated_pt2 >> 2 & PTE_PPN_MASK);
@@ -116,8 +116,8 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   if(prot){
     *pt2_e |= PTE_U;
   }
-  printf("(MAP)\n va=%x\n pa=%x\n", va, pa);
-  assert(0);
+  // printf("(MAP)\n va=%x\n pa=%x\n", va, pa);
+  // assert(0);
 }
 
 // similar to kcontext() but for user prog
