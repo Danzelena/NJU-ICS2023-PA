@@ -33,6 +33,7 @@ paddr_t vaddr2paddr(vaddr_t vaddr, int len, int type){
     Assert(0, "MMU_FAIL\n"); 
     break;
   }
+  Assert(paddr == vaddr, "va=%#x, pa=%#x\n",vaddr, paddr);
   return paddr;
 }
 word_t vaddr_ifetch(vaddr_t addr, int len) {
