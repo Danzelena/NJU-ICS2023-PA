@@ -37,21 +37,21 @@ paddr_t vaddr2paddr(vaddr_t vaddr, int len, int type){
   return paddr;
 }
 word_t vaddr_ifetch(vaddr_t addr, int len) {
-  printf("(vaddr_ifetch)\n");
+  // printf("(vaddr_ifetch)\n");
   int type = isa_mmu_check(addr, len, MEM_TYPE_IFETCH);
   paddr_t paddr = vaddr2paddr(addr, len, type);
   return paddr_read(paddr, len);
 }
 
 word_t vaddr_read(vaddr_t addr, int len) {
-  printf("(vaddr_read)\n");
+  // printf("(vaddr_read)\n");
   int type = isa_mmu_check(addr, len, MEM_TYPE_READ);
   paddr_t paddr = vaddr2paddr(addr, len, type);
   return paddr_read(paddr, len);
 }
 
 void vaddr_write(vaddr_t addr, int len, word_t data) {
-  printf("(vaddr_write)\n");
+  // printf("(vaddr_write)\n");
   int type = isa_mmu_check(addr, len, MEM_TYPE_WRITE);
   paddr_t paddr = vaddr2paddr(addr, len, type);
   paddr_write(paddr, len, data);
