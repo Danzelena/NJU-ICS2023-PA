@@ -41,7 +41,7 @@ bool vme_init(void* (*pgalloc_f)(int), void (*pgfree_f)(void*)) {
   pgfree_usr = pgfree_f;
 
   kas.ptr = pgalloc_f(PGSIZE);// 一级页表(页目录)的基地址
-
+  set_satp((void*)(0x666));
   int i;
   for (i = 0; i < LENGTH(segments); i ++) {
     void *va = segments[i].start;
