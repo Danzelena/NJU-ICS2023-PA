@@ -39,7 +39,7 @@ bool vme_init(void* (*pgalloc_f)(int), void (*pgfree_f)(void*)) {
   /* set call-back function */
   pgalloc_usr = pgalloc_f;
   pgfree_usr = pgfree_f;
-  printf("(vme_init)\n");
+  // printf("(vme_init)\n");
   kas.ptr = pgalloc_f(PGSIZE);// 一级页表(页目录)的基地址
   int i;
   for (i = 0; i < LENGTH(segments); i ++) {
@@ -116,7 +116,8 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   if(prot){
     *pt2_e |= PTE_U;
   }
-  printf("(MAP)\n, va=%x\n, pa=%x\n", va, pa);
+  printf("(MAP)\n va=%x\n pa=%x\n", va, pa);
+  assert(0);
 }
 
 // similar to kcontext() but for user prog
