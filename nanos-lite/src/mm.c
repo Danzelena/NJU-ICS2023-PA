@@ -7,7 +7,7 @@ static void *pf = NULL;
 void* new_page(size_t nr_page) {
   void *ret = pf;
   pf += nr_page * PGSIZE;
-  printf("(Debug)pf=0x%x\n", pf);
+  // printf("(Debug)pf=0x%x\n", pf);
   return ret;
   // return NULL;
 }
@@ -19,6 +19,7 @@ static void* pg_alloc(int n) {
   assert(n % PGSIZE == 0);
   void *ret = new_page((int)(n / PGSIZE));
   memset(ret, 0, n);
+  printf("begin=%x, end=%x\n", ret, ret + n);
   return ret;
 }
 #endif
