@@ -64,7 +64,7 @@ void call_main(uintptr_t *args) {
     environ = empty;
     exit(main(argc, argv, empty));
   }else{
-    environ = envp;
+    // environ = envp;
     exit(main(argc, argv, envp));
   }
 
