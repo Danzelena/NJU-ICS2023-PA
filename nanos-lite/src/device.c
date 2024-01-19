@@ -27,7 +27,7 @@ size_t serial_write(const void *buf, size_t offset, size_t len)
 
 size_t events_read(void *buf, size_t offset, size_t len)
 {
-  printf("(Debug)events_read\n");
+  // printf("(Debug)events_read\n");
   yield();
   bool has_uart,has_kbd;
   has_uart = io_read(AM_UART_CONFIG).present;
