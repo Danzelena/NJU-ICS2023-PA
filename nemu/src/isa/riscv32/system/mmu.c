@@ -41,7 +41,7 @@ paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
   paddr_t satp_ppn = cpu.sr[satp] & SATP_PPN;
   paddr_t pt1_e_addr = satp_ppn *4096 + (VPN1_MASK & vaddr) * 4;
   PTE pt1_e = paddr_read(pt1_e_addr, 4);
-  Assert(pt1_e & PTE_V, "pt1_e is not valid, pt1_e: %#lx, vaddr: %#x", (unsigned long)&pt1_e, vaddr);
+  Assert(pt1_e & PTE_V, "pt1_e is not valid, pt1_e: %#lx, vaddr: %#x", (unsigned long)pt1_e_addr, vaddr);
 
   paddr_t pt2_e_addr = PTE_PPN(pt1_e) * 4096 + VPN0(vaddr) * 4;
   PTE pt2_e = paddr_read(pt2_e_addr, 4);
