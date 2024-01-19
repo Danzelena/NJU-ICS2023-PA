@@ -86,9 +86,8 @@ int cnt = 0;
 // 用于将va所在的虚拟页, 以prot的权限映射到pa所在的物理页
 void map(AddrSpace *as, void *va, void *pa, int prot) {
   /* check offset */
-  cnt ++;
-  if(cnt == 5)assert(0);
-  printf("va=%x\n", va);
+
+  // printf("va=%x\n", va);
   uintptr_t va_offset = (uintptr_t)va & 0xfff;
   uintptr_t pa_offset = (uintptr_t)pa & 0xfff;
   assert(va_offset == pa_offset);
@@ -100,7 +99,7 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   /* 一级页表 */
   PTE *pt1_e = (uintptr_t*)(as->ptr + (vpn1 <<2));
 
-  printf("(MAP)pt1_e=%x\n", pt1_e);
+  // printf("(MAP)pt1_e=%x\n", pt1_e);
   // assert((uintptr_t)pt1_e == get_satp() + vpn1 * 4);
 
   /* 查看二级页表是否分配 */
