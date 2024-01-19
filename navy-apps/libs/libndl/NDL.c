@@ -162,6 +162,7 @@ int NDL_Init(uint32_t flags) {
   printf("(Debug)(NDL_Init)begin!\n");
 
   // BUG: incorrect envp make Segementation fault!!!
+  char *test = getenv("Path");
   if (getenv("NWM_APP")) {
     evtdev = 3;
   }

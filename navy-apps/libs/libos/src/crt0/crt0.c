@@ -40,16 +40,12 @@ void call_main(uintptr_t *args) {
     i ++;
   }
 
-  // char **envp = (char **)(args + 1);
-
   size_t envc = i;
   assert(MAX_envc > envc);
-  // char *evnp[] = {NULL};
 
   char *empty[] =  {NULL };
-  // environ = empty;
-  environ = envp;
-  printf("(Debug)before main: argc=%d\n", argc);
+  
+  printf("(Debug)before main: argc=%d, envc=%d\n", argc, envc);
   for(size_t i = 0;i < argc;i ++){
     printf("(Debug)argv[%d]=%s\n", i, argv[i]);
   }
@@ -68,6 +64,7 @@ void call_main(uintptr_t *args) {
     environ = empty;
     exit(main(argc, argv, empty));
   }else{
+    environ = envp;
     exit(main(argc, argv, envp));
   }
 
