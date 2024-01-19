@@ -95,6 +95,7 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   /* 一级页表 */
   PTE *pt1_e = (uintptr_t*)as->ptr + (vpn1 << 2);
   assert((uintptr_t)pt1_e == get_satp() + vpn1 * 4);
+  printf("(Debug)pt1_e=%x, then=%x\n", pt1_e, get_satp() + vpn1 * 4);
   /* 查看二级页表是否分配 */
   assert(pt1_e);
   if(!(*pt1_e & PTE_V)){
