@@ -16,7 +16,7 @@ void call_main(uintptr_t *args) {
   int argc = (int)*ptr;
   ptr ++;
 
-  printf("(Debug)ptr=%x, args=%x\n", ptr, args);
+  // printf("(Debug)ptr=%x, args=%x\n", ptr, args);
 
   char *argv[MAX_argc];
   assert(MAX_argc > argc);
@@ -60,6 +60,10 @@ void call_main(uintptr_t *args) {
   
   // printf("(Debug)envp[0]=%s\n",envp[0]);
   if(envp[0] && strcmp(envp[0], "nil") == 0){
+    printf("(Debug)envp=NULL\n");
+    environ = empty;
+    exit(main(argc, argv, empty));
+  }else if(envc == 0){
     printf("(Debug)envp=NULL\n");
     environ = empty;
     exit(main(argc, argv, empty));
