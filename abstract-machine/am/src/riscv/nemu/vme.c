@@ -116,7 +116,7 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   if(prot){
     *pt2_e |= PTE_U;
   }
-  printf("(MAP2)\n va=%x\n pa=%x\n", va, pa);
+  printf("(MAP)\n va=%x\n pa=%x\n", va, pa);
   assert(0);
 }
 
