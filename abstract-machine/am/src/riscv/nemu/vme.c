@@ -41,7 +41,6 @@ bool vme_init(void* (*pgalloc_f)(int), void (*pgfree_f)(void*)) {
   pgfree_usr = pgfree_f;
 
   kas.ptr = pgalloc_f(PGSIZE);// 一级页表(页目录)的基地址
-  set_satp((void*)(0x666));
   int i;
   for (i = 0; i < LENGTH(segments); i ++) {
     void *va = segments[i].start;
@@ -95,8 +94,8 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   /* 一级页表 */
   PTE *pt1_e = (uintptr_t*)as->ptr + (vpn1 << 2);
 
-  printf("(Debug)pt1_e=%x, satp=%x, vpn1*4=%x\n", pt1_e, get_satp(), vpn1 * 4);
-  assert((uintptr_t)pt1_e == get_satp() + vpn1 * 4);
+  // printf("(Debug)pt1_e=%x, satp=%x, vpn1*4=%x\n", pt1_e, get_satp(), vpn1 * 4);
+  // assert((uintptr_t)pt1_e == get_satp() + vpn1 * 4);
 
   /* 查看二级页表是否分配 */
   assert(pt1_e);
