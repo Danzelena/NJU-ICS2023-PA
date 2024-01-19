@@ -44,7 +44,7 @@ word_t vaddr_ifetch(vaddr_t addr, int len) {
 }
 
 word_t vaddr_read(vaddr_t addr, int len) {
-  // printf("(vaddr_read)\n");
+  printf("(vaddr_read)\n");
   int type = isa_mmu_check(addr, len, MEM_TYPE_READ);
   paddr_t paddr = vaddr2paddr(addr, len, type);
   return paddr_read(paddr, len);
