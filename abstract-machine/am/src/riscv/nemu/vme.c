@@ -39,7 +39,7 @@ bool vme_init(void* (*pgalloc_f)(int), void (*pgfree_f)(void*)) {
   /* set call-back function */
   pgalloc_usr = pgalloc_f;
   pgfree_usr = pgfree_f;
-  // printf("(vme_init)\n");
+  printf("(vme_init)\n");
   kas.ptr = pgalloc_f(PGSIZE);// 一级页表(页目录)的基地址
   int i;
   for (i = 0; i < LENGTH(segments); i ++) {
