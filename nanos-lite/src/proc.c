@@ -82,8 +82,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   /* 调用protext()创建地址空间,需要创建内核映射(参考vme.c) */
   AddrSpace *pcb_as = &pcb->as;
   protect(pcb_as);
-  // printf("(Debuggggg)ptr=%x\n", pcb_as->ptr);
-  // pcb->cp->pdir = pcb_as->ptr;
+
   /* 修改loader()函数, 支持虚拟内存加载 */
 
  
@@ -191,7 +190,8 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   pcb->cp = context;
   pcb->cp->GPRx = arg_begin;
 
-
+  printf("(Debuggggg)ptr=%x\n", pcb_as->ptr);
+  pcb->cp->pdir = pcb_as->ptr;
 
 }
 void init_proc() {
