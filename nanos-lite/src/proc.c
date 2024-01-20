@@ -218,7 +218,7 @@ void init_proc() {
 
 Context* schedule(Context *prev) {
 
- 
+  return pcb[1].cp;
   printf("(Debug)begin scuedule\n");
   current->cp = prev;
   // current = prev;
