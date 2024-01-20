@@ -191,8 +191,8 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
 }
 void init_proc() {
   // naive_uload(&pcb[0],"/bin/dummy");
-  // context_kload(&pcb[0], hello_fun, (void *)1L);
-  context_uload(&pcb[0], "/bin/dummy", NULL, NULL);
+  context_kload(&pcb[0], hello_fun, (void *)1L);
+  // context_uload(&pcb[0], "/bin/dummy", NULL, NULL);
 
   // BUG: 根据目前计算 argc, envc的方法,必须这么定义 argv, envp
   // char *const argv[] = {"--skip", "hello", "world", "NJU", NULL};
@@ -204,7 +204,7 @@ void init_proc() {
   
   // context_uload(&pcb[1], "/bin/pal", argv, envp);
   // context_uload(&pcb[1], "/bin/menu", argv, envp);
-
+  context_uload(&pcb[1], "/bin/dummy", NULL, NULL);
   // context_kload(&pcb[1], hello_fun, (void *)2L);
   switch_boot_pcb();
 
