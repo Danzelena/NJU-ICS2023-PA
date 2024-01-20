@@ -75,7 +75,7 @@ static size_t len_resize(size_t size){
     return size;
   }
 }
-
+uintptr_t entry;
 // TODO: 虚拟化
 void context_uload(PCB *pcb, const char *filename, char *const argv[], char *const envp[]){
   /* 在加载用户程序之前, 创建地址空间 */
@@ -173,7 +173,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   assert(ptr_ptr < (uintptr_t *)str_ptr);
   // printf("(Debug)(context_uload)finish with ptr_ptr=%x, str_ptr=%x\n", ptr_ptr, str_ptr);
 
-  uintptr_t entry = entry_get(pcb, filename);
+  entry = entry_get(pcb, filename);
   assert((void*)entry!= NULL);
 
   // Warning: 这条操作会把参数的内存空间扬了，要放在最后
@@ -211,9 +211,10 @@ void init_proc() {
   // context_kload(&pcb[1], hello_fun, (void *)2L);
   switch_boot_pcb();
   Log("Initializing processes...");
-
+  ((void (*)())entry)();
+  panic("Show not reach here1\n");
   yield();
-  panic("Show not reach here\n");
+  panic("Show not reach here2\n");
   // load program here
   // char *filename = "/bin/menu";
   // naive_uload(NULL,filename);
