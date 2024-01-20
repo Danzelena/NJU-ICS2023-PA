@@ -1,6 +1,12 @@
+/* a program break is end of the process's data segment*/
+
 #include <memory.h>
 #include <common.h>
+#include <proc.h>
+
+#define VPN_OFF 12
 static void *pf = NULL;
+extern PCB *current;
 
 // 实现 new_page(物理页)
 // 分配一段 nr_page * 4KB 的内存区域,并返回首地址
@@ -30,6 +36,24 @@ void free_page(void *p) {
 
 /* The brk() system call handler. */
 int mm_brk(uintptr_t brk) {
+  int prog = 1;
+  uintptr_t max_brk = current->max_brk;
+  uintptr_t brk_pn = brk >> VPN_OFF;
+  uintptr_t max_brk_pn = max_brk >> VPN_OFF;
+
+  if (brk_pn >= max_brk_pn){
+    printf("(Debug)(mm_brk)allocate new page\n");
+    /* alloc new physicsal page */
+    size_t new_pn = brk_pn + 1 - max_brk_pn;
+    void *ret = new_page(new_pn);
+    memset(ret, 0, new_pn * PGSIZE);
+    for(size_t i = 0; i < new_pn; i++){
+      map(&current->as, (void *)(max_brk + i * (PGSIZE - 1)), (void *)(ret + i * (PGSIZE - 1)), prog);
+    }
+    current->max_brk = (brk_pn + 1)<< VPN_OFF;
+    assert(current->max_brk > brk);
+  }
+  
   return 0;
 }
 

@@ -3,6 +3,8 @@
 #include "../include/fs.h"
 #include <sys/time.h>
 #include <proc.h>
+
+int mm_brk(uintptr_t brk);
 void naive_uload();
 void switch_boot_pcb();
 void context_uload();
@@ -90,7 +92,8 @@ void do_syscall(Context *c)
     break;
   case SYS_brk:
     // uintptr_t addr = a[1];
-    c->GPRx = 0;
+    c->GPRx = mm_brk(a[1]);
+    // c->GPRx = 0;
     break;
   case SYS_yield:
     yield();
