@@ -100,15 +100,15 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   uintptr_t vpn1 = ((uintptr_t)va & 0xffc00000)>> 22;
   uintptr_t vpn0 = ((uintptr_t)va & 0x3ff000)>> 12;
   uintptr_t ppn = ((uintptr_t)pa & (~0xfff))>> 12;
-  if(va==(void*)0x40000000){
-    printf("(MAP)vpn1=%x, vpn0=%x, ppn=%x\n", vpn1, vpn0, ppn);
-  }
+  // if(va==(void*)0x40000000){
+  //   printf("(MAP)vpn1=%x, vpn0=%x, ppn=%x\n", vpn1, vpn0, ppn);
+  // }
   /* 一级页表 */
   assert(as->ptr);
   PTE *pt1_e = (uintptr_t*)(as->ptr + (vpn1 <<2));
-  if(va==(void*)0x40000000){
-    printf("(MAP)pt1_e=%x\n", pt1_e);
-  }
+  // if(va==(void*)0x40000000){
+  //   printf("(MAP)pt1_e=%x\n", pt1_e);
+  // }
   // assert((uintptr_t)pt1_e == get_satp() + vpn1 * 4);
 
   /* 查看二级页表是否分配 */

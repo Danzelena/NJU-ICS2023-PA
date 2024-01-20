@@ -48,8 +48,8 @@ int mm_brk(uintptr_t brk) {
     void *ret = new_page(new_pn);
     memset(ret, 0, new_pn * PGSIZE);
     for(size_t i = 0; i < new_pn; i++){
-      map(&current->as, (void *)(max_brk + i * (PGSIZE - 1)), (void *)(ret + i * (PGSIZE - 1)), prog);
-      printf("(map)vaddr=%x\n", max_brk + i * (PGSIZE - 1));
+      map(&current->as, (void *)(max_brk + i * (PGSIZE)), (void *)(ret + i * (PGSIZE)), prog);
+      printf("(map)vaddr=%x\n", max_brk + i * (PGSIZE));
     }
     current->max_brk = (brk_pn + 1)<< VPN_OFF;
     assert(current->max_brk > brk);
