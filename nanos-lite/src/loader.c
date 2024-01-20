@@ -30,7 +30,7 @@ static void *alloc_section_space(AddrSpace *as, uintptr_t vaddr, size_t p_memsz)
 
 
 uintptr_t elf_loader(uintptr_t file_off, bool *suc);
-uintptr_t elf_file_loader(int fd, bool *suc, AddrSpace *as);
+uintptr_t elf_file_loader(int fd, bool *suc, AddrSpace *as, PCB *pcb);
 
 // TODO: 获取程序大小后, 以页为单位进行加载
 static uintptr_t loader(PCB *pcb, const char *filename)
@@ -46,7 +46,7 @@ static uintptr_t loader(PCB *pcb, const char *filename)
     return -1;
   }
   printf("0\n");
-  proaddr = elf_file_loader(file_fd, &suc, pcb_as);
+  proaddr = elf_file_loader(file_fd, &suc, pcb_as, pcb);
 
   // 之前的 loader, 从ramdisk中打开elf
   // uintptr_t file_off = 0;
@@ -59,6 +59,8 @@ static uintptr_t loader(PCB *pcb, const char *filename)
   }
   printf("finish load!\n");
   fs_close(file_fd);
+
+
   // printf("proaddr=%x\n",proaddr);
   return proaddr;
 }
@@ -77,7 +79,7 @@ void naive_uload(PCB *pcb, const char *filename)
   ((void (*)())entry)();
 }
 
-uintptr_t elf_file_loader(int fd, bool *suc, AddrSpace *as)
+uintptr_t elf_file_loader(int fd, bool *suc, AddrSpace *as, PCB *pcb)
 {
   printf("1\n");
   /* ELF header */
@@ -140,10 +142,16 @@ uintptr_t elf_file_loader(int fd, bool *suc, AddrSpace *as)
       // memcpy((char*)VirtAddr,program,MemSiz);
       void *addr = (void *)PhysAddr + (uintptr_t)(VirtAddr & 0xfff) + FileSiz;
       memset(addr, 0, MemSiz - FileSiz);
+
+
+      pcb->max_brk = ROUNDUP(VirtAddr + MemSiz, PGSIZE - 1);
     }
   }
   printf("3\n");
+
+
   *suc = true;
+
   return header.e_entry;
 }
 // elf_handle function
