@@ -223,7 +223,7 @@ void init_proc() {
 
 Context* schedule(Context *prev) {
   // panic("Should reach here\n");
-  printf("(Debug)begin scuedule\n");
+  // printf("(Debug)begin scuedule\n");
   current->cp = prev;
   // current = prev;
 

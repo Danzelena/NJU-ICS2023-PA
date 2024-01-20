@@ -144,7 +144,7 @@ uintptr_t elf_file_loader(int fd, bool *suc, AddrSpace *as, PCB *pcb)
       memset(addr, 0, MemSiz - FileSiz);
 
 
-      pcb->max_brk = ROUNDUP(VirtAddr + MemSiz, PGSIZE - 1);
+      pcb->max_brk = ROUNDUP(VirtAddr + MemSiz, PGSIZE);
     }
   }
   printf("3\n");
