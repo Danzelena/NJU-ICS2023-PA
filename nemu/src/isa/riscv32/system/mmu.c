@@ -61,7 +61,7 @@ paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
     break;
   }
   paddr_t pa = PTE_PPN(pt2_e) * 4096 + VA_OFFSET(vaddr);
-  Assert(pa==vaddr, "Vaddr(%#x)!=Paddr(%#x)", vaddr, pa);
+  // Assert(pa==vaddr, "Vaddr(%#x)!=Paddr(%#x)", vaddr, pa);
   // printf("(MMU)\n va=%x\npa=%x\n", vaddr, pa);
   // Assert(0, "Should stop here\n");
   return pa;
