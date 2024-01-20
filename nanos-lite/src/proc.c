@@ -23,7 +23,7 @@ void hello_fun(void *arg) {
   while (1) {
     Log("Hello World from Nanos-lite with arg '%x' for the %dth time!", (uintptr_t)arg, j);
     j ++;
-    // printf("max_brk[0]=%x, [1]=%x\n", pcb[0].max_brk, pcb[1].max_brk);
+    printf("max_brk[0]=%x, [1]=%x\n", pcb[0].max_brk, pcb[1].max_brk);
     for (int volatile i = 0; i < HELLO_RATE; i++) ;// make it slower
     // assert(0);
     yield();
