@@ -219,13 +219,13 @@ void init_proc() {
 Context* schedule(Context *prev) {
 
  
-  // printf("(Debug)begin scuedule\n");
+  printf("(Debug)begin scuedule\n");
   current->cp = prev;
   // current = prev;
 
   // current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
   // printf("(Debug)mepc1=%x, mepc2=%x \n", pcb[0].cp->uc.uc_mcontext.gregs[REG_RIP], pcb[1].cp->uc.uc_mcontext.gregs[REG_RIP]);
-  // printf("(Debug)mepc1=%x, mepc2=%x \n", pcb[0].cp->mepc, pcb[1].cp->mepc);
+  printf("(Debug)mepc1=%x, mepc2=%x \n", pcb[0].cp->mepc, pcb[1].cp->mepc);
   // if(current==&pcb[0]){printf("(Debug)(Schedule)go to 0\n");}
   // if(current==&pcb[1]){printf("(Debug)(Schedule)go to 1\n");}
   // printf("(Debug)entry=0x%x\n", current->cp->uc.uc_mcontext.gregs[REG_RIP]);
