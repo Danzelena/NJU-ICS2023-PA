@@ -42,7 +42,7 @@ int mm_brk(uintptr_t brk) {
   uintptr_t max_brk_pn = max_brk >> VPN_OFF;
 
   if (brk_pn >= max_brk_pn){
-    printf("(Debug)(mm_brk)allocate new page\n");
+    printf("(Debug)(mm_brk)allocate new page at brk=%x, max_brl=%x\n", brk, max_brk);
     /* alloc new physicsal page */
     size_t new_pn = brk_pn + 1 - max_brk_pn;
     void *ret = new_page(new_pn);
