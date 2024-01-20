@@ -228,8 +228,8 @@ static void *alloc_section_space(AddrSpace *as, uintptr_t vaddr, size_t p_memsz)
   // size_t page_n = ((vaddr + p_memsz - 1) >> 12) - (vaddr >> 12) + 1;
   void *ppage_begin = new_page(vpage_n);
   printf("(Debug)Loaded Segment from [%x to %x)\n", vaddr, vaddr + p_memsz);
+  printf("(Debug)ppage_begin=0x%x\n", ppage_begin);
   for (int i = 0; i < vpage_n; i++){
-
     map(as, (void *)((vpage_begin & ~0xfff) + i * PGSIZE), (void *)(ppage_begin + i * PGSIZE), 1);
   }
   return ppage_begin;
