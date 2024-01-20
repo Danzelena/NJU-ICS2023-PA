@@ -210,7 +210,7 @@ void init_proc() {
 
   Log("Initializing processes...");
   yield();
-  // panic("Show not reach here\n");
+  panic("Show not reach here\n");
   // load program here
   // char *filename = "/bin/menu";
   // naive_uload(NULL,filename);
