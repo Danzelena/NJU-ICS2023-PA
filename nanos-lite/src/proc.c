@@ -102,7 +102,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   // uintptr_t ustack_begin;
 
   printf("(Debug)arg_begin=%x, arg_end=%x\n", arg_begin, arg_end);
-  printf("(Log)user stack\n [0x---, 0x%x]", ustack_end);
+  printf("(Log)user stack\n [0x---, 0x%x]\n", ustack_end);
 
   assert((void*)arg_begin!= NULL&&(void*)arg_end!= NULL&&arg_begin<arg_end);
 
@@ -225,7 +225,7 @@ Context* schedule(Context *prev) {
   current->cp = prev;
   // current = prev;
 
-  current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
+  current = (current == &pcb[0] ? &pcb[1] : &pcb[1]);
   // printf("(Debug)mepc1=%x, mepc2=%x \n", pcb[0].cp->uc.uc_mcontext.gregs[REG_RIP], pcb[1].cp->uc.uc_mcontext.gregs[REG_RIP]);
   // printf("(Debug)mepc1=%x, mepc2=%x \n", pcb[0].cp->mepc, pcb[1].cp->mepc);
   // printf("(Debug)epc=%x \n", prev->mepc);
