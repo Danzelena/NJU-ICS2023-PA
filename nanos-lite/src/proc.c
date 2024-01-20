@@ -221,7 +221,7 @@ Context* schedule(Context *prev) {
  
   // printf("(Debug)begin scuedule\n");
   current->cp = prev;
-  current = &pcb[1];
+  // current = prev;
 
   // current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
   // printf("(Debug)mepc1=%x, mepc2=%x \n", pcb[0].cp->uc.uc_mcontext.gregs[REG_RIP], pcb[1].cp->uc.uc_mcontext.gregs[REG_RIP]);
