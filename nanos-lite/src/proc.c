@@ -21,7 +21,7 @@ void hello_fun(void *arg) {
   int j = 1;
   
   while (1) {
-    printf("max_brk[0]=%x, [1]=%x\n", pcb[0].max_brk, pcb[1].max_brk);
+    // printf("max_brk[0]=%x, [1]=%x\n", pcb[0].max_brk, pcb[1].max_brk);
     Log("Hello World from Nanos-lite with arg '%x' for the %dth time!\n", (uintptr_t)arg, j);
     j ++;
     // printf("max_brk[0]=%x, [1]=%x\n", pcb[0].max_brk, pcb[1].max_brk);
