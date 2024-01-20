@@ -100,6 +100,7 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   uintptr_t ppn = ((uintptr_t)pa & (~0xfff))>> 12;
 
   /* 一级页表 */
+  assert(as->ptr);
   PTE *pt1_e = (uintptr_t*)(as->ptr + (vpn1 <<2));
   if(va==(void*)0x40000000){
     printf("(MAP)pt1_e=%x\n", pt1_e);
