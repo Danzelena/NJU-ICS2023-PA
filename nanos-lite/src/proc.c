@@ -21,7 +21,7 @@ void hello_fun(void *arg) {
   int j = 1;
   
   while (1) {
-    // printf("max_brk[0]=%x, [1]=%x\n", pcb[0].max_brk, pcb[1].max_brk);
+    // BUG: 这一行Log必须要在下面添加一些语句,才不会影响到pcb[1].max_brk的值
     Log("Hello World from Nanos-lite with arg '%x' for the %dth time!", (uintptr_t)arg, j);
     // Log("Hello world");
     // printf("\n");
@@ -237,12 +237,11 @@ Context* schedule(Context *prev) {
   // printf("(Debug)mepc1=%x, mepc2=%x \n", pcb[0].cp->uc.uc_mcontext.gregs[REG_RIP], pcb[1].cp->uc.uc_mcontext.gregs[REG_RIP]);
   // printf("(Debug)mepc1=%x, mepc2=%x \n", pcb[0].cp->mepc, pcb[1].cp->mepc);
   // printf("(Debug)epc=%x \n", prev->mepc);
-  printf("(pcb0)pdir=%x, (pcb1)pdir=%x\n", pcb[0].cp->pdir, pcb[1].cp->pdir);
-  if(current==&pcb[0]){printf("(Debug)(Schedule)go to 0\n");}
-  if(current==&pcb[1]){printf("(Debug)(Schedule)go to 1\n");}
-  printf("(Schedule)max_brk[0]=%x, [1]=%x\n", pcb[0].max_brk, pcb[1].max_brk);
+  // printf("(pcb0)pdir=%x, (pcb1)pdir=%x\n", pcb[0].cp->pdir, pcb[1].cp->pdir);
+  // if(current==&pcb[0]){printf("(Debug)(Schedule)go to 0\n");}
+  // if(current==&pcb[1]){printf("(Debug)(Schedule)go to 1\n");}
+  // printf("(Schedule)max_brk[0]=%x, [1]=%x\n", pcb[0].max_brk, pcb[1].max_brk);
 
-  // printf("(Debug)entry=0x%x\n", current->cp->uc.uc_mcontext.gregs[REG_RIP]);
 
   return current->cp;
 }
