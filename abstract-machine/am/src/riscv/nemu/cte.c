@@ -36,6 +36,7 @@ Context *__am_irq_handle(Context *c)
     // printf("(Debug)after schedule()\n");
     assert(c != NULL);
   }
+  printf("(__am_ieq_handle)3\n");
   __am_switch(c);
   printf("(__am_ieq_handle)4\n");
   return c;
