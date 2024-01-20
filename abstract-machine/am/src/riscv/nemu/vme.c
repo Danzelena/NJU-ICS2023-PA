@@ -91,7 +91,7 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   // if(va==(void*)0x40000000){
   //   printf("(MAP)start, va=0x%x, pa=0x%x\n", va, pa);
   // }
-  printf("(Debug)as->ptr=%x\n", as->ptr);
+  // printf("(Debug)as->ptr=%x\n", as->ptr);
   // printf("va=%x\n", va);
   uintptr_t va_offset = (uintptr_t)va & 0xfff;
   uintptr_t pa_offset = (uintptr_t)pa & 0xfff;
