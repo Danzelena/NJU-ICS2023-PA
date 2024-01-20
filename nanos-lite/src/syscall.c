@@ -96,6 +96,7 @@ void do_syscall(Context *c)
     // c->GPRx = 0;
     break;
   case SYS_yield:
+    printf("(SYS_yield)\n");
     yield();
     // int val = 0;
     // int val =0;
