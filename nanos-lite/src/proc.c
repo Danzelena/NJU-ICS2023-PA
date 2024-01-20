@@ -188,6 +188,10 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   Context *context = ucontext(&addrs, (Area) {(void *)kstack_begin, (void*)kstack_end}, (void*)entry);
   pcb->cp = context;
   pcb->cp->GPRx = arg_begin;
+
+
+  Log("Jump to entry = %p", entry);
+  ((void (*)())entry)();
 }
 void init_proc() {
   // naive_uload(&pcb[0],"/bin/dummy");
@@ -209,6 +213,7 @@ void init_proc() {
   switch_boot_pcb();
 
   Log("Initializing processes...");
+
   yield();
   panic("Show not reach here\n");
   // load program here
