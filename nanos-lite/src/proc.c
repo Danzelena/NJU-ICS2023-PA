@@ -21,7 +21,7 @@ void hello_fun(void *arg) {
   int j = 1;
   while (1) {
     // printf("Hello World from Nanos-lite with arg '%p' for the %dth time!\n", (uintptr_t)arg, j);
-    // Log("Hello World from Nanos-lite with arg '%p' for the %dth time!", (uintptr_t)arg, j);
+    Log("Hello World from Nanos-lite with arg '%p' for the %dth time!", (uintptr_t)arg, j);
     j ++;
     for (int volatile i = 0; i < HELLO_RATE; i++) ;// make it slower
     // assert(0);
