@@ -235,8 +235,8 @@ Context* schedule(Context *prev) {
   // printf("(Debug)mepc1=%x, mepc2=%x \n", pcb[0].cp->mepc, pcb[1].cp->mepc);
   // printf("(Debug)epc=%x \n", prev->mepc);
   printf("(pcb0)pdir=%x, (pcb1)pdir=%x\n", pcb[0].cp->pdir, pcb[1].cp->pdir);
-  // if(current==&pcb[0]){printf("(Debug)(Schedule)go to 0\n");}
-  // if(current==&pcb[1]){printf("(Debug)(Schedule)go to 1\n");}
+  if(current==&pcb[0]){printf("(Debug)(Schedule)go to 0\n");}
+  if(current==&pcb[1]){printf("(Debug)(Schedule)go to 1\n");}
   // printf("(Debug)entry=0x%x\n", current->cp->uc.uc_mcontext.gregs[REG_RIP]);
 
   return current->cp;
