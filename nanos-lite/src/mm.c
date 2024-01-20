@@ -42,13 +42,14 @@ int mm_brk(uintptr_t brk) {
   uintptr_t max_brk_pn = max_brk >> VPN_OFF;
 
   if (brk_pn >= max_brk_pn){
-    printf("(Debug)(mm_brk)allocate new page at brk=%x, max_brl=%x\n", brk, max_brk);
+    printf("(Debug)(mm_brk)allocate new page at brk=%x, max_brk=%x\n", brk, max_brk);
     /* alloc new physicsal page */
     size_t new_pn = brk_pn + 1 - max_brk_pn;
     void *ret = new_page(new_pn);
     memset(ret, 0, new_pn * PGSIZE);
     for(size_t i = 0; i < new_pn; i++){
       map(&current->as, (void *)(max_brk + i * (PGSIZE - 1)), (void *)(ret + i * (PGSIZE - 1)), prog);
+      printf("(map)vaddr=%x\n", max_brk + i * (PGSIZE - 1));
     }
     current->max_brk = (brk_pn + 1)<< VPN_OFF;
     assert(current->max_brk > brk);
