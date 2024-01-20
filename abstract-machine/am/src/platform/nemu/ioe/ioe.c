@@ -45,7 +45,7 @@ static void *lut[128] = {
 };
 
 static void fail(void *buf) { panic("access nonexist register"); }
-// TODO:implement these function
+// tODO:implement these function
 bool ioe_init() {
   for (int i = 0; i < LENGTH(lut); i++)
     if (!lut[i]) lut[i] = fail;

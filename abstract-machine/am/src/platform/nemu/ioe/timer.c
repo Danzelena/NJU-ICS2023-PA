@@ -2,7 +2,7 @@
 #include <nemu.h>
 // #include <stdio.h>
 
-/* TODO:实现AM_TIMER_UPTIME的功能 */
+/* tODO:实现AM_TIMER_UPTIME的功能 */
 void __am_timer_init() {
     
 }

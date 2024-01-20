@@ -24,7 +24,6 @@ static void* pg_alloc(int n) {
 }
 #endif
 
-// TODO:
 void free_page(void *p) {
   panic("not implement yet");
 }

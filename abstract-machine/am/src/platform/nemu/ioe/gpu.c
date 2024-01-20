@@ -7,8 +7,8 @@
 void __am_gpu_init()
 {
   // int i;
-  // int w = (int)(inl(VGACTL_ADDR) >> 16); // TODO: get the correct width
-  // int h = (int)(inw(VGACTL_ADDR));       // TODO: get the correct height
+  // int w = (int)(inl(VGACTL_ADDR) >> 16); // TODO: get the correct width and height
+  // int h = (int)(inw(VGACTL_ADDR));       
   // printf("width: %d, high:%d\n", w, h);  // expected 400*300
   // uint32_t *fb = (uint32_t *)(uintptr_t)FB_ADDR;
   // for (i = 0; i < w * h; i++)
@@ -34,8 +34,8 @@ void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl)
 
   // printf("NoUpdate\n");
   // }
-  int width = (int)(inl(VGACTL_ADDR) >> 16); // TODO: get the correct width
-  // int height = (int)(inw(VGACTL_ADDR));      // TODO: get the correct height
+  int width = (int)(inl(VGACTL_ADDR) >> 16); // TODO: get the correct width and height
+  // int height = (int)(inw(VGACTL_ADDR));     
   // printf("width: %d, high:%d\n", width, height); // expected 400*300
 
   uint32_t *fb = (uint32_t *)(uintptr_t)FB_ADDR;

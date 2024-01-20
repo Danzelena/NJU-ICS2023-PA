@@ -3,10 +3,12 @@
 #include <klib.h>
 
 static Context *(*user_handler)(Event, Context *) = NULL;
+void __am_get_cur_as(Context *c);
+void __am_switch(Context *c);
 
 Context *__am_irq_handle(Context *c)
 {
-
+  __am_get_cur_as(c);
   // 把执行流切换的原因打包成事件,然后user_handle()
   if (user_handler)
   {
@@ -32,7 +34,7 @@ Context *__am_irq_handle(Context *c)
     // printf("(Debug)after schedule()\n");
     assert(c != NULL);
   }
-
+  __am_switch(c);
   return c;
 }
 
@@ -68,7 +70,7 @@ Context *kcontext(Area kstack, void (*entry)(void *), void *arg)
   context->mepc = (uintptr_t)entry;
   // riscv 是使用寄存器传递参数
   context->GPRa0 = (uintptr_t)arg;
-  // TODO: mcause, gpr[NR_REGS], pdir
+  // tODO: mcause, gpr[NR_REGS], pdir
   return context;
   // return NULL;
 }

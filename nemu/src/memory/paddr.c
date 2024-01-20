@@ -52,7 +52,6 @@ void init_mem() {
 }
 
 word_t paddr_read(paddr_t addr, int len) {
-  //TODO: mark read which memory
   #ifdef CONFIG_MTRACE_COND
   if(likely(in_pmem(addr))){
     log_write("read memory at addr = 0x%lx with %d bytes", (unsigned long)addr, len);
@@ -70,7 +69,6 @@ word_t paddr_read(paddr_t addr, int len) {
 }
 
 void paddr_write(paddr_t addr, int len, word_t data) {
-  //TODO: mark write which memory
   #ifdef CONFIG_MTRACE_COND
   if(likely(in_pmem(addr))){
     log_write("write memory at addr = 0x%lx with %d bytes", (unsigned long)addr, len);

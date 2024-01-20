@@ -26,14 +26,17 @@
 // #endif
 
 size_t ramdisk_read(void *buf, size_t offset, size_t len);
-
+static void *alloc_section_space(AddrSpace *as, uintptr_t vaddr, size_t p_memsz);
 
 
 uintptr_t elf_loader(uintptr_t file_off, bool *suc);
-uintptr_t elf_file_loader(int fd, bool *suc);
+uintptr_t elf_file_loader(int fd, bool *suc, AddrSpace *as);
+
+// TODO: 获取程序大小后, 以页为单位进行加载
 static uintptr_t loader(PCB *pcb, const char *filename)
 {
   printf("begin to load %s!\n",filename);
+  AddrSpace *pcb_as = &pcb->as;
   bool suc = false;
   uintptr_t proaddr = 0;
   // 使用 文件系统 之后的 loader
@@ -43,7 +46,7 @@ static uintptr_t loader(PCB *pcb, const char *filename)
     return -1;
   }
   printf("0\n");
-  proaddr = elf_file_loader(file_fd, &suc);
+  proaddr = elf_file_loader(file_fd, &suc, pcb_as);
 
   // 之前的 loader, 从ramdisk中打开elf
   // uintptr_t file_off = 0;
@@ -74,9 +77,10 @@ void naive_uload(PCB *pcb, const char *filename)
   ((void (*)())entry)();
 }
 
-uintptr_t elf_file_loader(int fd, bool *suc)
+uintptr_t elf_file_loader(int fd, bool *suc, AddrSpace *as)
 {
   printf("1\n");
+  /* ELF header */
   Elf_Ehdr header;
   size_t flag = fs_read(fd, &header, sizeof(Elf_Ehdr));
   if (flag <= 0)
@@ -84,13 +88,15 @@ uintptr_t elf_file_loader(int fd, bool *suc)
     panic("Sorry! read elf header from ramdisk fail!\n");
     *suc = false;
   }
-  // check magic number
+  /* magic number */
   if (memcmp(header.e_ident, ELFMAG, SELFMAG) != 0)
   {
     panic("Sorry! magic number of 'elf'(maybe) file is invalid!\n");
     assert(0);
   }
   printf("2\n");
+
+
   Elf_Off program_off = header.e_phoff;
   size_t program_cnt;
   for (program_cnt = 0; program_cnt < header.e_phnum; program_cnt++)
@@ -106,17 +112,20 @@ uintptr_t elf_file_loader(int fd, bool *suc)
     {
       panic("Sorry! fs_read in loader error!\n");
     }
+
+    /* load the program section */
     if (program->p_type == PT_LOAD)
     {
-      // load this segementation
-
+      
       Elf_Off Offset = program->p_offset;
       Elf_Addr VirtAddr = program->p_vaddr;
-
+     
       // printf("Debug:program%d:O=0x%x,V=0x%x\n", program_cnt, Offset, VirtAddr);
 
       uint64_t FileSiz = program->p_filesz;
       uint64_t MemSiz = program->p_memsz;
+      Elf_Addr PhysAddr = (Elf_Addr)alloc_section_space(as, VirtAddr, MemSiz);
+      printf("Debug:program%d:O=0x%x,V=0x%x,P=0x%x\n", program_cnt, Offset, VirtAddr, PhysAddr);
       // printf("Debug:F=0x%x,M=0x%x\n", FileSiz, MemSiz);
 
       // [VirtAddr,VirtAddr + MemSiz]<- Ramdisk[0 + Program Table Offset + Segment offset]
@@ -125,10 +134,12 @@ uintptr_t elf_file_loader(int fd, bool *suc)
       {
         panic("Sorry! lseek in loader error!\n");
       }
-      fs_read(fd, (char *)VirtAddr, MemSiz);
+      // fs_read(fd, (char *)VirtAddr, MemSiz);
+      fs_read(fd, (char *)(PhysAddr + (VirtAddr & 0xfff)), MemSiz);
       // ramdisk_read((char *)VirtAddr, file_off + Offset, MemSiz);
       // memcpy((char*)VirtAddr,program,MemSiz);
-      memset((char *)VirtAddr + FileSiz, 0, MemSiz - FileSiz);
+      void *addr = (void *)PhysAddr + (uintptr_t)(VirtAddr & 0xfff) + FileSiz;
+      memset(addr, 0, MemSiz - FileSiz);
     }
   }
   printf("3\n");
@@ -208,3 +219,18 @@ uintptr_t elf_loader(uintptr_t file_off, bool *suc)
 // [VirtAddr,VirtAddr + MemSiz]<- Ramdisk[0 + Program Table Offset + Segment offset]
 
 //  [VirtAddr + FileSiz ,VirtAddr + MemSiz]<- 0
+
+/* 申请一页物理页, 通过 map() 将物理页映射到用户进程的虚拟地址空间中 */
+static void *alloc_section_space(AddrSpace *as, uintptr_t vaddr, size_t p_memsz){
+  size_t vpage_end = vaddr + p_memsz - 1;
+  size_t vpage_begin = vaddr;
+  size_t vpage_n = (vpage_end >> 12) - (vpage_begin >> 12) + 1;
+  // size_t page_n = ((vaddr + p_memsz - 1) >> 12) - (vaddr >> 12) + 1;
+  void *ppage_begin = new_page(vpage_n);
+  printf("(Debug)Loaded Segment from [%x to %x)\n", vaddr, vaddr + p_memsz);
+  for (int i = 0; i < vpage_n; i++){
+
+    map(as, (void *)((vpage_begin & ~0xfff) + i * PGSIZE), (void *)(ppage_begin + i * PGSIZE), 1);
+  }
+  return ppage_begin;
+}

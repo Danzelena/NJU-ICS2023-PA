@@ -142,7 +142,7 @@ void ftrace_free(){
 }
 // int cnt = 0;
 // char *lastfunc;
-// TODO:simluate a function call stack to print
+// tODO:simluate a function call stack to print
 // void ftrace_call(word_t pc)
 // {
 //     // for(int i = 0;i < cnt;i++){

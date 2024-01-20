@@ -94,7 +94,7 @@ static int decode_exec(Decode *s) {
   // li addi jal ret sw jal mv ebreak j
   INSTPAT("??????? ????? ????? 000 ????? 00100 11", addi   , I, R(rd) = src1 + imm);
 
-  // TODO:function call : ftrace!(call and ret)
+  // tODO:function call : ftrace!(call and ret)
   // INSTPAT("??????? ????? ????? ??? ????? 11011 11", jal    , J, R(rd) = s->pc + 4; s->dnpc = s->pc + imm;if(rd != 0){ftrace_call(s->dnpc,true);});
   
   #ifdef CONFIG_FTRACE_COND
@@ -183,7 +183,6 @@ static int decode_exec(Decode *s) {
 
   // slti
 
-  // TODO: implement ecall, csrw(csrrs)
   // csrw : CSRs[csr] = x[rs1] csrrs x0,csr,rs1
   // csrw mtvec, %0
   // equal to : /me/

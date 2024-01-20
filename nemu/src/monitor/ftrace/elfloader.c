@@ -5,7 +5,6 @@ char *strtab;
 Elf32_Sym *symtab;
 Elf32_Shdr *sym = NULL;
 
-// TODO:func to load and parse ELF file
 void init_ftrace(const char *fn)
 {
 //   char buff[255];

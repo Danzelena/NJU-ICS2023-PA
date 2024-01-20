@@ -30,6 +30,9 @@ static void sh_prompt() {
 }
 static char fp[MAX_FP];// file variable is very important
 static char _input[MAX_INPUT];// 最长一次输入MAX_INPUT个字符
+
+
+// TODO: 这一块的代码非常屎山
 static char *init_input(const char *str){
   assert(strlen(str) <= MAX_INPUT);
   strncpy(_input, str, MAX_INPUT);
@@ -38,11 +41,9 @@ static char *init_input(const char *str){
   printf("(nterm)get _input=%s\n", _input);
   return _input;
 }
-// TODO: parse the cmd
 
 // static char *str_handle_cmd(const char *str){
 //   assert(str != NULL);
-//   // FORWARD:fp size fixed!
 //   assert(strlen(str) <= MAX_FP);
 //   strcpy(fp,str);
 //   fp[strlen(fp)-1] = '\0';

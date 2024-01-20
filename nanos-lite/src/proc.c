@@ -75,7 +75,16 @@ static size_t len_resize(size_t size){
     return size;
   }
 }
+
+// TODO: 虚拟化
 void context_uload(PCB *pcb, const char *filename, char *const argv[], char *const envp[]){
+  /* 在加载用户程序之前, 创建地址空间 */
+  /* 调用protext()创建地址空间,需要创建内核映射(参考vme.c) */
+  AddrSpace *pcb_as = &pcb->as;
+  protect(pcb_as);
+  /* 修改loader()函数, 支持虚拟内存加载 */
+
+ 
   printf("(Debug)(context_uload)\n");
   printf("filename=%s\n", filename);
 
@@ -86,14 +95,26 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   printf("(Debug)argc = %d, envc = %d\n", argc, envc);
 
   // Warning: 强行约定了 arg 区域的大小, 以及让用户栈的结尾成为heap.end
-  // 使用new_page()开辟新的用户栈
+  // 使用new_page()开辟新的用户栈, arg_end即用户栈栈顶
   uintptr_t arg_begin = (uintptr_t)new_page(NR_PAGE) + NR_PAGE * PGSIZE - MAX_args_len;
   uintptr_t arg_end = arg_begin + MAX_args_len;
+  uintptr_t ustack_end = arg_end;
+  // uintptr_t ustack_begin;
 
   printf("(Debug)arg_begin=%x, arg_end=%x\n", arg_begin, arg_end);
+  printf("(Log)user stack\n [0x---, 0x%x]", ustack_end);
+
   assert((void*)arg_begin!= NULL&&(void*)arg_end!= NULL&&arg_begin<arg_end);
 
   assert(argc >= 0&&envc >= 0);
+  /* 用户栈虚拟化 */
+  size_t i = 8;
+  assert(pcb_as->area.end - i * PGSIZE >=0);
+  assert(ustack_end - i * PGSIZE>= 0);
+  for(;i > 0;i--){
+    map(pcb_as, (void *)(pcb_as->area.end - i * PGSIZE), (void *)(ustack_end - i * PGSIZE), 1);
+  }
+
 
   char *envp_ustack[envc];
   char *argv_ustack[argc];
@@ -169,22 +190,19 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   pcb->cp->GPRx = arg_begin;
 }
 void init_proc() {
-  // 创建两个以hello_fun()为入口的上下文
-
-  context_kload(&pcb[0], hello_fun, (void *)1L);
+  naive_uload(NULL,"/bin/dummy");
+  // context_kload(&pcb[0], hello_fun, (void *)1L);
   // context_uload(&pcb[0], "/bin/hello");
 
   // BUG: 根据目前计算 argc, envc的方法,必须这么定义 argv, envp
   // char *const argv[] = {"--skip", "hello", "world", "NJU", NULL};
-
   // char *const envp[] = {"ICS", "PA", "pa", NULL};
-  // BUG: "nil" for NULL, always make Segemetion fault when getenv()
-  char *const argv[] = {"/bin/exec-test", NULL};
-  // char *const envp[] = {"nil", NULL};
 
-  char *const envp[] = {"nil", NULL};
+  // BUG: "nil" for NULL, always make Segemetion fault when getenv()
+  // char *const argv[] = {"/bin/exec-test", NULL};
+  // char *const envp[] = {"nil", NULL};
   
-  context_uload(&pcb[1], "/bin/pal", argv, envp);
+  // context_uload(&pcb[1], "/bin/pal", argv, envp);
   // context_uload(&pcb[1], "/bin/menu", argv, envp);
 
   // context_kload(&pcb[1], hello_fun, (void *)2L);

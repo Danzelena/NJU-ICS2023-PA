@@ -43,7 +43,7 @@ struct iringbuf{
 char *pool[IRING_LEN];
 
 
-// TODO:handle iringbuf as a queue
+// tODO:handle iringbuf as a queue
 void irbuf_print();
 void irbuf_init(struct iringbuf *rb, 
                   char **pool,
