@@ -190,8 +190,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   pcb->cp->GPRx = arg_begin;
 
 
-  Log("Jump to entry = %p", entry);
-  ((void (*)())entry)();
+
 }
 void init_proc() {
   // naive_uload(&pcb[0],"/bin/dummy");
@@ -211,7 +210,6 @@ void init_proc() {
   context_uload(&pcb[1], "/bin/dummy", NULL, NULL);
   // context_kload(&pcb[1], hello_fun, (void *)2L);
   switch_boot_pcb();
-
   Log("Initializing processes...");
 
   yield();
