@@ -73,7 +73,7 @@ Context *kcontext(Area kstack, void (*entry)(void *), void *arg)
 {
   Context *context = kstack.end - sizeof(Context)-4;
   //TODO: for test
-  context->mstatus = 0x1800 | 0x88;
+  context->mstatus = 0x1800 | 0x80;
   context->mepc = (uintptr_t)entry;
   // context->m
   // riscv 是使用寄存器传递参数
