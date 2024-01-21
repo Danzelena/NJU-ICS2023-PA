@@ -191,7 +191,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   // AddrSpace addrs;
   // Hint: c->uc.uc_mcontext.gregs[REG_RIP]存放 entry
   // 分配上下文
-  printf("(Debug)pcb_as->pdir=%x\n",pcb_as->ptr);
+  // printf("(Debug)pcb_as->pdir=%x\n",pcb_as->ptr);
   Context *context = ucontext(pcb_as, (Area) {(void *)kstack_begin, (void*)kstack_end}, (void*)entry);
   context->GPRx = arg_begin;
   
@@ -218,8 +218,8 @@ void init_proc() {
   context_uload(&pcb[1], "/bin/pal", NULL, NULL);
 
 
-  printf("(DEBUG)pcb[0]->pdir=%x, mstatus=%x\n", pcb[0].cp->pdir, pcb[0].cp->mstatus);
-  printf("(DEBUG)pcb[1]->pdir=%x, mstatus=%x\n", pcb[0].cp->pdir, pcb[1].cp->mstatus);
+  printf("(DEBUG)(init_proc)pcb[0]->pdir=%x, mstatus=%x\n", pcb[0].cp->pdir, pcb[0].cp->mstatus);
+  printf("(DEBUG)(init_proc)pcb[1]->pdir=%x, mstatus=%x\n", pcb[0].cp->pdir, pcb[1].cp->mstatus);
   // context_kload(&pcb[1], hello_fun, (void *)2L);
   switch_boot_pcb();
   Log("Initializing processes...");
