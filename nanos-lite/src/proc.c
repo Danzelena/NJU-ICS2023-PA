@@ -198,7 +198,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
     if (pcb == &pcb[i]){
       printf("Hit\n");
     }else{
-      printf("(Debug)pcb=%x, [%d]=%x\n", pcb, &pcb[i]);
+      printf("(Debug)pcb=%x, [%d]=%x\n", pcb,i, &pcb[i]);
     }
   }
   assert(pcb == &pcb[1]);
