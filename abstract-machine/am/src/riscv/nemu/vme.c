@@ -147,14 +147,14 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
 // kstack -> 内核栈, 用于分配上下文结构
 // entry -> 用户进程的入口
 Context *ucontext(AddrSpace *as, Area kstack, void *entry) {
-  // printf("(Debug)begin to ucontext\n");
+  printf("(Debug)begin to ucontext\n");
   Context *context = kstack.end - sizeof(Context);
   // printf("(Debug)context=%x\n", context);
   context->mstatus = 0x1800 | 0x88;
   context->mepc = (uintptr_t)entry;
   context->pdir = as->ptr;
   // context->GPRx = (uintptr_t)heap.end;
-  // printf("(Debug)context->mepc=%x\n", context->mepc);
+  printf("(Debug)context->pdir=%x\n", context->pdir);
   return context;
   // return NULL;
 }
