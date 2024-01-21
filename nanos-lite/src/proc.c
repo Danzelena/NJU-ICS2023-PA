@@ -230,5 +230,8 @@ Context* schedule(Context *prev) {
   current->cp = prev;
   current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
   // printf("(Debug)(Schedule)finished\n");
+  printf("(DEBUG)pcb[0]->mstatus=%x\n", pcb[0].cp->mstatus);
+    printf("(DEBUG)pcb[1]->mstatus=%x\n", pcb[1].cp->mstatus);
+
   return current->cp;
 }
