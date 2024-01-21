@@ -9,7 +9,7 @@ void __am_switch(Context *c);
 
 Context *__am_irq_handle(Context *c)
 {
-  printf("(Debug)buf0=%x\n", c->GPR3);
+  // printf("(Debug)buf0=%x\n", c->GPR3);
   __am_get_cur_as(c);
   // printf("(__am_irq_handle)2\n");
   // 把执行流切换的原因打包成事件,然后user_handle()
@@ -35,7 +35,7 @@ Context *__am_irq_handle(Context *c)
       ev.event = EVENT_ERROR;
       break;
     }
-    printf("(Debug)ev.event=%d, buf=%x\n", ev.event, c->GPR3);
+    // printf("(Debug)ev.event=%d, buf=%x\n", ev.event, c->GPR3);
     c = user_handler(ev, c);
     // printf("(Debug)after schedule()\n");
     assert(c != NULL);
@@ -81,7 +81,6 @@ Context *kcontext(Area kstack, void (*entry)(void *), void *arg)
   // riscv 是使用寄存器传递参数
   context->GPRa0 = (uintptr_t)arg;
   context->pdir = NULL;
-  // tODO: mcause, gpr[NR_REGS], pdir
   return context;
   // return NULL;
 }

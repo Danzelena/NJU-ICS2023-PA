@@ -47,10 +47,10 @@ void call_main(uintptr_t *args) {
   
   printf("(Debug)before main: argc=%d, envc=%d\n", argc, envc);
   for(size_t i = 0;i < argc;i ++){
-    printf("(Debug)argv[%d]=%s\n", i, argv[i]);
+    // printf("(Debug)argv[%d]=%s\n", i, argv[i]);
   }
   for(size_t i = 0;i < envc;i++){
-    printf("(Debug)envp[%d]=%s\n", i, envp[i]);
+    // printf("(Debug)envp[%d]=%s\n", i, envp[i]);
   }
   printf("(Debug)(call_main)finished\n");
   

@@ -39,10 +39,10 @@ uintptr_t entry_get(PCB *pcb, const char *filename);
 // 调用 kcontext 来创建上下文
 // 把返回的指针记录到 PCB 的 cp 中
 void context_kload(PCB *pcb, void (*entry)(void *), void *arg){
-  printf("(Debug)(context_kload)begin=%x, end=%x\n", pcb->stack, pcb + 1);
+  // printf("(Debug)(context_kload)begin=%x, end=%x\n", pcb->stack, pcb + 1);
 
   pcb->cp = kcontext((Area) {pcb->stack, pcb + 1}, entry, arg);
-  printf("(Debug)(context_kload)end\n");
+  // printf("(Debug)(context_kload)end\n");
 
   // pcb->max_brk = ROUN
   // printf("(Debug)epc1=%x\n", pcb->cp->mepc);
@@ -86,26 +86,26 @@ static size_t len_resize(size_t size){
 uintptr_t entry;
 // TODO: 虚拟化
 void context_uload(PCB *pcb, const char *filename, char *const argv[], char *const envp[]){
-  printf("(Debug)(context_uload)1\n");
+  // printf("(Debug)(context_uload)1\n");
   /* 在加载用户程序之前, 创建地址空间 */
   /* 调用protext()创建地址空间,需要创建内核映射(参考vme.c) */
   
   AddrSpace *pcb_as = &pcb->as;
-  printf("(Debug)(context_uload)2\n");
+  // printf("(Debug)(context_uload)2\n");
   #ifdef HAS_VME
     protect(pcb_as);
   #endif
   /* 修改loader()函数, 支持虚拟内存加载 */
 
  
-  printf("(Debug)(context_uload)3\n");
-  printf("filename=%s\n", filename);
+  // printf("(Debug)(context_uload)3\n");
+  printf("(context_uload)filename=%s\n", filename);
 
   // Warning: 获取 argc, envc需要靠前
   const int argc = argc_get(argv);
   const int envc = envc_get(envp);
 
-  printf("(Debug)argc = %d, envc = %d\n", argc, envc);
+  // printf("(Debug)argc = %d, envc = %d\n", argc, envc);
 
   // Warning: 强行约定了 arg 区域的大小, 以及让用户栈的结尾成为heap.end
   // 使用new_page()开辟新的用户栈, arg_end即用户栈栈顶
@@ -114,7 +114,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   uintptr_t ustack_end = arg_end;
   // uintptr_t ustack_begin;
 
-  printf("(Debug)arg_begin=%x, arg_end=%x\n", arg_begin, arg_end);
+  // printf("(Debug)arg_begin=%x, arg_end=%x\n", arg_begin, arg_end);
   printf("(Log)user stack\n [0x---, 0x%x]\n", ustack_end);
 
   assert((void*)arg_begin!= NULL&&(void*)arg_end!= NULL&&arg_begin<arg_end);
@@ -226,8 +226,8 @@ void init_proc() {
   context_uload(&pcb[1], "/bin/menu", NULL, NULL);
 
 
-  printf("(DEBUG)(init_proc)pcb[0]->pdir=%x, mstatus=%x\n", pcb[0].cp->pdir, pcb[0].cp->mstatus);
-  printf("(DEBUG)(init_proc)pcb[1]->pdir=%x, mstatus=%x\n", pcb[1].cp->pdir, pcb[1].cp->mstatus);
+  // printf("(DEBUG)(init_proc)pcb[0]->pdir=%x, mstatus=%x\n", pcb[0].cp->pdir, pcb[0].cp->mstatus);
+  // printf("(DEBUG)(init_proc)pcb[1]->pdir=%x, mstatus=%x\n", pcb[1].cp->pdir, pcb[1].cp->mstatus);
   // context_kload(&pcb[1], hello_fun, (void *)2L);
   switch_boot_pcb();
   Log("Initializing processes...");
@@ -254,9 +254,9 @@ Context* schedule(Context *prev) {
 
   // BUG: not equal!!!!
   if(current->cp->pdir != current->as.ptr){
-    printf("(DEBUG)pdir=%x, ptr=%x\n",current->cp->pdir,current->as.ptr);
+    // printf("(DEBUG)pdir=%x, ptr=%x\n",current->cp->pdir,current->as.ptr);
     current->cp->pdir = current->as.ptr;
-    printf("(DEBUG)pdir=%x, ptr=%x\n",current->cp->pdir,current->as.ptr);
+    // printf("(DEBUG)pdir=%x, ptr=%x\n",current->cp->pdir,current->as.ptr);
   }
   printf("go to %d\n", current == &pcb[0]? 0:1);
   assert(current->cp->pdir == current->as.ptr);

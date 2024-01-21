@@ -39,7 +39,7 @@ bool vme_init(void* (*pgalloc_f)(int), void (*pgfree_f)(void*)) {
   /* set call-back function */
   pgalloc_usr = pgalloc_f;
   pgfree_usr = pgfree_f;
-  printf("(vme_init)\n");
+  // printf("(vme_init)\n");
   kas.ptr = pgalloc_f(PGSIZE);// 一级页表(页目录)的基地址
   int i;
   for (i = 0; i < LENGTH(segments); i ++) {
@@ -48,7 +48,6 @@ bool vme_init(void* (*pgalloc_f)(int), void (*pgfree_f)(void*)) {
     for (; va < segments[i].end; va += PGSIZE) {
       map(&kas, va, va, 0);
     }
-    // printf("va_end=%x\n", va);
     
   }
 
@@ -61,19 +60,12 @@ bool vme_init(void* (*pgalloc_f)(int), void (*pgfree_f)(void*)) {
 // 创建一个默认的地址空间
 void protect(AddrSpace *as) {
   PTE *updir = (PTE*)(pgalloc_usr(PGSIZE));
-  printf("(Debug)(protect)0.0\n");
   as->ptr = updir;// updir是一个页表项
-  printf("(Debug)(protect)0.1\n");
   as->area = USER_SPACE;
-  printf("(Debug)(protect)0.2\n");
   as->pgsize = PGSIZE;
-    printf("(Debug)(protect)1\n");
 
   // map kernel space
   memcpy(updir, kas.ptr, PGSIZE);
-    printf("(Debug)(protect)2\n");
-
-
 }
 
 // 销毁指定的地址空间
@@ -91,16 +83,12 @@ void __am_switch(Context *c) {
     set_satp(c->pdir);
   }
 }
-int cnt = 0;
+
+
 // TODO:riscv32-nemu map()
 // 用于将va所在的虚拟页, 以prot的权限映射到pa所在的物理页
 void map(AddrSpace *as, void *va, void *pa, int prot) {
   /* check offset */
-  // if(va==(void*)0x40000000){
-  //   printf("(MAP)start, va=0x%x, pa=0x%x\n", va, pa);
-  // }
-  // printf("(Debug)as->ptr=%x\n", as->ptr);
-  // printf("va=%x\n", va);
   uintptr_t va_offset = (uintptr_t)va & 0xfff;
   uintptr_t pa_offset = (uintptr_t)pa & 0xfff;
   assert(va_offset == pa_offset);
@@ -108,15 +96,11 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   uintptr_t vpn1 = ((uintptr_t)va & 0xffc00000)>> 22;
   uintptr_t vpn0 = ((uintptr_t)va & 0x3ff000)>> 12;
   uintptr_t ppn = ((uintptr_t)pa & (~0xfff))>> 12;
-  // if(va==(void*)0x40000000){
-  //   printf("(MAP)vpn1=%x, vpn0=%x, ppn=%x\n", vpn1, vpn0, ppn);
-  // }
+
   /* 一级页表 */
   assert(as->ptr);
   PTE *pt1_e = (uintptr_t*)(as->ptr + (vpn1 <<2));
-  // if(va==(void*)0x40000000){
-  //   printf("(MAP)pt1_e=%x\n", pt1_e);
-  // }
+
   // assert((uintptr_t)pt1_e == get_satp() + vpn1 * 4);
 
   /* 查看二级页表是否分配 */
@@ -154,7 +138,7 @@ Context *ucontext(AddrSpace *as, Area kstack, void *entry) {
   context->mepc = (uintptr_t)entry;
   context->pdir = as->ptr;
   // context->GPRx = (uintptr_t)heap.end;
-  printf("(Debug)context->pdir=%x\n", context->pdir);
+  // printf("(Debug)context->pdir=%x\n", context->pdir);
   return context;
   // return NULL;
 }

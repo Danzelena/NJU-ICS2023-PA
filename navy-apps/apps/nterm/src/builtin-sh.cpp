@@ -51,19 +51,19 @@ static char *init_input(const char *str){
 //   return fp;
 // }
 static char *input_handle_fp(char *input){
-  printf("(Debug)input__fp\n");
+  // printf("(Debug)input__fp\n");
   
   assert(input != NULL);
   char *input_r = input;
   // strncpy(input_r, input, strlen(input));
   char *fp = strtok(input_r, " ");
   assert(fp != NULL);
-  printf("(nterm)get fp=%s, strlen=%d\n", fp, strlen(fp));
+  // printf("(nterm)get fp=%s, strlen=%d\n", fp, strlen(fp));
   return fp;
 }
 
 static char *input_handle_arg(char *input, char *fp, char *end){
-  printf("(Debug)input__arg\n");
+  // printf("(Debug)input__arg\n");
   assert(input != NULL || fp != NULL);
   // printf("(nterm)arg=%x\n", input);
   // printf("(Debug)arg=%d, input_end=%d\n", arg, input_end);
