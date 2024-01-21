@@ -154,7 +154,6 @@ int SDL_WaitEvent(SDL_Event *event)
         // }
         // else
         // {
-        //   // BUG: don't know how to set status
         //   event->key.keysym.sym = SDLK_NONE;
         // }
       }

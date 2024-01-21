@@ -74,7 +74,7 @@ void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
     // printf("offset1=%d\n",((canvas_y + y + i) * screen_w + (canvas_x + x)) * sizeof(uint32_t));
     ssize_t s = write(graphics, pixels + w * i, w * sizeof(uint32_t));
   }
-  // BUG:not cloase fild
+  // BUG:not close fild
   // close(fd);
 }
 
@@ -92,7 +92,7 @@ int NDL_QueryAudio() {
   return 0;
 }
 
-// BUG:because of KISS rule(
+// Warning: because of KISS rule(
 void extract_values(const char *content) {
   char *token;
   // char *rest = malloc(256);
