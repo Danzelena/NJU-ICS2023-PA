@@ -89,10 +89,12 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   printf("(Debug)(context_uload)1\n");
   /* 在加载用户程序之前, 创建地址空间 */
   /* 调用protext()创建地址空间,需要创建内核映射(参考vme.c) */
+  
   AddrSpace *pcb_as = &pcb->as;
   printf("(Debug)(context_uload)2\n");
-  protect(pcb_as);
-
+  #ifdef HAS_VME
+    protect(pcb_as);
+  #endif
   /* 修改loader()函数, 支持虚拟内存加载 */
 
  
@@ -119,13 +121,16 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
 
   assert(argc >= 0&&envc >= 0);
   /* 用户栈虚拟化 */
-  size_t i = 8;
-  assert(pcb_as->area.end - i * PGSIZE >=0);
-  assert(ustack_end - i * PGSIZE>= 0);
-  for(;i > 0;i--){
-    map(pcb_as, (void *)(pcb_as->area.end - i * PGSIZE), (void *)(ustack_end - i * PGSIZE), 1);
-  }
+  
 
+  #ifdef HAS_VME 
+    size_t i = 8;
+    assert(pcb_as->area.end - i * PGSIZE >=0);
+    assert(ustack_end - i * PGSIZE>= 0);
+    for(;i > 0;i--){
+      map(pcb_as, (void *)(pcb_as->area.end - i * PGSIZE), (void *)(ustack_end - i * PGSIZE), 1);
+    }
+  #endif
 
   char *envp_ustack[envc];
   char *argv_ustack[argc];
