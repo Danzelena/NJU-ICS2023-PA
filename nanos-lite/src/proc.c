@@ -86,16 +86,17 @@ static size_t len_resize(size_t size){
 uintptr_t entry;
 // TODO: 虚拟化
 void context_uload(PCB *pcb, const char *filename, char *const argv[], char *const envp[]){
-  printf("(Debug)(context_uload)");
+  printf("(Debug)(context_uload)1\n");
   /* 在加载用户程序之前, 创建地址空间 */
   /* 调用protext()创建地址空间,需要创建内核映射(参考vme.c) */
   AddrSpace *pcb_as = &pcb->as;
+  printf("(Debug)(context_uload)2\n");
   protect(pcb_as);
 
   /* 修改loader()函数, 支持虚拟内存加载 */
 
  
-  printf("(Debug)(context_uload)\n");
+  printf("(Debug)(context_uload)3\n");
   printf("filename=%s\n", filename);
 
   // Warning: 获取 argc, envc需要靠前
