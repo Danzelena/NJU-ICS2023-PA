@@ -26,8 +26,9 @@
 // #endif
 
 size_t ramdisk_read(void *buf, size_t offset, size_t len);
-static void *alloc_section_space(AddrSpace *as, uintptr_t vaddr, size_t p_memsz);
-
+#ifdef HAS_VME
+  static void *alloc_section_space(AddrSpace *as, uintptr_t vaddr, size_t p_memsz);
+#endif
 
 uintptr_t elf_loader(uintptr_t file_off, bool *suc);
 uintptr_t elf_file_loader(int fd, bool *suc, AddrSpace *as, PCB *pcb);
@@ -36,7 +37,9 @@ uintptr_t elf_file_loader(int fd, bool *suc, AddrSpace *as, PCB *pcb);
 static uintptr_t loader(PCB *pcb, const char *filename)
 {
   printf("begin to load %s!\n",filename);
+
   AddrSpace *pcb_as = &pcb->as;
+
   bool suc = false;
   uintptr_t proaddr = 0;
   // 使用 文件系统 之后的 loader
@@ -126,8 +129,10 @@ uintptr_t elf_file_loader(int fd, bool *suc, AddrSpace *as, PCB *pcb)
 
       uint64_t FileSiz = program->p_filesz;
       uint64_t MemSiz = program->p_memsz;
-      Elf_Addr PhysAddr = (Elf_Addr)alloc_section_space(as, VirtAddr, MemSiz);
-      printf("Debug:program%d:O=0x%x,V=0x%x,P=0x%x\n", program_cnt, Offset, VirtAddr, PhysAddr);
+      #ifdef HAS_VME
+        Elf_Addr PhysAddr = (Elf_Addr)alloc_section_space(as, VirtAddr, MemSiz);
+        printf("Debug:program%d:O=0x%x,V=0x%x,P=0x%x\n", program_cnt, Offset, VirtAddr, PhysAddr);
+      #endif
       // printf("Debug:F=0x%x,M=0x%x\n", FileSiz, MemSiz);
 
       // [VirtAddr,VirtAddr + MemSiz]<- Ramdisk[0 + Program Table Offset + Segment offset]
@@ -137,14 +142,21 @@ uintptr_t elf_file_loader(int fd, bool *suc, AddrSpace *as, PCB *pcb)
         panic("Sorry! lseek in loader error!\n");
       }
       // fs_read(fd, (char *)VirtAddr, MemSiz);
-      fs_read(fd, (char *)(PhysAddr + (VirtAddr & 0xfff)), MemSiz);
-      // ramdisk_read((char *)VirtAddr, file_off + Offset, MemSiz);
-      // memcpy((char*)VirtAddr,program,MemSiz);
-      void *addr = (void *)PhysAddr + (uintptr_t)(VirtAddr & 0xfff) + FileSiz;
-      memset(addr, 0, MemSiz - FileSiz);
-
-
-      pcb->max_brk = ROUNDUP(VirtAddr + MemSiz, PGSIZE);
+      #ifdef HAS_VME
+        fs_read(fd, (char *)(PhysAddr + (VirtAddr & 0xfff)), MemSiz);
+        // ramdisk_read((char *)VirtAddr, file_off + Offset, MemSiz);
+        // memcpy((char*)VirtAddr,program,MemSiz);
+        void *addr = (void *)PhysAddr + (uintptr_t)(VirtAddr & 0xfff) + FileSiz;
+        memset(addr, 0, MemSiz - FileSiz);
+        pcb->max_brk = ROUNDUP(VirtAddr + MemSiz, PGSIZE);
+      #endif
+      #ifndef HAS_VME
+        fs_read(fd, (char *)((VirtAddr )), MemSiz);
+        // ramdisk_read((char *)VirtAddr, file_off + Offset, MemSiz);
+        // memcpy((char*)VirtAddr,program,MemSiz);
+        void *addr = (void *)(uintptr_t)(VirtAddr) + FileSiz;
+        memset(addr, 0, MemSiz - FileSiz);
+      #endif
     }
   }
   printf("3\n");
@@ -229,18 +241,19 @@ uintptr_t elf_loader(uintptr_t file_off, bool *suc)
 // [VirtAddr,VirtAddr + MemSiz]<- Ramdisk[0 + Program Table Offset + Segment offset]
 
 //  [VirtAddr + FileSiz ,VirtAddr + MemSiz]<- 0
-
-/* 申请一页物理页, 通过 map() 将物理页映射到用户进程的虚拟地址空间中 */
-static void *alloc_section_space(AddrSpace *as, uintptr_t vaddr, size_t p_memsz){
-  size_t vpage_end = vaddr + p_memsz - 1;
-  size_t vpage_begin = vaddr;
-  size_t vpage_n = (vpage_end >> 12) - (vpage_begin >> 12) + 1;
-  // size_t page_n = ((vaddr + p_memsz - 1) >> 12) - (vaddr >> 12) + 1;
-  void *ppage_begin = new_page(vpage_n);
-  printf("(Debug)Loaded Segment from [%x to %x)\n", vaddr, vaddr + p_memsz);
-  printf("(Debug)ppage_begin=0x%x\n", ppage_begin);
-  for (int i = 0; i < vpage_n; i++){
-    map(as, (void *)((vpage_begin & ~0xfff) + i * PGSIZE), (void *)(ppage_begin + i * PGSIZE), 1);
+#ifdef HAS_VME
+  /* 申请一页物理页, 通过 map() 将物理页映射到用户进程的虚拟地址空间中 */
+  static void *alloc_section_space(AddrSpace *as, uintptr_t vaddr, size_t p_memsz){
+    size_t vpage_end = vaddr + p_memsz - 1;
+    size_t vpage_begin = vaddr;
+    size_t vpage_n = (vpage_end >> 12) - (vpage_begin >> 12) + 1;
+    // size_t page_n = ((vaddr + p_memsz - 1) >> 12) - (vaddr >> 12) + 1;
+    void *ppage_begin = new_page(vpage_n);
+    printf("(Debug)Loaded Segment from [%x to %x)\n", vaddr, vaddr + p_memsz);
+    printf("(Debug)ppage_begin=0x%x\n", ppage_begin);
+    for (int i = 0; i < vpage_n; i++){
+      map(as, (void *)((vpage_begin & ~0xfff) + i * PGSIZE), (void *)(ppage_begin + i * PGSIZE), 1);
+    }
+    return ppage_begin;
   }
-  return ppage_begin;
-}
+#endif
