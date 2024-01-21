@@ -223,7 +223,7 @@ void init_proc() {
   // char *const argv[] = {"/bin/exec-test", NULL};
   // char *const envp[] = {"nil", NULL};
 
-  context_uload(&pcb[1], "/bin/pal", NULL, NULL);
+  context_uload(&pcb[1], "/bin/menu", NULL, NULL);
 
 
   printf("(DEBUG)(init_proc)pcb[0]->pdir=%x, mstatus=%x\n", pcb[0].cp->pdir, pcb[0].cp->mstatus);
