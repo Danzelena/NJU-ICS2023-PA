@@ -40,6 +40,7 @@ void isa_reg_display()
   printf("mepc\t:%x\n", cpu.sr[mepc]);
   printf("mstatus\t:%x\n", cpu.sr[mstatus]);
   printf("mcause\t:%x\n", cpu.sr[mcause]);
+  printf("pc\t:%x\n", cpu.pc);
 }
 word_t set_bit(word_t reg, size_t dist_off, size_t src){
   word_t ret;
