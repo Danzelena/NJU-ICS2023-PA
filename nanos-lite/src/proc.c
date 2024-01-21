@@ -197,7 +197,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
 
   printf("(Debuggggg)ptr=%x\n", pcb_as->ptr);
   pcb->cp->pdir = pcb_as->ptr;
-  printf("(Debuggggg)ptr=%x\n", pcb[1].cp->pdir);
+  printf("(Debuggggg)ptr=%x\n", pcb->cp->pdir);
 }
 void init_proc() {
   // naive_uload(&pcb[0],"/bin/dummy");
@@ -215,6 +215,10 @@ void init_proc() {
   // context_uload(&pcb[1], "/bin/pal", argv, envp);
   // context_uload(&pcb[1], "/bin/menu", argv, envp);
   context_uload(&pcb[1], "/bin/pal", NULL, NULL);
+
+
+   printf("(DEBUG)pcb[0]->pdir=%x, mstatus=%x\n", pcb[0].cp->pdir, pcb[0].cp->mstatus);
+  printf("(DEBUG)pcb[1]->pdir=%x, mstatus=%x\n", pcb[0].cp->pdir, pcb[1].cp->mstatus);
   // context_kload(&pcb[1], hello_fun, (void *)2L);
   switch_boot_pcb();
   Log("Initializing processes...");
