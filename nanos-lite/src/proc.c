@@ -83,6 +83,19 @@ static size_t len_resize(size_t size){
 uintptr_t entry;
 // TODO: 虚拟化
 void context_uload(PCB *pcb, const char *filename, char *const argv[], char *const envp[]){
+
+  for (int i = 0; i < 4; i ++){
+    printf("(Debug)pcb=%x, [%d]=%x\n", pcb,i, &pcb[i]);
+    if (pcb == &pcb[i]){
+      printf("Hit\n");
+    }else{
+      
+    }
+  }
+  assert(pcb == &pcb[1]);
+
+
+
   /* 在加载用户程序之前, 创建地址空间 */
   /* 调用protext()创建地址空间,需要创建内核映射(参考vme.c) */
   AddrSpace *pcb_as = &pcb->as;
