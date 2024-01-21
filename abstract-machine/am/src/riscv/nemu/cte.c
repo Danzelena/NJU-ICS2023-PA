@@ -25,11 +25,12 @@ Context *__am_irq_handle(Context *c)
     // case 0:case 1:case 2:case 3:case 4:case 5:case 6:case 7:case 8:case 9:case 10:case 11:case 12:case 13:case 14:case 15:case 16:case 17:case 18:case 19:
     case 1:case 2:case 3:case 4:case 5:case 6:case 7:case 8:case 9:case 10:case 11:case 12:case 13:case 14:case 15:case 16:case 17:case 18:case 19:
       ev.event = EVENT_SYSCALL;break;
-
     case 0:
       ev.event = EVENT_SYSCALL;break;
     case IRQ_TIMER:
-      ev.event = EVENT_IRQ_TIMER;break;
+      ev.event = EVENT_IRQ_TIMER;
+      c->mepc -= 4;
+      break;
     default:
       ev.event = EVENT_ERROR;
       break;
@@ -72,7 +73,7 @@ bool cte_init(Context *(*handler)(Event, Context *))
 // 你需要在kstack的底部创建一个以entry为入口的上下文结构(目前你可以先忽略arg参数), 然后返回这一结构的指针.
 Context *kcontext(Area kstack, void (*entry)(void *), void *arg)
 {
-  Context *context = kstack.end - sizeof(Context)-4;
+  Context *context = kstack.end - sizeof(Context) - 4;
   //TODO: for test
   context->mstatus = 0x1800 | 0x80;
   context->mepc = (uintptr_t)entry;

@@ -216,9 +216,7 @@ void init_proc() {
   // BUG: "nil" for NULL, always make Segemetion fault when getenv()
   // char *const argv[] = {"/bin/exec-test", NULL};
   // char *const envp[] = {"nil", NULL};
-  
-  // context_uload(&pcb[1], "/bin/pal", argv, envp);
-  // context_uload(&pcb[1], "/bin/menu", argv, envp);
+
   context_uload(&pcb[1], "/bin/pal", NULL, NULL);
 
 
