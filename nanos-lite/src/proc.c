@@ -48,7 +48,6 @@ void context_kload(PCB *pcb, void (*entry)(void *), void *arg){
       
     }
   }
-  assert(pcb == &pcb[1]);
   pcb->cp = kcontext((Area) {pcb->stack, pcb + 1}, entry, arg);
   printf("(Debug)(context_kload)end\n");
 
