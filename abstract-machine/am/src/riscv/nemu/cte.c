@@ -9,7 +9,6 @@ void __am_switch(Context *c);
 
 Context *__am_irq_handle(Context *c)
 {
-  // printf("(__am_irq_handle)1\n");
   __am_get_cur_as(c);
   // printf("(__am_irq_handle)2\n");
   // 把执行流切换的原因打包成事件,然后user_handle()
@@ -34,9 +33,9 @@ Context *__am_irq_handle(Context *c)
       ev.event = EVENT_ERROR;
       break;
     }
-    // printf("(Debug)before schedule()\n");
+    printf("(Debug)before schedule()\n");
     c = user_handler(ev, c);
-    // printf("(Debug)after schedule()\n");
+    printf("(Debug)after schedule()\n");
     assert(c != NULL);
   }
   // printf("(__am_ieq_handle)3\n");
