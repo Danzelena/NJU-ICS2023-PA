@@ -188,13 +188,13 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   uintptr_t kstack_end = (uintptr_t)(pcb + 1);
   assert((void*)kstack_begin!= NULL && (void*)kstack_end!= NULL&&kstack_end>kstack_begin);
   // printf("(Debug)(context_uload)begin=%x, end=%x\n", pcb->stack, kstack_end);
-  AddrSpace addrs;
+  // AddrSpace addrs;
   // Hint: c->uc.uc_mcontext.gregs[REG_RIP]存放 entry
   // 分配上下文
-  Context *context = ucontext(&addrs, (Area) {(void *)kstack_begin, (void*)kstack_end}, (void*)entry);
+  Context *context = ucontext(pcb_as, (Area) {(void *)kstack_begin, (void*)kstack_end}, (void*)entry);
   context->GPRx = arg_begin;
   
-  context-> pdir = pcb_as->ptr;
+  // context-> pdir = pcb_as->ptr;
   pcb->cp = context;
   // pcb->cp->GPRx = arg_begin;
   // pcb->cp->pdir = pcb_as->ptr;
