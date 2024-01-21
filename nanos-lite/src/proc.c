@@ -194,6 +194,13 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   // printf("(Debug)pcb_as->pdir=%x\n",pcb_as->ptr);
   Context *context = ucontext(pcb_as, (Area) {(void *)kstack_begin, (void*)kstack_end}, (void*)entry);
   context->GPRx = arg_begin;
+  for (int i = 0; i < 4; i ++){
+    if (pcb == &pcb[i]){
+      printf("Hit\n");
+    }else{
+      printf("(Debug)pcb=%x, [%d]=%x\n", pcb, &pcb[i]);
+    }
+  }
   assert(pcb == &pcb[1]);
   // context-> pdir = pcb_as->ptr;
   pcb->cp = context;
