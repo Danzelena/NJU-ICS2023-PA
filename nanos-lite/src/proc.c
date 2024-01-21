@@ -242,6 +242,7 @@ Context* schedule(Context *prev) {
   
   printf("(DEBUG)pcb[0]->pdir=%x, mstatus=%x\n", pcb[0].cp->pdir, pcb[0].cp->mstatus);
   printf("(DEBUG)pcb[1]->pdir=%x, mstatus=%x\n", pcb[1].cp->pdir, pcb[1].cp->mstatus);
+  printf("go to %d\n", current == &pcb[0]? 0:1);
   assert(pcb[0].cp->pdir == NULL);
   return current->cp;
 }
