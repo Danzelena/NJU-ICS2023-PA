@@ -41,7 +41,22 @@ void isa_reg_display()
   printf("mstatus\t:%x\n", cpu.sr[mstatus]);
   printf("mcause\t:%x\n", cpu.sr[mcause]);
 }
-
+word_t set_bit(word_t reg, size_t dist_off, size_t src){
+  word_t ret;
+  switch (src)
+  {
+  case 1:
+    ret = reg | (1 << dist_off);
+    break;
+  case 0:
+    ret = reg & ~(1 << dist_off);
+    break;
+  default:
+    panic("Should not reach here\n");
+    break;
+  }
+  return ret;
+}
 // return name=s register's value, and if success
 word_t isa_reg_str2val(const char *s, bool *success)
 {

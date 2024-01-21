@@ -8,6 +8,10 @@ static Context *do_event(Event e, Context *c)
   {
   // 在 native 上进行上下文切换
   case EVENT_IRQ_TIMER:
+    /* 调用schedule()强制当前进程让出CPU */
+    Log("Get Timer Interrupt");
+    
+    return schedule(c);
     break;
   case EVENT_IRQ_IODEV:
     break;

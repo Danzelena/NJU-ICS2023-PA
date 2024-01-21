@@ -2,6 +2,7 @@
 #include <riscv/riscv.h>
 #include <klib.h>
 
+#define IRQ_TIMER 0x80000007
 static Context *(*user_handler)(Event, Context *) = NULL;
 void __am_get_cur_as(Context *c);
 void __am_switch(Context *c);
@@ -27,6 +28,8 @@ Context *__am_irq_handle(Context *c)
 
     case 0:
       ev.event = EVENT_SYSCALL;break;
+    case IRQ_TIMER:
+      ev.event = EVENT_IRQ_TIMER;break;
     default:
       ev.event = EVENT_ERROR;
       break;
@@ -69,9 +72,10 @@ bool cte_init(Context *(*handler)(Event, Context *))
 Context *kcontext(Area kstack, void (*entry)(void *), void *arg)
 {
   Context *context = kstack.end - sizeof(Context)-4;
-
-  context->mstatus = 0x1800;
+  //TODO: for test
+  context->mstatus = 0x1800 | 0x88;
   context->mepc = (uintptr_t)entry;
+  // context->m
   // riscv 是使用寄存器传递参数
   context->GPRa0 = (uintptr_t)arg;
   context->pdir = NULL;

@@ -197,7 +197,7 @@ static int decode_exec(Decode *s) {
   // mepc 0x8000094c->0x830009dc(expected 0x830000dc) t2:0x830000dc
   // mret
   // pc->CSRs[mepc],.......
-  INSTPAT("0011000 00010 00000 000 00000 11100 11", mret   , J, s->dnpc = SR(mepc) + 4);
+  INSTPAT("0011000 00010 00000 000 00000 11100 11", mret   , J, s->dnpc = SR(mepc) + 4; set_bit(SR(mstatus), MIE_OFF, MPIE(SR(mstatus))); set_bit(SR(mstatus), MPIE_OFF, 1););
   
   INSTPAT("0000000 00001 00000 000 00000 11100 11", ebreak , N, NEMUTRAP(s->pc, R(10))); // R(10) is $a0
   INSTPAT("??????? ????? ????? ??? ????? ????? ??", inv    , N, INV(s->pc));

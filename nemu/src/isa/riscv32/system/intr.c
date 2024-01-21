@@ -15,6 +15,8 @@
 
 #include <isa.h>
 #include "../local-include/reg.h"
+
+#define IRQ_TIMER 0x80000007
 /**
  * parameter:
  * NO: interrupt/exception reason;
@@ -25,7 +27,13 @@ word_t isa_raise_intr(word_t NO, vaddr_t epc) {
    * Then return the address of the interrupt/exception vector.
    */
 
-
+  /* 让处理器处于关中断状态 */
+  // MPIE <- MIE
+  set_bit(cpu.sr[mstatus], MPIE_OFF, MIE(cpu.sr[mstatus]));
+  Assert(MPIE(cpu.sr[mstatus]) == MIE(cpu.sr[mstatus]), "MPIE <- MIE");
+  // MIE <- 0
+  set_bit(cpu.sr[mstatus], MIE_OFF, 0);
+  Assert(MIE(cpu.sr[mstatus]) == 0, "MIE <- 0");
   /* exception trace */
   // printf("(etrace)cause:%d,epc:0x%x\n",NO,epc);
   cpu.sr[mepc] = epc;
@@ -37,5 +45,12 @@ word_t isa_raise_intr(word_t NO, vaddr_t epc) {
 }
 
 word_t isa_query_intr() {
-  return INTR_EMPTY;
+  if(cpu.INTR && MIE(cpu.sr[mstatus])){
+    cpu.INTR = false;
+    return (word_t)IRQ_TIMER;
+  }else{
+    return INTR_EMPTY;
+  }
+  // return cpu.INTR;
+  // return INTR_EMPTY;
 }

@@ -25,7 +25,13 @@ static inline int check_reg_idx(int idx) {
 
 #define gpr(idx) (cpu.gpr[check_reg_idx(idx)])
 #define sr(idx) (cpu.sr[(idx)])
+#define MIE(x) (x & 0b1000)
+#define MPIE(x) (x & 0b10000000)
+#define MIE_OFF 3
+#define MPIE_OFF 7
 enum sr_name{mtvec=0x305,mepc=0x341, mstatus=0x300, mcause=0x342, satp=0x180};
+
+word_t set_bit(word_t reg, size_t dist_off, size_t src);
 static inline const char* reg_name(int idx) {
   extern const char* regs[];
   return regs[check_reg_idx(idx)];
