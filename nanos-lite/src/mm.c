@@ -36,6 +36,9 @@ void free_page(void *p) {
 
 /* The brk() system call handler. */
 int mm_brk(uintptr_t brk) {
+  #ifndef HAS_VME
+    return 0;
+  #endif
   int prog = 1;
   uintptr_t max_brk = current->max_brk;
   uintptr_t brk_pn = brk >> VPN_OFF;
