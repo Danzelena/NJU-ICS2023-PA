@@ -204,6 +204,7 @@ int fs_lseek(int fd, size_t offset, int whence)
 
 size_t fs_write(int fd, void *buf, size_t len)
 {
+  assert(buf);
   // handle stdout and stderrir( use`putch()`)
   printf("(fs_write)(%d, %d)\n", fd, len);
   if (file_table[fd].write != NULL)
