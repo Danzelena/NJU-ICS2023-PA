@@ -37,10 +37,9 @@ static Context *do_event(Event e, Context *c)
   case EVENT_SYSCALL:
 
     /* strace */
-    // printf("(strace)Type:%d\n",c->GPR1);
+    printf("(strace)Type:%d\n",c->GPR1);
     do_syscall(c);
 
-    // panic("Syscall ID = %d", e.event);
     break;
   default:
     panic("Unhandled event ID = %d", e.event);
