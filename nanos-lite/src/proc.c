@@ -197,7 +197,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
 
   printf("(Debuggggg)ptr=%x\n", pcb_as->ptr);
   pcb->cp->pdir = pcb_as->ptr;
-  printf("(Debuggggg)ptr=%x\n", pcb->cp->pdir);
+  printf("(Debuggggg)ptr=%x\n", pcb[1].cp->pdir);
 }
 void init_proc() {
   // naive_uload(&pcb[0],"/bin/dummy");
