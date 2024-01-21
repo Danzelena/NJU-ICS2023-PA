@@ -52,6 +52,7 @@ word_t set_bit(word_t reg, size_t dist_off, size_t src){
     ret = reg & ~(1 << dist_off);
     break;
   default:
+    printf("src=%lx\n", src);
     panic("Should not reach here\n");
     break;
   }
