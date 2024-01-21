@@ -191,7 +191,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   // AddrSpace addrs;
   // Hint: c->uc.uc_mcontext.gregs[REG_RIP]存放 entry
   // 分配上下文
-  printf("(Debug)pcb_as->pdir=%x",pcb_as->ptr);
+  printf("(Debug)pcb_as->pdir=%x\n",pcb_as->ptr);
   Context *context = ucontext(pcb_as, (Area) {(void *)kstack_begin, (void*)kstack_end}, (void*)entry);
   context->GPRx = arg_begin;
   
