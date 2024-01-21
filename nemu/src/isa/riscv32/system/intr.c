@@ -33,7 +33,7 @@ word_t isa_raise_intr(word_t NO, vaddr_t epc) {
   Assert(MPIE(cpu.sr[mstatus]) == MIE(cpu.sr[mstatus]), "MPIE <- MIE");
   // MIE <- 0
   set_bit(cpu.sr[mstatus], MIE_OFF, 0);
-  Assert(MIE(cpu.sr[mstatus]) == 0, "MIE <- 0");
+  Assert(MIE(cpu.sr[mstatus]) == 0, "MIE <- 0, MIE = %#x", MIE(cpu.sr[mstatus]));
   /* exception trace */
   // printf("(etrace)cause:%d,epc:0x%x\n",NO,epc);
   cpu.sr[mepc] = epc;
