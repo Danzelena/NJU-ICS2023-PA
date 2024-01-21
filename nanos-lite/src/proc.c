@@ -236,6 +236,7 @@ void init_proc() {
 }
 
 Context* schedule(Context *prev) {
+  printf("(DEBUG)prev->pdir=%x\n", prev->pdir);
   current->cp = prev;
   current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
   // printf("(Debug)(Schedule)finished\n");
