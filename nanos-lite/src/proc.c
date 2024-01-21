@@ -41,6 +41,7 @@ uintptr_t entry_get(PCB *pcb, const char *filename);
 void context_kload(PCB *pcb, void (*entry)(void *), void *arg){
   printf("(Debug)(context_kload)begin=%x, end=%x\n", pcb->stack, pcb + 1);
   pcb->cp = kcontext((Area) {pcb->stack, pcb + 1}, entry, arg);
+  printf("(Debug)(context_kload)end\n");
   // pcb->max_brk = ROUN
   // printf("(Debug)epc1=%x\n", pcb->cp->mepc);
 }
