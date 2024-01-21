@@ -63,7 +63,9 @@ void protect(AddrSpace *as) {
   PTE *updir = (PTE*)(pgalloc_usr(PGSIZE));
   printf("(Debug)(protect)0\n");
   as->ptr = updir;// updir是一个页表项
+  printf("(Debug)(protect)0.1\n");
   as->area = USER_SPACE;
+  printf("(Debug)(protect)0.2\n");
   as->pgsize = PGSIZE;
     printf("(Debug)(protect)1\n");
 
