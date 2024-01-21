@@ -90,7 +90,7 @@ int f_find(const char *pathname)
 int fs_open(const char *pathname, int flags, int mode)
 {
   // ignored flags and mode
-
+  printf("open file %s\n", pathname);
   // search the file table
   int ret = f_find(pathname);
   if (ret == -1)
