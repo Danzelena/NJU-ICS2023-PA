@@ -10,7 +10,7 @@ static Context *do_event(Event e, Context *c)
   case EVENT_IRQ_TIMER:
     /* 调用schedule()强制当前进程让出CPU */
     Log("Get Timer Interrupt");
-    c->mepc += 1;
+    c->mepc += 4;
     return schedule(c);
     break;
   case EVENT_IRQ_IODEV:
