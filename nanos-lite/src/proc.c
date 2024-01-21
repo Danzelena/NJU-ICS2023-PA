@@ -40,14 +40,7 @@ uintptr_t entry_get(PCB *pcb, const char *filename);
 // 把返回的指针记录到 PCB 的 cp 中
 void context_kload(PCB *pcb, void (*entry)(void *), void *arg){
   printf("(Debug)(context_kload)begin=%x, end=%x\n", pcb->stack, pcb + 1);
-    for (int i = 0; i < 4; i ++){
-    printf("(Debug)pcb=%x, [%d]=%x\n", pcb,i, &pcb[i]);
-    if (pcb == &pcb[i]){
-      printf("Hit\n");
-    }else{
-      
-    }
-  }
+
   pcb->cp = kcontext((Area) {pcb->stack, pcb + 1}, entry, arg);
   printf("(Debug)(context_kload)end\n");
 
@@ -94,18 +87,6 @@ uintptr_t entry;
 // TODO: 虚拟化
 void context_uload(PCB *pcb, const char *filename, char *const argv[], char *const envp[]){
   printf("(Debug)(context_uload)");
-  for (int i = 0; i < 4; i ++){
-    printf("(Debug)pcb=%x, [%d]=%x\n", pcb,i, &pcb[i]);
-    if (pcb == &pcb[i]){
-      printf("Hit\n");
-    }else{
-      
-    }
-  }
-  assert(pcb == &pcb[1]);
-
-
-
   /* 在加载用户程序之前, 创建地址空间 */
   /* 调用protext()创建地址空间,需要创建内核映射(参考vme.c) */
   AddrSpace *pcb_as = &pcb->as;
@@ -217,15 +198,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   // printf("(Debug)pcb_as->pdir=%x\n",pcb_as->ptr);
   Context *context = ucontext(pcb_as, (Area) {(void *)kstack_begin, (void*)kstack_end}, (void*)entry);
   context->GPRx = arg_begin;
-  for (int i = 0; i < 4; i ++){
-    printf("(Debug)pcb=%x, [%d]=%x\n", pcb,i, &pcb[i]);
-    if (pcb == &pcb[i]){
-      printf("Hit\n");
-    }else{
-      
-    }
-  }
-  assert(pcb == &pcb[1]);
+
   // context-> pdir = pcb_as->ptr;
   pcb->cp = context;
   // pcb->cp->GPRx = arg_begin;
@@ -250,7 +223,7 @@ void init_proc() {
 
 
   printf("(DEBUG)(init_proc)pcb[0]->pdir=%x, mstatus=%x\n", pcb[0].cp->pdir, pcb[0].cp->mstatus);
-  printf("(DEBUG)(init_proc)pcb[1]->pdir=%x, mstatus=%x\n", pcb[0].cp->pdir, pcb[1].cp->mstatus);
+  printf("(DEBUG)(init_proc)pcb[1]->pdir=%x, mstatus=%x\n", pcb[1].cp->pdir, pcb[1].cp->mstatus);
   // context_kload(&pcb[1], hello_fun, (void *)2L);
   switch_boot_pcb();
   Log("Initializing processes...");
