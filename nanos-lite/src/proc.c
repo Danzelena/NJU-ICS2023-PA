@@ -22,11 +22,11 @@ void hello_fun(void *arg) {
   
   while (1) {
     // BUG: 这一行Log必须要在下面添加一些语句,才不会影响到pcb[1].max_brk的值
-    // Log("Hello World from Nanos-lite with arg '%x' for the %dth time!", (uintptr_t)arg, j);
+    Log("Hello World from Nanos-lite with arg '%x' for the %dth time!", (uintptr_t)arg, j);
     // Log("Hello world");
     // printf("\n");
     j ++;
-    // printf("max_brk[0]=%x, [1]=%x\n", pcb[0].max_brk, pcb[1].max_brk);
+    printf("max_brk[0]=%x, [1]=%x\n", pcb[0].max_brk, pcb[1].max_brk);
     for (int volatile i = 0; i < HELLO_RATE; i++) ;// make it slower
     // assert(0);
     yield();
