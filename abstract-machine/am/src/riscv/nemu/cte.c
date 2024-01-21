@@ -33,9 +33,9 @@ Context *__am_irq_handle(Context *c)
       ev.event = EVENT_ERROR;
       break;
     }
-    printf("(Debug)before schedule(), ev.event=%d\n", ev.event);
+    // printf("(Debug)before schedule(), ev.event=%d\n", ev.event);
     c = user_handler(ev, c);
-    printf("(Debug)after schedule()\n");
+    // printf("(Debug)after schedule()\n");
     assert(c != NULL);
   }
   // printf("(__am_ieq_handle)3\n");
