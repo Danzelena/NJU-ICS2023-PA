@@ -61,11 +61,16 @@ bool vme_init(void* (*pgalloc_f)(int), void (*pgfree_f)(void*)) {
 // 创建一个默认的地址空间
 void protect(AddrSpace *as) {
   PTE *updir = (PTE*)(pgalloc_usr(PGSIZE));
+  printf("(Debug)(protect)0\n");
   as->ptr = updir;// updir是一个页表项
   as->area = USER_SPACE;
   as->pgsize = PGSIZE;
+    printf("(Debug)(protect)1\n");
+
   // map kernel space
   memcpy(updir, kas.ptr, PGSIZE);
+    printf("(Debug)(protect)2\n");
+
 
 }
 
