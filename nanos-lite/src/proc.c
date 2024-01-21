@@ -61,7 +61,6 @@ inline int envc_get(char *const envp[]){
   // if(envp == NULL){
   //   return 0;
   // }
-  // printf("(Debug)Target\n");
   // assert(envp[0]);
   // printf("(Debug)(envc_get)%s\n", envp[0]);
   int count = 0;
