@@ -40,8 +40,18 @@ uintptr_t entry_get(PCB *pcb, const char *filename);
 // 把返回的指针记录到 PCB 的 cp 中
 void context_kload(PCB *pcb, void (*entry)(void *), void *arg){
   printf("(Debug)(context_kload)begin=%x, end=%x\n", pcb->stack, pcb + 1);
+    for (int i = 0; i < 4; i ++){
+    printf("(Debug)pcb=%x, [%d]=%x\n", pcb,i, &pcb[i]);
+    if (pcb == &pcb[i]){
+      printf("Hit\n");
+    }else{
+      
+    }
+  }
+  assert(pcb == &pcb[1]);
   pcb->cp = kcontext((Area) {pcb->stack, pcb + 1}, entry, arg);
   printf("(Debug)(context_kload)end\n");
+
   // pcb->max_brk = ROUN
   // printf("(Debug)epc1=%x\n", pcb->cp->mepc);
 }
@@ -84,7 +94,7 @@ static size_t len_resize(size_t size){
 uintptr_t entry;
 // TODO: 虚拟化
 void context_uload(PCB *pcb, const char *filename, char *const argv[], char *const envp[]){
-
+  printf("(Debug)(context_uload)");
   for (int i = 0; i < 4; i ++){
     printf("(Debug)pcb=%x, [%d]=%x\n", pcb,i, &pcb[i]);
     if (pcb == &pcb[i]){
