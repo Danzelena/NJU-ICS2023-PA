@@ -29,7 +29,7 @@ word_t isa_raise_intr(word_t NO, vaddr_t epc) {
 
   /* 让处理器处于关中断状态 */
   // MPIE <- MIE
-  set_bit(cpu.sr[mstatus], MPIE_OFF, MIE(cpu.sr[mstatus])>>MIE_OFF);
+  set_bit(cpu.sr[mstatus], MPIE_OFF, MIE(cpu.sr[mstatus]));
   Assert(MPIE(cpu.sr[mstatus]) == MIE(cpu.sr[mstatus]), "MPIE <- MIE");
   // MIE <- 0
   set_bit(cpu.sr[mstatus], MIE_OFF, 0);

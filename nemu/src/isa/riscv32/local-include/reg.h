@@ -25,8 +25,8 @@ static inline int check_reg_idx(int idx) {
 
 #define gpr(idx) (cpu.gpr[check_reg_idx(idx)])
 #define sr(idx) (cpu.sr[(idx)])
-#define MIE(x) (x & 0b1000)
-#define MPIE(x) (x & 0b10000000)
+#define MIE(x) ((x & 0b1000)>>MIE_OFF)
+#define MPIE(x) ((x & 0b10000000)>>MPIE_OFF)
 #define MIE_OFF 3
 #define MPIE_OFF 7
 enum sr_name{mtvec=0x305,mepc=0x341, mstatus=0x300, mcause=0x342, satp=0x180};
