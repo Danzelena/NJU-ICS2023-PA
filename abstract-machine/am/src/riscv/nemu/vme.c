@@ -65,7 +65,10 @@ void protect(AddrSpace *as) {
   as->area = USER_SPACE;
   as->pgsize = PGSIZE;
   // map kernel space
+  printf("(Debug)before memcpy\n");
   memcpy(updir, kas.ptr, PGSIZE);
+  printf("(Debug)after memcpy\n");
+
 }
 
 // 销毁指定的地址空间
