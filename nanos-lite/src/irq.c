@@ -37,7 +37,7 @@ static Context *do_event(Event e, Context *c)
   case EVENT_SYSCALL:
 
     /* strace */
-    printf("(strace)Type:%d\n",c->GPR1);
+    printf("(strace)Type:%d, buf=%x\n",c->GPR1, c->GPR3);
     do_syscall(c);
 
     break;

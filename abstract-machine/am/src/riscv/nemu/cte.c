@@ -33,7 +33,7 @@ Context *__am_irq_handle(Context *c)
       ev.event = EVENT_ERROR;
       break;
     }
-    printf("(Debug)ev.event=%d\n", ev.event);
+    printf("(Debug)ev.event=%d, buf=%x\n", ev.event, c->GPR3);
     c = user_handler(ev, c);
     // printf("(Debug)after schedule()\n");
     assert(c != NULL);
