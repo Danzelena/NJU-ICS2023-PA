@@ -72,9 +72,12 @@ void protect(AddrSpace *as) {
   as->ptr = updir;// updir是一个页表项
   as->area = USER_SPACE;
   as->pgsize = PGSIZE;
+    printf("(0x81e44400)1.1=%x\n", *((uint32_t*)(0x81e44400)));
 
   // map kernel space
   memcpy(updir, kas.ptr, PGSIZE);
+    printf("(0x81e44400)1.2=%x\n", *((uint32_t*)(0x81e44400)));
+
   // ASSERT
   // assert(0);
 }

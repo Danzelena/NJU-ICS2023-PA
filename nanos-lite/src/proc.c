@@ -97,7 +97,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   #endif
   /* 修改loader()函数, 支持虚拟内存加载 */
 
-   printf("(0x81e44400)2=%x\n", *((uint32_t*)(0x81e44400)));
+  printf("(0x81e44400)2=%x\n", *((uint32_t*)(0x81e44400)));
   // printf("(Debug)(context_uload)3\n");
   printf("(context_uload)filename=%s\n", filename);
 
