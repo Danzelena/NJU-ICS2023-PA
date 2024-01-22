@@ -52,7 +52,7 @@ extern void __am_asm_trap(void);
 bool cte_init(Context *(*handler)(Event, Context *))
 {
   // ASSERT:
-  assert(0);
+  // assert(0);
   // initialize exception entry
   uint64_t val = 0x1800;
   // READ: 直接将异常入口地址设置到mtvec寄存器中,__am_asm_trap is a asm function,put address of the function to reg
@@ -63,7 +63,7 @@ bool cte_init(Context *(*handler)(Event, Context *))
   // register event handler
   user_handler = handler;
   // ASSERT: here
-  assert(0);
+  // assert(0);
   return true;
 }
 
@@ -77,7 +77,7 @@ bool cte_init(Context *(*handler)(Event, Context *))
 Context *kcontext(Area kstack, void (*entry)(void *), void *arg)
 {
   // ASSERT here
-  assert(0);
+  // assert(0);
   Context *context = kstack.end - sizeof(Context) - 4;
   //TODO: for test
   context->mstatus = 0x1800 | 0x80;
@@ -87,7 +87,7 @@ Context *kcontext(Area kstack, void (*entry)(void *), void *arg)
   context->GPRa0 = (uintptr_t)arg;
   context->pdir = NULL;
   // ASSERT: here
-  assert(0);
+  // assert(0);
   return context;
   // return NULL;
 }
