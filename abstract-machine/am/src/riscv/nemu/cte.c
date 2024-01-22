@@ -37,6 +37,7 @@ Context *__am_irq_handle(Context *c)
     }
     // printf("(Debug)ev.event=%d, buf=%x\n", ev.event, c->GPR3);
     c = user_handler(ev, c);
+    printf("(Check)pdir=%x\n", c->pdir);
     // printf("(Debug)after schedule()\n");
     assert(c != NULL);
   }
