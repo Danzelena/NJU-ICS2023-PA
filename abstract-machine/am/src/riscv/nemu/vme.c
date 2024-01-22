@@ -14,6 +14,7 @@
 #define PTE_PPN(x) (((uintptr_t)x & PTE_PPN_MASK) >> 10)
 
 static AddrSpace kas = {};
+
 static void* (*pgalloc_usr)(int) = NULL;
 static void (*pgfree_usr)(void*) = NULL;
 static int vme_enable = 0;
@@ -54,6 +55,8 @@ bool vme_init(void* (*pgalloc_f)(int), void (*pgfree_f)(void*)) {
   }
 
   set_satp(kas.ptr);
+
+  // Warning
   vme_enable = 1;
   // ASSERT
   // assert(0);
@@ -87,7 +90,7 @@ void __am_switch(Context *c) {
   if (vme_enable && c->pdir != NULL) {
     set_satp(c->pdir);
   }else if(c->pdir == NULL){
-    set_satp(0);
+    set_satp(kas.ptr);
   }
 }
 
