@@ -85,7 +85,7 @@ static size_t len_resize(size_t size){
 }
 uintptr_t entry;
 // TODO: 虚拟化
-void context_uload(PCB *pcb, const char *filename, char *const argv[], char *const envp[]){
+void context_uload(PCB *pcb, const char *filename, char *const argv[], char *const envp[], bool execve){
   // printf("(Debug)(context_uload)1\n");
   /* 在加载用户程序之前, 创建地址空间 */
   /* 调用protext()创建地址空间,需要创建内核映射(参考vme.c) */
@@ -93,7 +93,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   AddrSpace *pcb_as = &pcb->as;
   // printf("(Debug)(context_uload)2\n");
   #ifdef HAS_VME
-    protect(pcb_as);
+    protect(pcb_as, execve);
   #endif
   /* 修改loader()函数, 支持虚拟内存加载 */
 
@@ -223,7 +223,7 @@ void init_proc() {
   // context_uload(&pcb[0], "/bin/hello", NULL, NULL);
 
   char *const argv[] = {"/bin/exec-test", NULL};
-  context_uload(&pcb[1], "/bin/exec-test", argv, NULL);
+  context_uload(&pcb[1], "/bin/exec-test", argv, NULL, false);
   
   // BUG: 根据目前计算 argc, envc的方法,必须这么定义 argv, envp
   // char *const argv[] = {"--skip", "hello", "world", "NJU", NULL};

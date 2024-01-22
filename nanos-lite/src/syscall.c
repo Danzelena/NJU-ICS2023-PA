@@ -42,7 +42,7 @@ void do_syscall(Context *c)
     char **const envp = (char **)a[3];
   //     printf("(Debug)argv=%s\n", argv);
   // printf("(Debug)envp=%s\n", envp);
-    context_uload(current, path, argv, envp);
+    context_uload(current, path, argv, envp, true);
     switch_boot_pcb();
     yield();
     panic("Should not reach here\n");
