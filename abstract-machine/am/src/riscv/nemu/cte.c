@@ -79,6 +79,10 @@ Context *kcontext(Area kstack, void (*entry)(void *), void *arg)
 {
   // ASSERT here
   // assert(0);
+
+  uintptr_t *buf = kstack.end - 4;
+  *buf = 0;
+
   Context *context = kstack.end - sizeof(Context) - 4;
   //TODO: for test
   context->mstatus = 0x1800 | 0x80;
@@ -87,6 +91,9 @@ Context *kcontext(Area kstack, void (*entry)(void *), void *arg)
   // riscv 是使用寄存器传递参数
   context->GPRa0 = (uintptr_t)arg;
   context->pdir = NULL;
+
+  context->np = 0x3;
+  context->GPRra = (uintptr_t)(kstack.end - 4);
   // ASSERT: here
   // assert(0);
   return context;

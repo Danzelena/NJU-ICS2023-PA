@@ -31,16 +31,32 @@ f(30) f(31)
 #define PUSH(n) STORE concat(x, n), (n * XLEN)(sp);
 #define POP(n)  LOAD  concat(x, n), (n * XLEN)(sp);
 
-#define CONTEXT_SIZE  ((NR_REGS + 3 + 1) * XLEN)
+#define CONTEXT_SIZE  ((NR_REGS + 3 + 1 + 1) * XLEN)
 #define OFFSET_SP     ( 2 * XLEN)
 #define OFFSET_CAUSE  ((NR_REGS + 0) * XLEN)
 #define OFFSET_STATUS ((NR_REGS + 1) * XLEN)
 #define OFFSET_EPC    ((NR_REGS + 2) * XLEN)
 
+#define OFFSET_NP     ((NR_REGS + 4) * XLEN)
+
 .align 3
 .globl __am_asm_trap
 __am_asm_trap:
+  // 此时位于用户栈底部
+  addi sp, sp, -XLEN
+  STORE t4, (sp)
+  mv t4, sp
+  // 切换栈
+  csrrw sp, mscratch, sp   // (1) atomically exchange sp and mscratch
+  bnez sp, save_context    // (2) take the branch if we trapped from user
+  csrrw sp, mscratch, sp   // (3) if we trapped from kernel, 恢复之前的状态
+
+  // 进入内核栈
+  save_context:
+
   addi sp, sp, -CONTEXT_SIZE
+
+  STORE t4, OFFSET_SP(sp)
 
   MAP(REGS, PUSH)
 
@@ -63,6 +79,16 @@ __am_asm_trap:
   # 先将栈顶指针 sp 切换到新进程的上下文结构,然后再恢复上下文
   mv sp, a0
 
+  // 切换到新的内核栈空间
+  // if(c->np == USER)
+  LOAD t4, OFFSET_NP(sp)
+  bnez t4, restore_contexts
+  //c->np == USER
+  addi t4, sp, CONTEXT_SIZE
+  csrw mscratch, t4
+
+  restore_contexts:
+
   LOAD t1, OFFSET_STATUS(sp)
   LOAD t2, OFFSET_EPC(sp)
   csrw mstatus, t1
@@ -70,5 +96,11 @@ __am_asm_trap:
 
   MAP(REGS, POP)
 
+  LOAD t4, OFFSET_SP(sp)
   addi sp, sp, CONTEXT_SIZE
+
+  mv sp, t4
+  LOAD t4, (sp)
+  addi sp, sp, XLEN
+  
   mret

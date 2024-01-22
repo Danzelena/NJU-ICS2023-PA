@@ -12,6 +12,7 @@ struct Context {
   uintptr_t gpr[NR_REGS], mcause, mstatus,mepc;
   // uintptr_t mepc, mcause, gpr[NR_REGS], mstatus;
   void *pdir;
+  uintptr_t np;
 };
 
 #ifdef __riscv_e
@@ -28,6 +29,7 @@ struct Context {
 // #define GPR4 gpr[0]
 #define GPRx gpr[10] // a0
 
+#define GPRra gpr[2] // ra
 #define GPRa0 gpr[10]
 #define GPRa1 gpr[11]
 #define GPRa2 gpr[12]

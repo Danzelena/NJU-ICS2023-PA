@@ -155,6 +155,7 @@ Context *ucontext(AddrSpace *as, Area kstack, void *entry) {
   context->mstatus = 0x1800 | 0x80;
   context->mepc = (uintptr_t)entry;
   context->pdir = as->ptr;
+  context->np = 0x0;
   // context->GPRx = (uintptr_t)heap.end;
   // printf("(Debug)context->pdir=%x\n", context->pdir);
   // ASSERT: here
