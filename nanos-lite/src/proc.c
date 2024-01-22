@@ -204,8 +204,12 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   // printf("(Debug)pcb_as->pdir=%x\n",pcb_as->ptr);
   Context *context = ucontext(pcb_as, (Area) {(void *)kstack_begin, (void*)kstack_end}, (void*)entry);
   context->GPRx = arg_begin;
-
+  arg_begin -= 1;
+  char *buf = (char *)arg_begin;
+  *buf = 0;
+  context->gpr[2] = arg_begin - ustack_end + (uintptr_t)pcb_as->area.end;
   // context-> pdir = pcb_as->ptr;
+
   pcb->cp = context;
   // pcb->cp->GPRx = arg_begin;
   // pcb->cp->pdir = pcb_as->ptr;
