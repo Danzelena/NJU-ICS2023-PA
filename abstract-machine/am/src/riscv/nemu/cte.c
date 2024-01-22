@@ -107,8 +107,8 @@ Context *kcontext(Area kstack, void (*entry)(void *), void *arg)
   context->GPRa0 = (uintptr_t)arg;
   context->pdir = NULL;
 
-  context->np = 0x3;
-  context->GPRra = (uintptr_t)(kstack.end - 4);
+  context->np = KERNEL;
+  context->GPRra = (uintptr_t)kstack.end - 4;
   // ASSERT: here
   // assert(0);
   return context;

@@ -13,6 +13,9 @@
 #define PTE_PPN_MASK (0xfffffc00)
 #define PTE_PPN(x) (((uintptr_t)x & PTE_PPN_MASK) >> 10)
 
+#define KERNEL 3
+#define USER 0
+
 static AddrSpace kas = {};
 
 static void* (*pgalloc_usr)(int) = NULL;
@@ -154,7 +157,7 @@ Context *ucontext(AddrSpace *as, Area kstack, void *entry) {
   context->mstatus = 0x1800 | 0x80;
   context->mepc = (uintptr_t)entry;
   context->pdir = as->ptr;
-  context->np = 0x0;
+  context->np = USER;
   // context->GPRx = (uintptr_t)heap.end;
   // printf("(Debug)context->pdir=%x\n", context->pdir);
   // ASSERT: here

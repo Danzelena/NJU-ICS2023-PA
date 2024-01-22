@@ -42,6 +42,7 @@ f(30) f(31)
 .align 3
 .globl __am_asm_trap
 __am_asm_trap:
+
   // 此时位于用户栈底部
   addi sp, sp, -XLEN
   STORE t4, (sp)
@@ -87,7 +88,7 @@ __am_asm_trap:
   addi t4, sp, CONTEXT_SIZE
   csrw mscratch, t4
 
-  restore_contexts:
+restore_contexts:
 
   LOAD t1, OFFSET_STATUS(sp)
   LOAD t2, OFFSET_EPC(sp)
