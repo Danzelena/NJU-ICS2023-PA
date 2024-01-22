@@ -25,9 +25,9 @@ static void* pg_alloc(int n) {
   printf("(Debug)(pg_alloc)\n");
   assert(n % PGSIZE == 0);
   void *ret = new_page((int)(n / PGSIZE));
-  printf("(0x81e44400)0=%x\n", (void*)(0x81e44400));
+  printf("(0x81e44400)0=%x\n", *((uint32_t*)(0x81e44400)));
   memset(ret, 0, n);
-  printf("(0x81e44400)1=%x\n", (void*)(0x81e44400));
+  printf("(0x81e44400)1=%x\n", *((uint32_t*)(0x81e44400)));
 
   printf("begin=%x, end=%x\n", ret, ret + n);
   return ret;
