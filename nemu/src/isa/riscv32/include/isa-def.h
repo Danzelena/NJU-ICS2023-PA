@@ -18,7 +18,7 @@
 
 #include <common.h>
 
-#define SR_NUM 0x500
+#define SR_NUM 0x800
 #define satp_r (0x180)
 typedef struct {
   word_t gpr[MUXDEF(CONFIG_RVE, 16, 32)];
