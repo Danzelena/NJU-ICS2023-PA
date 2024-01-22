@@ -97,7 +97,6 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   #endif
   /* 修改loader()函数, 支持虚拟内存加载 */
 
-  printf("(0x81e44400)2=%x\n", *((uint32_t*)(0x81e44400)));
   // printf("(Debug)(context_uload)3\n");
   printf("(context_uload)filename=%s\n", filename);
 
@@ -113,7 +112,6 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   uintptr_t arg_end = arg_begin + MAX_args_len;
   uintptr_t ustack_end = arg_end;
   // uintptr_t ustack_begin;
-  printf("(0x81e44400)3=%x\n", *((uint32_t*)(0x81e44400)));
 
   // printf("(Debug)arg_begin=%x, arg_end=%x\n", arg_begin, arg_end);
   printf("(Log)user stack\n [0x---, 0x%x]\n", ustack_end);
@@ -132,7 +130,6 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
       map(pcb_as, (void *)(pcb_as->area.end - i * PGSIZE), (void *)(ustack_end - i * PGSIZE), 1);
     }
   #endif
-    printf("(0x81e44400)4=%x\n", *((uint32_t*)(0x81e44400)));
 
   char *envp_ustack[envc];
   char *argv_ustack[argc];
@@ -190,7 +187,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
 
   assert(ptr_ptr < (uintptr_t *)str_ptr);
   // printf("(Debug)(context_uload)finish with ptr_ptr=%x, str_ptr=%x\n", ptr_ptr, str_ptr);
-  printf("(0x81e44400)5=%x\n", *((uint32_t*)(0x81e44400)));
+  // printf("(0x81e44400)5=%x\n", *((uint32_t*)(0x81e44400)));
 
   entry = entry_get(pcb, filename);
   assert((void*)entry!= NULL);
@@ -219,21 +216,21 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
 }
 void init_proc() {
   // naive_uload(&pcb[0],"/bin/dummy");
-  context_kload(&pcb[0], hello_fun, (void *)1L);
-  // context_uload(&pcb[0], "/bin/hello", NULL, NULL);
+  // context_kload(&pcb[0], hello_fun, (void *)1L);
+  context_uload(&pcb[0], "/bin/hello", NULL, NULL);
 
-  char *const argv[] = {"/bin/exec-test", NULL};
-  context_uload(&pcb[1], "/bin/exec-test", argv, NULL);
+  // char *const argv[] = {"/bin/exec-test", NULL};
+  // context_uload(&pcb[1], "/bin/exec-test", argv, NULL);
   
   // BUG: 根据目前计算 argc, envc的方法,必须这么定义 argv, envp
   // char *const argv[] = {"--skip", "hello", "world", "NJU", NULL};
   // char *const envp[] = {"ICS", "PA", "pa", NULL};
 
   // BUG: "nil" for NULL, always make Segemetion fault when getenv()
-  // char *const argv[] = {"/bin/exec-test", NULL};
+  char *const argv[] = {"/bin/exec-test", NULL};
   // char *const envp[] = {"nil", NULL};
 
-  // context_uload(&pcb[1], "/bin/menu", NULL, NULL);
+  context_uload(&pcb[1], "/bin/menu", argv, NULL);
   // context_uload(&pcb[2], "/bin/menu", NULL, NULL);
 
 

@@ -15,12 +15,10 @@ Context *__am_irq_handle(Context *c)
   uintptr_t mscratch_r;
   uintptr_t kas = 0;
   asm volatile("csrr %0, mscratch" : "=r"(mscratch_r));
-  c->np = (mscratch_r == 0 ? KERNEL : USER);
-  asm volatile("csrw mscratch, %0" : : "r"(kas));
 
-  if ((uintptr_t)&c < 0x80000000){
-    halt(10001);
-  }
+  c->np = (mscratch_r == 0 ? KERNEL : USER);
+  printf("(Debug)c->np=%x", c->np);
+  asm volatile("csrw mscratch, %0" : : "r"(kas));
 
   // printf("(Debug)buf0=%x\n", c->GPR3);
   __am_get_cur_as(c);
@@ -35,7 +33,7 @@ Context *__am_irq_handle(Context *c)
     {
     case -1:
       ev.event = EVENT_YIELD;break;
-    // BUG:有不干净的东西~ 这么写就会报错(
+ 
     // case 0:case 1:case 2:case 3:case 4:case 5:case 6:case 7:case 8:case 9:case 10:case 11:case 12:case 13:case 14:case 15:case 16:case 17:case 18:case 19:
     case 1:case 2:case 3:case 4:case 5:case 6:case 7:case 8:case 9:case 10:case 11:case 12:case 13:case 14:case 15:case 16:case 17:case 18:case 19:
       ev.event = EVENT_SYSCALL;break;

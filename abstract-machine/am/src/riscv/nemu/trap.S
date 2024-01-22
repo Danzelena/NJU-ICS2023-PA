@@ -43,16 +43,16 @@ f(30) f(31)
 .globl __am_asm_trap
 __am_asm_trap:
 
-  // 此时位于用户栈底部
+
   addi sp, sp, -XLEN
   STORE t4, (sp)
   mv t4, sp
-  // 切换栈
+
   csrrw sp, mscratch, sp   // (1) atomically exchange sp and mscratch
   bnez sp, save_context    // (2) take the branch if we trapped from user
   csrrw sp, mscratch, sp   // (3) if we trapped from kernel, 恢复之前的状态
 
-  // 进入内核栈
+
   save_context:
 
   addi sp, sp, -CONTEXT_SIZE
@@ -80,11 +80,11 @@ __am_asm_trap:
   # 先将栈顶指针 sp 切换到新进程的上下文结构,然后再恢复上下文
   mv sp, a0
 
-  // 切换到新的内核栈空间
+
   // if(c->np == USER)
   LOAD t4, OFFSET_NP(sp)
   bnez t4, restore_contexts
-  //c->np == USER
+
   addi t4, sp, CONTEXT_SIZE
   csrw mscratch, t4
 

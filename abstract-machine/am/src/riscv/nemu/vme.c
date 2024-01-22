@@ -76,9 +76,6 @@ void protect(AddrSpace *as) {
   // map kernel space
 
     memcpy(updir, kas.ptr, PGSIZE);
-
- 
-
   // ASSERT
   // assert(0);
 }
