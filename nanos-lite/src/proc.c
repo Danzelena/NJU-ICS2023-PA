@@ -248,7 +248,8 @@ Context* schedule(Context *prev) {
   printf("(Schedule)\n");
   printf("(DEBUG)[0]: pdir=%x, ptr=%x\n", pcb[0].cp->pdir, pcb[0].as.ptr);
   printf("(DEBUG)[1]: pdir=%x, ptr=%x\n", pcb[1].cp->pdir, pcb[1].as.ptr);
-  assert(pcb[0].cp->pdir == NULL);
+  assert(pcb[0].cp->pdir == pcb[0].as.ptr);
+  assert(pcb[1].cp->pdir == pcb[1].as.ptr);
 
   // BUG: not equal!!!!
   // if(current->cp->pdir != current->as.ptr){
