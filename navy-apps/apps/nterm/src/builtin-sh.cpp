@@ -71,7 +71,7 @@ static char *input_handle_arg(char *input, char *fp, char *end){
   
   char *arg = input + strlen(fp) + 1;
   
-  printf("(Debug)arg=%d, input_end=%d\n", arg, end);
+  // printf("(Debug)arg=%d, input_end=%d\n", arg, end);
   if(arg >= end){
     return NULL;
   }
@@ -80,7 +80,7 @@ static char *input_handle_arg(char *input, char *fp, char *end){
 
 char *_argv[MAX_ARGC];
 static char **arg_handle_argv(char *arg){
-  printf("(Debug)arg__argv\n");
+  // printf("(Debug)arg__argv\n");
   // assert(arg != NULL);
   if(arg == NULL){
     return (char **)NULL;

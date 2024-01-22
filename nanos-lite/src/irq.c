@@ -1,6 +1,6 @@
 #include <common.h>
 #include <proc.h>
-
+// #include <errno.h>
 void do_syscall();
 static Context *do_event(Event e, Context *c)
 {
