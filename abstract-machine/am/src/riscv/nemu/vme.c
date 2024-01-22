@@ -37,6 +37,8 @@ static inline uintptr_t get_satp() {
 
 bool vme_init(void* (*pgalloc_f)(int), void (*pgfree_f)(void*)) {
   /* set call-back function */
+  // ASSERT:
+  // assert(0);
   pgalloc_usr = pgalloc_f;
   pgfree_usr = pgfree_f;
   // printf("(vme_init)\n");
@@ -53,7 +55,8 @@ bool vme_init(void* (*pgalloc_f)(int), void (*pgfree_f)(void*)) {
 
   set_satp(kas.ptr);
   vme_enable = 1;
-
+  // ASSERT
+  assert(0);
   return true;
 }
 
@@ -66,6 +69,8 @@ void protect(AddrSpace *as) {
 
   // map kernel space
   memcpy(updir, kas.ptr, PGSIZE);
+  // ASSERT
+  assert(0);
 }
 
 // 销毁指定的地址空间
@@ -131,6 +136,8 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
 // kstack -> 内核栈, 用于分配上下文结构
 // entry -> 用户进程的入口
 Context *ucontext(AddrSpace *as, Area kstack, void *entry) {
+  // ASSERT:
+  assert(0);
   // printf("(Debug)begin to ucontext\n");
   Context *context = kstack.end - sizeof(Context);
   // printf("(Debug)context=%x\n", context);
@@ -139,6 +146,7 @@ Context *ucontext(AddrSpace *as, Area kstack, void *entry) {
   context->pdir = as->ptr;
   // context->GPRx = (uintptr_t)heap.end;
   // printf("(Debug)context->pdir=%x\n", context->pdir);
+  // ASSERT: here
   assert(0);
   return context;
   // return NULL;

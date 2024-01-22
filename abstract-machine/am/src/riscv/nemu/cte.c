@@ -51,6 +51,8 @@ extern void __am_asm_trap(void);
 
 bool cte_init(Context *(*handler)(Event, Context *))
 {
+  // ASSERT:
+  assert(0);
   // initialize exception entry
   uint64_t val = 0x1800;
   // READ: 直接将异常入口地址设置到mtvec寄存器中,__am_asm_trap is a asm function,put address of the function to reg
@@ -60,6 +62,7 @@ bool cte_init(Context *(*handler)(Event, Context *))
 
   // register event handler
   user_handler = handler;
+  // ASSERT: here
   assert(0);
   return true;
 }
@@ -73,7 +76,8 @@ bool cte_init(Context *(*handler)(Event, Context *))
 // 你需要在kstack的底部创建一个以entry为入口的上下文结构(目前你可以先忽略arg参数), 然后返回这一结构的指针.
 Context *kcontext(Area kstack, void (*entry)(void *), void *arg)
 {
-
+  // ASSERT here
+  assert(0);
   Context *context = kstack.end - sizeof(Context) - 4;
   //TODO: for test
   context->mstatus = 0x1800 | 0x80;
@@ -82,6 +86,7 @@ Context *kcontext(Area kstack, void (*entry)(void *), void *arg)
   // riscv 是使用寄存器传递参数
   context->GPRa0 = (uintptr_t)arg;
   context->pdir = NULL;
+  // ASSERT: here
   assert(0);
   return context;
   // return NULL;
