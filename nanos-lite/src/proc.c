@@ -216,7 +216,9 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
 }
 void init_proc() {
   // naive_uload(&pcb[0],"/bin/dummy");
-  context_kload(&pcb[0], hello_fun, (void *)1L);
+  // context_kload(&pcb[0], hello_fun, (void *)1L);
+  context_uload(&pcb[0], "/bin/hello", NULL, NULL);
+
   context_uload(&pcb[1], "/bin/hello", NULL, NULL);
   
   // BUG: 根据目前计算 argc, envc的方法,必须这么定义 argv, envp
