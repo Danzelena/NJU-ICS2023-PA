@@ -137,7 +137,8 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   }
   /* 二级页表 */ 
   PTE *pt2_e = (uintptr_t*)(PTE_PPN(*pt1_e) * 4096 + vpn0 * 4);
-  printf("(Debug)vpn0=%x, pt2_e=%x\n", vpn0, pt2_e);
+  printf("(Debug)vpn0=%x, *pt1_e=%x, pt2_e=%x\n", vpn0, *pt1_e, pt2_e);
+  // pt2_e = 0xc0000000 
   *pt2_e = (ppn << 10) | (PTE_V) | (PTE_R) | (PTE_W) | (PTE_X);
   if(prot){
     *pt2_e |= PTE_U;

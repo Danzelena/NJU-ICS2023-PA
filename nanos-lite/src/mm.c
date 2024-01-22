@@ -17,6 +17,7 @@ void* new_page(size_t nr_page) {
   return ret;
   // return NULL;
 }
+//pt1_e=0x81e44000
 
 // TODO: 分配n个字节的空间
 #ifdef HAS_VME
