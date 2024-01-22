@@ -60,7 +60,7 @@ bool cte_init(Context *(*handler)(Event, Context *))
 
   // register event handler
   user_handler = handler;
-
+  assert(0);
   return true;
 }
 
@@ -73,6 +73,7 @@ bool cte_init(Context *(*handler)(Event, Context *))
 // 你需要在kstack的底部创建一个以entry为入口的上下文结构(目前你可以先忽略arg参数), 然后返回这一结构的指针.
 Context *kcontext(Area kstack, void (*entry)(void *), void *arg)
 {
+
   Context *context = kstack.end - sizeof(Context) - 4;
   //TODO: for test
   context->mstatus = 0x1800 | 0x80;
@@ -81,6 +82,7 @@ Context *kcontext(Area kstack, void (*entry)(void *), void *arg)
   // riscv 是使用寄存器传递参数
   context->GPRa0 = (uintptr_t)arg;
   context->pdir = NULL;
+  assert(0);
   return context;
   // return NULL;
 }

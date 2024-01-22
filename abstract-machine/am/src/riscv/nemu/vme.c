@@ -139,6 +139,7 @@ Context *ucontext(AddrSpace *as, Area kstack, void *entry) {
   context->pdir = as->ptr;
   // context->GPRx = (uintptr_t)heap.end;
   // printf("(Debug)context->pdir=%x\n", context->pdir);
+  assert(0);
   return context;
   // return NULL;
 }
