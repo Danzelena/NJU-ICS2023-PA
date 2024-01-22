@@ -219,7 +219,8 @@ void init_proc() {
   // context_kload(&pcb[0], hello_fun, (void *)1L);
   context_uload(&pcb[0], "/bin/hello", NULL, NULL);
 
-  context_uload(&pcb[1], "/bin/hello", NULL, NULL);
+  char *const argv[] = {"/bin/exec-test", NULL};
+  context_uload(&pcb[1], "/bin/exec-test", argv, NULL);
   
   // BUG: 根据目前计算 argc, envc的方法,必须这么定义 argv, envp
   // char *const argv[] = {"--skip", "hello", "world", "NJU", NULL};
