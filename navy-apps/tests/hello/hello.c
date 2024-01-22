@@ -2,19 +2,19 @@
 #include <stdio.h>
 
 int main() {
-  write(1, "Hello World!\n", 13);
+  // write(1, "Hello World!\n", 13);
   int i = 2;
   // write(1, "Hello World!\n", 13);
-  // volatile int j = 0;
+  volatile int j = 0;
   // write(1, "Hello World!\n", 13);
-  printf("Hello World from Navy-apps for the %dth time!\n", i);
-  // while (1) {
-  //   j ++;
-  //   if (j == 10000) {
-  //     // write(1, "Hello World!\n", 13);
-  //     printf("Hello World from Navy-apps for the %dth time!\n", i ++);
-  //     j = 0;
-  //   }
-  // }
+  // printf("Hello World from Navy-apps for the %dth time!\n", i);
+  while (1) {
+    j ++;
+    if (j == 10000) {
+      // write(1, "Hello World!\n", 13);
+      printf("Hello World from Navy-apps for the %dth time!\n", i ++);
+      j = 0;
+    }
+  }
   return 0;
 }
