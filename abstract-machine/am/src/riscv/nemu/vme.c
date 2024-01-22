@@ -74,7 +74,7 @@ void protect(AddrSpace *as) {
   as->pgsize = PGSIZE;
 
   // map kernel space
-  // memcpy(updir, kas.ptr, PGSIZE);
+  memcpy(updir, kas.ptr, PGSIZE);
 
   // ASSERT
   // assert(0);
@@ -85,11 +85,19 @@ void unprotect(AddrSpace *as) {
 }
 
 void __am_get_cur_as(Context *c) {
-  printf("(__am_get_cur_as)vme_enable=%d, c->pdir=%x\n", vme_enable, c->pdir);
-  c->pdir = (vme_enable && (get_satp() != (uintptr_t)kas.ptr))?(void *)get_satp() : NULL;
+  // printf("(__am_get_cur_as)vme_enable=%d, c->pdir=%x\n", vme_enable, c->pdir);
+  // c->pdir = (vme_enable && (get_satp() != (uintptr_t)kas.ptr))?(void *)get_satp() : NULL;
   // c->pdir = vme_enable ? (void *)get_satp() : NULL;
   // c->pdir = ((vme_enable && (c->pdir != NULL))? (void *)get_satp() : NULL);
   // printf("(__am_get_cur_as)c->pdir=%x\n", c->pdir);
+
+
+
+    if (c->pdir != NULL){ //自行添加
+    //printf("在__am_get_cur_as中设置为由%p，地址为%p，更改为，", c->pdir, &c->pdir);
+    c->pdir = (vme_enable ? (void *)get_satp() : NULL);
+    //printf("%p\n", c->pdir);
+  }
 }
 
 void __am_switch(Context *c) {
