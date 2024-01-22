@@ -45,6 +45,8 @@ Context *__am_irq_handle(Context *c)
   // assert(c->pdir == )
   __am_switch(c);
   // printf("(__am_ieq_handle)4\n");
+  printf("===========================================\n");
+
   return c;
 }
 

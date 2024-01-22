@@ -90,7 +90,6 @@ void __am_get_cur_as(Context *c) {
 
 void __am_switch(Context *c) {
   // printf("vme_enable=%d, c->pdir=%x\n", vme_enable, c->pdir);
-  printf("===========================================\n");
   // printf("(__am_switch)pdir=%x\n", c->pdir);
   // printf("(__am_switch)Hint: kas.ptr=%x\n", kas.ptr);
   if (vme_enable && c->pdir != NULL) {
