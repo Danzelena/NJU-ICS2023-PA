@@ -244,6 +244,7 @@ uintptr_t elf_loader(uintptr_t file_off, bool *suc)
 #ifdef HAS_VME
   /* 申请一页物理页, 通过 map() 将物理页映射到用户进程的虚拟地址空间中 */
   static void *alloc_section_space(AddrSpace *as, uintptr_t vaddr, size_t p_memsz){
+    assert(as);
     size_t vpage_end = vaddr + p_memsz - 1;
     size_t vpage_begin = vaddr;
     size_t vpage_n = (vpage_end >> 12) - (vpage_begin >> 12) + 1;
