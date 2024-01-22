@@ -28,8 +28,7 @@ struct Context {
 // #define GPR3 gpr[0]
 // #define GPR4 gpr[0]
 #define GPRx gpr[10] // a0
-
-#define GPRra gpr[2] // ra
+#define GPRsp gpr[2] // sp
 #define GPRa0 gpr[10]
 #define GPRa1 gpr[11]
 #define GPRa2 gpr[12]

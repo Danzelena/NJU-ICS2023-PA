@@ -58,6 +58,7 @@ Context *__am_irq_handle(Context *c)
   // assert(c->pdir == )
   __am_switch(c);
   // printf("(__am_ieq_handle)4\n");
+  printf("(DEBUG)c->sp", c->GPRsp);
   printf("===========================================\n");
 
   return c;
@@ -108,7 +109,7 @@ Context *kcontext(Area kstack, void (*entry)(void *), void *arg)
   context->pdir = NULL;
 
   context->np = KERNEL;
-  context->GPRra = (uintptr_t)kstack.end - 4;
+  context->GPRsp = (uintptr_t)kstack.end - 4;
   // ASSERT: here
   // assert(0);
   return context;
