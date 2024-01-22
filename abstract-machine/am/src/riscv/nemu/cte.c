@@ -11,6 +11,7 @@ Context *__am_irq_handle(Context *c)
 {
   // printf("(Debug)buf0=%x\n", c->GPR3);
   __am_get_cur_as(c);
+  printf("(__am_irq_handle)pdir=%x\n", c->pdir);
   // printf("(__am_irq_handle)2\n");
   // 把执行流切换的原因打包成事件,然后user_handle()
   if (user_handler)
