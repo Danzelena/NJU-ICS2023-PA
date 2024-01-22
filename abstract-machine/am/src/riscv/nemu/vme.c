@@ -120,7 +120,7 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   /* 一级页表 */
   assert(as->ptr);
   PTE *pt1_e = (uintptr_t*)(as->ptr + (vpn1 <<2));
-  printf("(Debug)as->ptr=%x, vpn1=%x, pt1_e=%x\n", as->ptr, vpn1, pt1_e);
+  // printf("(Debug)as->ptr=%x, vpn1=%x, pt1_e=%x\n", as->ptr, vpn1, pt1_e);
   // assert((uintptr_t)pt1_e == get_satp() + vpn1 * 4);
 
   /* 查看二级页表是否分配 */
@@ -138,13 +138,13 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   }
   /* 二级页表 */ 
   PTE *pt2_e = (uintptr_t*)(PTE_PPN(*pt1_e) * 4096 + vpn0 * 4);
-  printf("(Debug)vpn0=%x, *pt1_e=%x, pt2_e=%x\n", vpn0, *pt1_e, pt2_e);
+  // printf("(Debug)vpn0=%x, *pt1_e=%x, pt2_e=%x\n", vpn0, *pt1_e, pt2_e);
   // pt2_e = 0xc0000000 
   *pt2_e = (ppn << 10) | (PTE_V) | (PTE_R) | (PTE_W) | (PTE_X);
   if(prot){
     *pt2_e |= PTE_U;
   }
-  printf("(Debug)finish map\n");
+  // printf("(Debug)finish map\n");
   // printf("(MAP)\n va=%x\n pa=%x\n", va, pa);
   // assert(0);
 }
