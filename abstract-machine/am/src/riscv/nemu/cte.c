@@ -7,8 +7,21 @@ static Context *(*user_handler)(Event, Context *) = NULL;
 void __am_get_cur_as(Context *c);
 void __am_switch(Context *c);
 
+#define KERNEL 3
+#define USER 0
+
 Context *__am_irq_handle(Context *c)
 {
+  uintptr_t mscratch_r;
+  uintptr_t kas = 0;
+  asm volatile("csrr %0, mscratch" : "=r"(mscratch_r));
+  c->np = (mscratch_r == 0 ? KERNEL : USER);
+  asm volatile("csrw mscratch, %0" : : "r"(kas));
+
+  if ((uintptr_t)&c < 0x80000000){
+    halt(10001);
+  }
+
   // printf("(Debug)buf0=%x\n", c->GPR3);
   __am_get_cur_as(c);
   printf("(__am_irq_handle)pdir=%x\n", c->pdir);
