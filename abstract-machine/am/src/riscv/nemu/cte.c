@@ -58,7 +58,7 @@ Context *__am_irq_handle(Context *c)
   // assert(c->pdir == )
   __am_switch(c);
   // printf("(__am_ieq_handle)4\n");
-  printf("(DEBUG)c->sp", c->GPRsp);
+  printf("(DEBUG)c->sp=%x\n", c->GPRsp);
   printf("===========================================\n");
 
   return c;
